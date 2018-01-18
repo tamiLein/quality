@@ -1,0 +1,39 @@
+div.tooltip {
+    position: absolute;
+    text-align: left;
+    min-width: 200px;
+    padding: 10px;
+    font-size: 12px;
+    background: #d8d7d7;
+    border: 0px;
+    pointer-events: none;
+}
+
+g {
+    cursor: pointer;
+}
+
+.tooltip span {
+    float: right;
+}
+
+#bubbleChart {
+    position: relative;
+}
+
+.tooltip:after,
+.tooltip:before {
+    bottom: 100%;
+    left: 20px;
+    border: solid transparent;
+    content: " ";
+    position: absolute;
+    pointer-events: none;
+}
+
+.tooltip:after {
+    border-bottom-color: #d8d7d7;
+    border-width: 20px;
+    border-bottom-width: 15px;
+    margin-left: -20px;
+}

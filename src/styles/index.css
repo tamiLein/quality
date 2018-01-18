@@ -1,0 +1,47 @@
+@import url("./accordion.css");
+@import url("./lib/font-awesome.min.css");
+@import url("./input.css");
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Raleway', sans-serif;
+}
+
+header{
+  text-align: center;
+  margin: 40px 0;
+}
+
+.App-logo {
+  height: 150px;
+}
+
+.container{
+  max-width: 1024px;
+}
+
+footer .container{
+  border-top: 1px solid #ef8160;
+  padding: 25px 0;
+  text-align: center;
+  font-size:12px;
+}
+footer .container div{
+  width: 400px;
+  margin: auto;
+}
+
+/* Text meant only for screen readers. */
+.screen-reader-text {
+  border: 0;
+  clip: rect(1px, 1px, 1px, 1px);
+  clip-path: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute !important;
+  width: 1px;
+  word-wrap: normal !important;
+}
