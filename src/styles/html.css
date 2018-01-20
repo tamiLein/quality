@@ -1,0 +1,55 @@
+.error.col-md-12:nth-child(odd){
+    background-color: #fafafa;
+}
+
+.error.col-md-12{
+    padding: 15px 5px;
+}
+
+.codeSnipped, .codeLine{
+    font-family:'Cutive Mono', monospace;
+    overflow: hidden;
+    width: 100%;
+    text-overflow: ellipsis;
+    max-height: 100px;
+}
+
+.codeLine{
+    font-style: italic;
+    display: block;
+}
+
+.errorType {
+    display: block;
+    font-size: 18px;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+/*.errorType.info .fa::before{
+    content: ' '
+}
+
+.errorType.info .fa{
+    background-color: transparent;
+}*/
+
+.errorType.error .fa, .fa.error{
+    float: none;
+    background-color:#ef8160;
+    padding: 2px 7px;
+    color: #fff;
+    margin-right:10px;
+}
+
+.errorType.error .fa::before, .fa.error::before{
+    content: '\f12a'
+}
+
+#panel-html .error.col-md-12{
+    display: none;
+}
+
+#panel-html .error.col-md-12.checked{
+    display: block;
+}

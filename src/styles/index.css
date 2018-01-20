@@ -1,6 +1,8 @@
 @import url("./accordion.css");
 @import url("./lib/font-awesome.min.css");
 @import url("./input.css");
+@import url("./html.css");
+@import url("./css.css");
 
 body {
   margin: 0;

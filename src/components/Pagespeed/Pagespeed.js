@@ -25,7 +25,7 @@ class Pagespeed extends Component {
   }
 
   render() {
-    this.validatePagespeed(this.state.url);
+    //this.validatePagespeed(this.state.url);
 
 
     return null;

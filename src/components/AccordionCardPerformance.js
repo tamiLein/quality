@@ -7,8 +7,10 @@ import '../styles/App.css';
 class AccordionCardPerformance extends Component {
   render() {
     return (
-        <a className="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse3" aria-expanded="false">
-          <div className="panel panel-default" id="panel-performance">
+        <div className="panel panel-default" id="panel-performance">
+          <a className="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse3"
+             aria-expanded="false">
+
             <div className="panel-heading">
               <span className="colorbar"></span>
               <h4 className="panel-title">
@@ -18,14 +20,15 @@ class AccordionCardPerformance extends Component {
               </h4>
               <i className="fa arrow" aria-hidden="true"></i>
             </div>
-            <div id="collapse3" className="panel-collapse collapse">
-              <div className="panel-body">
-                Anim pariatur cliche reprehenderit
-                {/*<Pagespeed/>*/}
-              </div>
+          </a>
+          <div id="collapse3" className="panel-collapse collapse">
+            <div className="panel-body">
+              Anim pariatur cliche reprehenderit
+              {/*<Pagespeed/>*/}
             </div>
           </div>
-        </a>
+        </div>
+
     );
   }
 }

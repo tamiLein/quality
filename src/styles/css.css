@@ -1,0 +1,7 @@
+#panel-css .error.col-md-12{
+    display: none;
+}
+
+#panel-css .error.col-md-12.checked{
+    display: block;
+}
