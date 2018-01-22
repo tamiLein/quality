@@ -26,6 +26,10 @@
     padding-right:0;
 }
 
+.panel-collapse.collapse.in{
+    border-top: 2px solid gray;
+}
+
 .panel-group .panel-heading + .panel-collapse > .list-group, .panel-group .panel-heading + .panel-collapse > .panel-body{
     border-top-width: 2px;
 }
@@ -73,8 +77,6 @@ a.collapsed .fa.arrow::before{
 .col-md-12.error-filter {
     padding: 20px 20px;
     border-bottom: 2px solid gray;
-    border-top: 2px solid gray;
-
 }
 
 label{

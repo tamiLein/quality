@@ -1,0 +1,3 @@
+Hello, my name is Tamara and I'm a master student at the university of applied science in upper austria - Hagenberg. I'm implementing a web quality analyzing tool to check websites based on their source code given by a url input. your project is very interesting and provides a very good validation on accessibility. Therefore, I would be very happy if I could have access to your API for free. My project will tell the audience that I use your API and the project will only run on my local computer and will not be published in the world wide web.
+    I'm looking forward to your answer! Have a nice day,
+Tamara

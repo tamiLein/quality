@@ -1,0 +1,16 @@
+#colorChart text {
+    opacity: 0;
+    font-size: 14px;
+}
+
+#colorChart g:hover text {
+    opacity: 1;
+}
+
+#colorChart {
+    position: relative;
+}
+
+#colorChart g {
+    cursor: pointer;
+}

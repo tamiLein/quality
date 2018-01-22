@@ -117,7 +117,7 @@ class HTML extends Component {
       //add warnings and errors
 
       for (let i = 0; i < error.length; i++) {
-        let classChecked = '';
+          let classChecked = '';
         if (error[i].type === 'error') {
           classChecked = this.state.showHideError;
         } else {

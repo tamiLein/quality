@@ -3,6 +3,8 @@
 @import url("./input.css");
 @import url("./html.css");
 @import url("./css.css");
+@import url("./bubbles.css");
+@import url("./colors.css");
 
 body {
   margin: 0;

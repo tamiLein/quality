@@ -1,21 +1,33 @@
 import React, {Component} from 'react';
-import '../styles/App.css';
 import * as d3 from 'd3';
 
 class Bubbles extends Component {
 
+  constructor(props){
+    super(props);
+    this.createBubbles = this.createBubbles.bind(this);
+  }
+
+  componentDidMount(){
+    this.createBubbles();
+  }
+
+  componentDidUpdate(){
+    this.createBubbles();
+  }
+
   createBubbles(){
-    const svg = d3.select('svg');
-    console.log("svg", svg);
-    const width = +svg.attr("width");
-    const height = +svg.attr("height");
+    const svg = this.node;
+    const width = 500;
+    const height = 500;
 
     const colors = [
       'rgb(251, 201, 141)', 'rgb(239, 129, 96)', 'rgb(219, 71, 106)', 'rgb(159, 47, 127)', 'rgb(94, 37, 124)'
     ];
 
-
-    console.log(colors);
+    //console.log('svg', svg);
+    //console.log('width', width);
+    //console.log('height', height);
 
     const pack = d3.pack()
         .size([width, height])
@@ -26,10 +38,13 @@ class Bubbles extends Component {
         .style('opacity', 0);
 
 
-    d3.json('../json/classnames.json', function(error, data) {
-      if (error) throw error;
+    d3.json('./json/classnames.json', function(error, data) {
+      console.log('read data');
+      if (error){
+        console.log('error', error.currentTarget.responseText);
+      }
 
-      console.log('data: ', data);
+      //console.log('data: ', data);
 
       const root = d3.hierarchy({
         children: data
@@ -48,7 +63,6 @@ class Bubbles extends Component {
       });
 
       const max = d3.max(data, function(d) {
-        console.log('d', d);
         return d.VALUE;
       });
 
@@ -56,7 +70,8 @@ class Bubbles extends Component {
       // -----
 
 
-      const node = svg.selectAll('.node')
+      const node = d3.select(svg)
+          .selectAll('.node')
           .data(pack(root).leaves())
           .enter()
           .append('g')
@@ -93,8 +108,9 @@ class Bubbles extends Component {
   }
 
   render() {
-    this.createBubbles();
-    return null;
+    return <svg ref={node => this.node = node}
+                width={500} height={500}>
+    </svg>
   }
 }
 

@@ -4,9 +4,10 @@ div.tooltip {
     min-width: 200px;
     padding: 10px;
     font-size: 12px;
-    background: #d8d7d7;
+    background: gray;
     border: 0px;
     pointer-events: none;
+    color: white;
 }
 
 g {
@@ -32,8 +33,15 @@ g {
 }
 
 .tooltip:after {
-    border-bottom-color: #d8d7d7;
+    border-bottom-color: gray;
     border-width: 20px;
     border-bottom-width: 15px;
     margin-left: -20px;
+}
+
+.classname.index {
+    display: inline-block;
+    width: 40px;
+    text-align: right;
+    margin-right: 10px;
 }

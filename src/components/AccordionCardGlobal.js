@@ -2,7 +2,10 @@ import React, {Component} from 'react';
 import '../styles/App.css';
 
 //########## Components ##############
-import Bubbles from './Bubbles';
+import Bubbles from './Global/Bubbles';
+import Classnames from './Global/Classnames';
+import Colors from './Global/Colors';
+import ChordDiagramm from './Global/ChordDiagramm';
 
 
 class AccordionCardGlobal extends Component {
@@ -24,9 +27,31 @@ class AccordionCardGlobal extends Component {
           </a>
           <div id="collapse5" className="panel-collapse collapse">
             <div className="panel-body">
-              <div id="bubbleChart">
-                <svg id="svg-bubbles" width="400" height="400" textAnchor="middle"></svg>
-                {/*<Bubbles/>*/}
+              <div className="row">
+                <div id="bubbleChart" className="col-md-6">
+                  <Bubbles/>
+
+                </div>
+                <div id="classnames" className="col-md-6">
+                  <h5>Classnames</h5>
+                  <p>The following classnames are used in the given source code:</p>
+                  <ul>
+                    <Classnames/>
+                  </ul>
+                </div>
+              </div>
+              <div className="row">
+                <div id="colorChart" className="col-md-6">
+                  <Colors data="font"/>
+                  <Colors data="background"/>
+                  <Colors data="border"/>
+
+                </div>
+              </div>
+              <div className="row">
+                <div id="colorChart" className="col-md-6">
+                  <ChordDiagramm/>
+                </div>
               </div>
             </div>
           </div>
