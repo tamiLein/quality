@@ -15,14 +15,12 @@ class Classnames extends Component {
 
     array.forEach((item, index) => {
       items.push((
-          <li key={index}><span className="classname index">[ {index} ]</span>    {item}</li>
+          <li key={index}><span className="classname index">[ {index} ]</span> {item}</li>
       ))
     });
 
 
     if (items.length > 0) {
-
-      console.log('items', items);
       return (
           items
       )

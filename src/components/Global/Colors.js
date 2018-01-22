@@ -26,9 +26,6 @@ class Colors extends Component {
         console.log('error', error.currentTarget.responseText);
       }
 
-      console.log('data: ', data);
-
-
       const node = d3.select(svg)
           .selectAll('.node')
           .data(data)
