@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import '../styles/App.css';
 
-//import Pagespeed from './Pagespeed/Pagespeed';
+import Pagespeed from './Pagespeed/Pagespeed';
 
 
 class AccordionCardPerformance extends Component {
@@ -23,8 +23,7 @@ class AccordionCardPerformance extends Component {
           </a>
           <div id="collapse3" className="panel-collapse collapse">
             <div className="panel-body">
-              Anim pariatur cliche reprehenderit
-              {/*<Pagespeed/>*/}
+              <Pagespeed/>
             </div>
           </div>
         </div>

@@ -18,14 +18,7 @@ class Colors extends Component {
 
   createBubbles() {
     const svg = this.node;
-    const width = 500;
-    const height = 150;
     const nodeWidth = 60;
-
-    var toolTip = d3.select('#colorChart').append('div')
-        .attr('class', 'tooltip')
-        .style('opacity', 0);
-
 
     d3.json('./json/colors-' + this.props.data + '.json', function (error, data) {
       console.log('read data');

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import * as d3 from 'd3';
+// import * as d3 from 'd3';
 
 class ChordDiagramm extends Component {
 
@@ -23,7 +23,7 @@ class ChordDiagramm extends Component {
 
   render() {
     return ( <div>
-          <h5>Colors</h5>
+          <h5>Relations between HTML Elements:</h5>
           <h6>{this.props.data}</h6>
           <svg ref={node => this.node = node}
                width={500} height={100}>

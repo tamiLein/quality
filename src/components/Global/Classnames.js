@@ -1,19 +1,13 @@
 import React, {Component} from 'react';
-import * as d3 from 'd3';
 
 import json from './../../json/classnames.json'
 
 class Classnames extends Component {
 
-  constructor(props) {
-    super(props);
-  }
-
   render() {
 
-
-    let items = new Array();
-    let array = new Array();
+    let items = [];
+    let array = [];
 
     for (let i = 0; i < json.length; i++) {
       array[json[i].VALUE] = json[i].CLASS

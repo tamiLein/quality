@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
-import pagespeedValiator from 'gpagespeed';
+//import valiator from 'gpagespeed';
+
+const validator = require('gpagespeed')
 
 class Pagespeed extends Component {
   constructor(props){
@@ -7,21 +9,31 @@ class Pagespeed extends Component {
     this.state = {
       url: 'https://www.google.at/',
     }
+    this.validatePagespeed = this.validatePagespeed.bind(this);
+  }
+
+  componentDidMount(){
+    this.validatePagespeed();
+  }
+
+  componentDidUpdate(){
+    this.validatePagespeed();
   }
 
   validatePagespeed(url){
+
     const options = {
       url: url,
       key: 'AIzaSyDM0KzbxUNHlR4GYSIkdAV_S-b2JzTDhSk'
     };
 
-    pagespeedValiator(options)
+    /*valiator(options)
         .then((data) => {
           console.log(data)
         })
         .catch((error) => {
           console.error(error)
-        });
+        });*/
   }
 
   render() {
