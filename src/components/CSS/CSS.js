@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import cssValiator from 'w3c-css';
+import {connect} from 'react-redux';
 
 class CSS extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      url: 'https://www.google.at/',
       errors: '',
       warnings: '',
       showHideError: 'checked',
@@ -19,12 +19,12 @@ class CSS extends Component {
   }
 
   componentWillMount() {
-    this.validateCss(this.state.url);
+    this.validateCss(this.props.url);
   }
 
 
   validateCss(url) {
-    cssValiator.validate(this.state.url, (err, data) => {
+    cssValiator.validate(url, (err, data) => {
       if (err) {
         console.log('crashed', err);
       } else {
@@ -64,8 +64,6 @@ class CSS extends Component {
 
 
   render() {
-
-    console.log('render css');
 
     let errorItems = [];
     let warningItems = [];
@@ -143,4 +141,10 @@ class CSS extends Component {
   }
 }
 
-export default CSS;
+const stateMap = (state) => {
+  return {
+    url: state.url
+  };
+};
+
+export default connect(stateMap)(CSS);

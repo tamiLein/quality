@@ -21,7 +21,7 @@ class AccordionCardAccessibility extends Component {
           </a>
           <div id="collapse4" className="panel-collapse collapse">
             <div className="panel-body">
-              Anim pariatur cliche reprehenderit
+              Coming soon... Testing the accessibility of the page.
             </div>
           </div>
         </div>

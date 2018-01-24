@@ -1,26 +1,14 @@
 [
   {
     "POS": 1,
-    "COLOR": "#fbc98d"
+    "COLOR": "#000"
   },
   {
     "POS": 2,
-    "COLOR": "#ef8160"
+    "COLOR": "gray"
   },
   {
     "POS": 3,
-    "COLOR": "#db476a"
-  },
-  {
-    "POS": 4,
-    "COLOR": "#9f2f7f"
-  },
-  {
-    "POS": 5,
-    "COLOR": "#5e257c"
-  },
-  {
-    "POS": 6,
-    "COLOR": "#262150"
+    "COLOR": "#b4aeae"
   }
 ]

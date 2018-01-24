@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import htmlValiator from 'html-validator';
+import {connect} from 'react-redux';
 
 class HTML extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      url: 'https://www.google.at/',
       data: '',
       error: '',
       showHideError: 'checked',
@@ -21,7 +21,7 @@ class HTML extends Component {
 
 
   componentWillMount() {
-    this.validateHTML(this.state.url);
+    this.validateHTML(this.props.url);
   }
 
 
@@ -67,8 +67,6 @@ class HTML extends Component {
     if (this.state.data !== '') {
       const error = this.state.data.messages;
 
-      console.log('update', error);
-
       for (let i = 0; i < error.length; i++) {
         let classChecked = '';
         if (error[i].type === 'error') {
@@ -86,9 +84,6 @@ class HTML extends Component {
 
 
   render() {
-
-    console.log('render html');
-
 
     let errorItems = [];
 
@@ -117,7 +112,7 @@ class HTML extends Component {
       //add warnings and errors
 
       for (let i = 0; i < error.length; i++) {
-          let classChecked = '';
+        let classChecked = '';
         if (error[i].type === 'error') {
           classChecked = this.state.showHideError;
         } else {
@@ -148,4 +143,10 @@ class HTML extends Component {
   }
 }
 
-export default HTML;
+const stateMap = (state) => {
+  return {
+    url: state.url
+  };
+};
+
+export default connect(stateMap)(HTML);

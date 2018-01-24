@@ -1,0 +1,247 @@
+[
+    {
+        "root": "58187782-516f-437e-b",
+        "node": "d48d76de-007f-40f0-8",
+        "count": 4
+ },
+    {
+        "root": "58187782-516f-437e-b",
+        "node": "19684fff-e3b2-4440-a",
+        "count": 2
+ },
+    {
+        "root": "8009504c-297d-4fc3-9",
+        "node": "8c570a09-6838-433a-b",
+        "count": 2
+ },
+    {
+        "root": "3863dfd9-5f1c-4c78-9",
+        "node": "e1dbcfbb-591c-4557-9",
+        "count": 2
+ },
+    {
+        "root": "3863dfd9-5f1c-4c78-9",
+        "node": "11a1d72b-5ceb-4108-a",
+        "count": 2
+ },
+    {
+        "root": "e3163186-76c7-466d-8",
+        "node": "3b5c1b47-3868-4612-8",
+        "count": 2
+ },
+    {
+        "root": "a898d2cc-883a-4a8b-8",
+        "node": "9bf06f13-74fe-4fa8-a",
+        "count": 5
+ },
+    {
+        "root": "9bf06f13-74fe-4fa8-a",
+        "node": "e1dbcfbb-591c-4557-9",
+        "count": 2
+ },
+    {
+        "root": "9bf06f13-74fe-4fa8-a",
+        "node": "11a1d72b-5ceb-4108-a",
+        "count": 3
+ },
+    {
+        "root": "25b707d0-89dc-421a-9",
+        "node": "6c940c4e-76c0-4309-b",
+        "count": 3
+ },
+    {
+        "root": "1e65df72-9d53-491c-a",
+        "node": "3b5c1b47-3868-4612-8",
+        "count": 2
+ },
+    {
+        "root": "7613ddd3-5261-4476-9",
+        "node": "03e9ebc0-037a-4f4a-a",
+        "count": 2
+ },
+    {
+        "root": "19684fff-e3b2-4440-a",
+        "node": "d48d76de-007f-40f0-8",
+        "count": 15
+ },
+    {
+        "root": "19684fff-e3b2-4440-a",
+        "node": "03e9ebc0-037a-4f4a-a",
+        "count": 2
+ },
+    {
+        "root": "9424713b-4b25-4534-8",
+        "node": "e1dbcfbb-591c-4557-9",
+        "count": 5
+ },
+    {
+        "root": "3b1f717f-f907-45e8-b",
+        "node": "d48d76de-007f-40f0-8",
+        "count": 2
+ },
+    {
+        "root": "3b1f717f-f907-45e8-b",
+        "node": "03e9ebc0-037a-4f4a-a",
+        "count": 3
+ },
+    {
+        "root": "3b796282-0a34-45ed-8",
+        "node": "e19e1b88-6d3a-40c3-b",
+        "count": 2
+ },
+    {
+        "root": "e1dbcfbb-591c-4557-9",
+        "node": "11a1d72b-5ceb-4108-a",
+        "count": 3
+ },
+    {
+        "root": "60a8a96f-8b9d-4332-8",
+        "node": "d48d76de-007f-40f0-8",
+        "count": 10
+ },
+    {
+        "root": "778f3c6d-a5f0-46c1-9",
+        "node": "9bf06f13-74fe-4fa8-a",
+        "count": 3
+ },
+    {
+        "root": "3164ce01-465f-4182-a",
+        "node": "9bf06f13-74fe-4fa8-a",
+        "count": 2
+ },
+    {
+        "root": "1985e3d4-5b52-4005-8",
+        "node": "9bf06f13-74fe-4fa8-a",
+        "count": 5
+ },
+    {
+        "root": "03e9ebc0-037a-4f4a-a",
+        "node": "11a1d72b-5ceb-4108-a",
+        "count": 2
+ },
+    {
+        "root": "05521eb7-7ca1-4dfe-8",
+        "node": "6c940c4e-76c0-4309-b",
+        "count": 2
+ },
+    {
+        "root": "fc958eee-4932-4e11-a",
+        "node": "9bf06f13-74fe-4fa8-a",
+        "count": 6
+ },
+    {
+        "root": "623d354c-a3a1-4ba8-8",
+        "node": "6c940c4e-76c0-4309-b",
+        "count": 2
+ },
+    {
+        "root": "e3163186-76c7-466d-8",
+        "node": "3b5c1b47-3868-4612-8",
+        "count": 4
+ },
+    {
+        "root": "1b7be548-a7f5-4554-a",
+        "node": "9bf06f13-74fe-4fa8-a",
+        "count": 2
+ },
+    {
+        "root": "dbbf12a2-202f-4763-8",
+        "node": "9bf06f13-74fe-4fa8-a",
+        "count": 3
+ },
+    {
+        "root": "c99e454e-763d-4205-9",
+        "node": "6c940c4e-76c0-4309-b",
+        "count": 2
+ },
+    {
+        "root": "5850f863-32a5-453f-8",
+        "node": "41ed023b-52f7-41c1-9",
+        "count": 5
+ },
+    {
+        "root": "5850f863-32a5-453f-8",
+        "node": "3b5c1b47-3868-4612-8",
+        "count": 9
+ },
+    {
+        "root": "b974b85c-f4a3-44bc-a",
+        "node": "3b5c1b47-3868-4612-8",
+        "count": 2
+ },
+    {
+        "root": "d135b2d5-7f04-4bec-a",
+        "node": "3b5c1b47-3868-4612-8",
+        "count": 2
+ },
+    {
+        "root": "135d607a-36a7-44ff-b",
+        "node": "8c570a09-6838-433a-b",
+        "count": 3
+ },
+    {
+        "root": "e19e1b88-6d3a-40c3-b",
+        "node": "03e9ebc0-037a-4f4a-a",
+        "count": 3
+ },
+    {
+        "root": "e19e1b88-6d3a-40c3-b",
+        "node": "e19e1b88-6d3a-40c3-b",
+        "count": 2
+ },
+    {
+        "root": "c8cba7bf-2b8d-4942-8",
+        "node": "8c570a09-6838-433a-b",
+        "count": 3
+ },
+    {
+        "root": "c8cba7bf-2b8d-4942-8",
+        "node": "3b5c1b47-3868-4612-8",
+        "count": 2
+ },
+    {
+        "root": "bd928995-d84c-4683-b",
+        "node": "d48d76de-007f-40f0-8",
+        "count": 2
+ },
+    {
+        "root": "b23a8939-61cf-4c98-a",
+        "node": "d48d76de-007f-40f0-8",
+        "count": 2
+ },
+    {
+        "root": "b23a8939-61cf-4c98-a",
+        "node": "19684fff-e3b2-4440-a",
+        "count": 2
+ },
+    {
+        "root": "41ed023b-52f7-41c1-9",
+        "node": "11a1d72b-5ceb-4108-a",
+        "count": 4
+ },
+    {
+        "root": "3c3ba44b-7408-4599-9",
+        "node": "41ed023b-52f7-41c1-9",
+        "count": 2
+ },
+    {
+        "root": "3c3ba44b-7408-4599-9",
+        "node": "11a1d72b-5ceb-4108-a",
+        "count": 5
+ },
+    {
+        "root": "11a1d72b-5ceb-4108-a",
+        "node": "e1dbcfbb-591c-4557-9",
+        "count": 4
+ },
+    {
+        "root": "e4bbeb95-8ba8-4e61-a",
+        "node": "41ed023b-52f7-41c1-9",
+        "count": 4
+ },
+    {
+        "root": "e4bbeb95-8ba8-4e61-a",
+        "node": "11a1d72b-5ceb-4108-a",
+        "count": 4
+ }
+]

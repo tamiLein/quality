@@ -6,6 +6,7 @@ import Bubbles from './Global/Bubbles';
 import Classnames from './Global/Classnames';
 import Colors from './Global/Colors';
 import ChordDiagramm from './Global/ChordDiagramm';
+import ParseHtml from './Global/ParseHTML';
 
 
 class AccordionCardGlobal extends Component {
@@ -49,8 +50,9 @@ class AccordionCardGlobal extends Component {
                 </div>
               </div>
               <div className="row">
-                <div id="colorChart" className="col-md-6">
+                <div id="chordChart" className="col-md-6">
                   <ChordDiagramm/>
+                  {/*<ParseHtml/>*/}
                 </div>
               </div>
             </div>
