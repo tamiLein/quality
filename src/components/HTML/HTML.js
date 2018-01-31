@@ -28,6 +28,7 @@ class HTML extends Component {
   validateHTML(url) {
     const options = {
       url: url,
+      //validator: 'http://html5.validator.nu',
       format: 'json'
     };
 
@@ -36,6 +37,7 @@ class HTML extends Component {
           this.setState({
             data: data,
           });
+          this.countErrors(data);
         })
         .catch((error) => {
           console.error(error);
@@ -61,14 +63,13 @@ class HTML extends Component {
     );
   }
 
-  countErrors() {
+  countErrors(data) {
     let counterError = 0;
     let counterWarning = 0;
-    if (this.state.data !== '') {
-      const error = this.state.data.messages;
+    if (data !== '') {
+      const error = data.messages;
 
       for (let i = 0; i < error.length; i++) {
-        let classChecked = '';
         if (error[i].type === 'error') {
           counterError++;
         } else {

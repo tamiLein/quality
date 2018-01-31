@@ -22,13 +22,12 @@ class App extends Component {
   };
 
   componentWillMount() {
-    console.log('store test', this.props.url);
+
   }
 
   render() {
     const body = document.getElementsByTagName('body');
-    console.log('body', body);
-    console.log('body', body[0].className);
+
 
     if(this.props.url !== '') {
       body[0].removeAttribute("class", "no-url");
@@ -61,7 +60,6 @@ class App extends Component {
 }
 
 const stateMap = (state) => {
-  console.log('state', state);
   return {
     url: state.url
   };

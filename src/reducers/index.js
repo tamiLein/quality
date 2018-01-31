@@ -1,6 +1,6 @@
 const initialState = {
-  //url: '',
-  url: 'https://www.google.at/',
+  url: '',
+  //url: 'http://www.biohof-sadleder.at/',
 };
 
 const urlReducer = function (state = initialState, action) {

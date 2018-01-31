@@ -25,8 +25,13 @@ class ChordDiagramm extends Component {
 
   createChord() {
 
+    const toolTip = d3.select('#chordChart').append('div')
+        .attr('class', 'tooltip')
+        .style('opacity', 0);
+
 
     d3.json('./json/chord_v4_data.json', function (error, data) {
+    //d3.json('./json/chord_v4_data_html.json', function (error, data) {
 
       if (error) {
         console.log('error', error.currentTarget.responseText);
@@ -156,6 +161,11 @@ class ChordDiagramm extends Component {
                 })
                 .transition()
                 .style("opacity", .1);
+            toolTip.transition().duration(200).style('opacity', 1);
+            toolTip.html("<b>Info:</b> <span>(source: " + g.source.index + " target: " + g.target.index + ")</span>")
+                //.style('left', (d.x - 20) + 'px')
+                //.style('top', (d.y + d.value * 3 + 20) + 'px')
+            ;
           })
           .on('mouseout', function (g, i) {
             svg.selectAll("path.chord ")
