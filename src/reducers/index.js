@@ -1,6 +1,6 @@
 const initialState = {
-  url: '',
-  //url: 'http://www.biohof-sadleder.at/',
+  //url: '',
+  url: 'http://www.biohof-sadleder.at/',
 };
 
 const urlReducer = function (state = initialState, action) {
@@ -10,6 +10,18 @@ const urlReducer = function (state = initialState, action) {
       return {
           ...state,
           url: action.payload
+
+      };
+    case 'SET_PAGESPEEDDATA':
+      return {
+        ...state,
+        pagespeeddata: action.payload
+
+      };
+    case 'SET_PAGESPEEDDATAMOBILE':
+      return {
+        ...state,
+        pagespeeddatamobile: action.payload
 
       };
     default:

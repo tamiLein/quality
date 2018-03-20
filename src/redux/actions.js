@@ -4,3 +4,18 @@ export function setUrl(url) {
     payload: url,
   };
 }
+
+
+export function setPagespeeddata(data) {
+  return {
+    type: 'SET_PAGESPEEDDATA',
+    payload: data,
+  };
+}
+
+export function setPagespeeddataMobile(data) {
+  return {
+    type: 'SET_PAGESPEEDDATAMOBILE',
+    payload: data,
+  };
+}

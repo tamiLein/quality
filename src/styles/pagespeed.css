@@ -1,0 +1,42 @@
+.interest-rate rect:first-child{
+     opacity: 1;
+ }
+.nav-tabs .col-md-6{
+    padding: 0;
+    text-align: center;
+}
+
+.nav-tabs .col-md-6 a{
+    background: #e7e7e7;
+    color: black;
+    border-radius: 0;
+    padding: 25px 15px;
+    margin:0;
+    font-size:18px;
+    border: none;
+}
+
+.nav-tabs li.col-md-6.active a,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li > a:hover{
+    color: white;
+    background: gray;
+    border: none;
+}
+
+.nav-tabs > li > a:hover{
+    cursor: pointer;
+    border: none;
+}
+
+.passed-lable{
+    font-size:24px;
+}
+
+.chart-tip.col-md-6,
+.chart-tip-mobile.col-md-6{
+    background-color: #e7e7e7;
+    padding: 25px;
+    margin-top: 20px;
+    opacity:0;
+}

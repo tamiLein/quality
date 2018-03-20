@@ -1,6 +1,10 @@
 import React, {Component} from 'react';
 import * as d3 from 'd3';
 import {connect} from 'react-redux';
+import Barchart from './pagespeed-barchart';
+import BarchartMobile from './pagespeed-barchart-mobile';
+import {setPagespeeddata as setPagespeeddata} from './../../redux/actions';
+import {setPagespeeddataMobile as setPagespeeddataMobile} from './../../redux/actions';
 
 class Pagespeed extends Component {
   constructor(props) {
@@ -9,6 +13,8 @@ class Pagespeed extends Component {
       key: 'AIzaSyDM0KzbxUNHlR4GYSIkdAV_S-b2JzTDhSk',
       response: '',
       pageStats: '',
+      responseMobile: '',
+      pageStatsMobile: '',
     };
     this.validatePagespeed = this.validatePagespeed.bind(this);
     this.createPieChart = this.createPieChart.bind(this);
@@ -20,12 +26,13 @@ class Pagespeed extends Component {
 
   validatePagespeed(url) {
 
-    let pagespeedUrl = 'https://www.googleapis.com/pagespeedonline/v4/runPagespeed?url=' + this.props.url + '&strategy=mobile&key=' + this.state.key;
+    let pagespeedUrlMobile = 'https://www.googleapis.com/pagespeedonline/v4/runPagespeed?url=' + this.props.url + '&strategy=mobile&key=' + this.state.key;
+    let pagespeedUrl = 'https://www.googleapis.com/pagespeedonline/v4/runPagespeed?url=' + this.props.url + '&strategy=desktop&key=' + this.state.key;
 
     fetch(pagespeedUrl)
         .then(res => res.json())
         .then((out) => {
-          console.log('out', out);
+          //console.log('out', out);
           this.setState({
             response: out,
             pageStats: [
@@ -36,7 +43,28 @@ class Pagespeed extends Component {
             ],
           })
         }).then(() => {
-      this.createPieChart();
+          this.props.dispatch(setPagespeeddata(this.state.response.formattedResults.ruleResults));
+          this.createPieChart();
+        })
+        .catch(err => {
+          throw err
+        });
+
+    fetch(pagespeedUrlMobile)
+        .then(res => res.json())
+        .then((out) => {
+          //console.log('out mobile', out);
+          this.setState({
+            responseMobile: out,
+            pageStatsMobile: [
+              {label: 'JavaScript', color: 'rgb(251, 201, 141)', count: out.pageStats.javascriptResponseBytes},
+              {label: 'Images', color: 'rgb(239, 129, 96)', count: out.pageStats.imageResponseBytes},
+              {label: 'CSS', color: 'rgb(219, 71, 106)', count: out.pageStats.cssResponseBytes},
+              {label: 'HTML', color: 'rgb(159, 47, 127)', count: out.pageStats.htmlResponseBytes},
+            ],
+          })
+        }).then(() => {
+      this.props.dispatch(setPagespeeddataMobile(this.state.responseMobile.formattedResults.ruleResults));
     })
         .catch(err => {
           throw err
@@ -91,13 +119,13 @@ class Pagespeed extends Component {
 
   render() {
 
-    let ruleItems = [];
+    /*let ruleItems = [];
 
     if (this.state.response !== '') {
 
       const ruleResults = this.state.response.formattedResults.ruleResults;
 
-      console.log('ruleResults', ruleResults);
+      //console.log('ruleResults', ruleResults);
 
       ruleItems.push(
           <div className='error col-md-12' key="score">
@@ -113,8 +141,8 @@ class Pagespeed extends Component {
       for (let key in ruleResults) {
         if(ruleResults[key].ruleImpact > 0) {
           rule = ruleResults[key];
-          console.log('rule', rule);
-          console.log('test',rule.hasOwnProperty('summary') );
+          //console.log('rule', rule);
+          //console.log('test',rule.hasOwnProperty('summary') );
           if(rule.hasOwnProperty('summary')) {
             ruleItems.push(
                 <div className='error col-md-12' key={key}>
@@ -139,11 +167,35 @@ class Pagespeed extends Component {
           }
         }
       }
-    }
+    }*/
 
-    if (ruleItems !== '') {
+    if (this.state.response !== '') {
       return (<div>
-        {ruleItems}
+        {/*{ruleItems}*/}
+
+        <div className="tabbable-panel">
+          <div className="tabbable-line">
+            <ul className="nav nav-tabs ">
+              <li className="col-md-6 active">
+                <a href="#tab_default_1" data-toggle="tab">
+                  Desktop </a>
+              </li>
+              <li className="col-md-6">
+                <a href="#tab_default_2" data-toggle="tab">
+                  Mobile </a>
+              </li>
+            </ul>
+            <div className="tab-content">
+              <div className="tab-pane active" id="tab_default_1">
+                <Barchart/>
+              </div>
+              <div className="tab-pane" id="tab_default_2">
+                <BarchartMobile/>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <svg ref={node => this.node = node}
              width={300} height={300}>
         </svg>
@@ -161,7 +213,8 @@ class Pagespeed extends Component {
 
 const stateMap = (state) => {
   return {
-    url: state.url
+    url: state.url,
+    pagespeeddata: state.pagespeeddata,
   };
 };
 

@@ -20,15 +20,28 @@ class Input extends Component {
   }
 
 
-  handleChange(event){
+  handleChange(event) {
     this.setState({
       url: event.target.value,
     })
   }
 
+  checkUrl(url) {
+    const pattern = /^((http|https|ftp):\/\/)/;
+
+    if (!pattern.test(url)) {
+      url = "http://" + url;
+    }
+    return url;
+
+  }
+
   handleClick(event) {
     event.preventDefault();
-    this.props.dispatch(setUrlAction(this.state.url));
+
+    let newURL = this.checkUrl(this.state.url);
+    console.log("new url", newURL);
+    this.props.dispatch(setUrlAction(newURL));
   }
 
   render() {
