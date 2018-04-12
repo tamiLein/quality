@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import * as d3 from 'd3';
+import {connect} from 'react-redux';
 
 class Bubbles extends Component {
 
@@ -9,17 +10,24 @@ class Bubbles extends Component {
   }
 
   componentDidMount() {
-    this.createBubbles();
+    if(this.props.classNames !== "empty") {
+      this.createBubbles();
+    }
   }
 
   componentDidUpdate() {
-    this.createBubbles();
+    if(this.props.classNames !== "empty") {
+      this.createBubbles();
+    }
   }
 
   createBubbles() {
     const svg = this.node;
     const width = 500;
     const height = 500;
+
+    const data = this.props.classNames;
+
 
     const colors = [
       'rgb(251, 201, 141)', 'rgb(239, 129, 96)', 'rgb(219, 71, 106)', 'rgb(159, 47, 127)', 'rgb(94, 37, 124)'
@@ -33,12 +41,6 @@ class Bubbles extends Component {
         .attr('class', 'tooltip')
         .style('opacity', 0);
 
-
-    d3.json('./json/classnames.json', function (error, data) {
-      if (error) {
-        console.log('error', error.currentTarget.responseText);
-      }
-
       const root = d3.hierarchy({
         children: data
       })
@@ -50,7 +52,7 @@ class Bubbles extends Component {
             d.count = d.data.VALUE;
           });
 
-      // ----- find max VALUE in csv
+      // ----- find max VALUE in csv for color defining
       data.forEach(function (d) {
         d.VALUE = +d.VALUE;
       });
@@ -58,6 +60,8 @@ class Bubbles extends Component {
       const max = d3.max(data, function (d) {
         return d.VALUE;
       });
+
+      console.log('max', max);
 
       const range = (max + 1) / 5;
       // -----
@@ -84,14 +88,14 @@ class Bubbles extends Component {
           })
           .transition().duration(2000)
           .attr('r', function (d) {
-            return d.count * 3;
+            return d.count;
           });
 
 
       node.on('mouseover', function (d) {
         toolTip.transition().duration(200).style('opacity', 1);
         toolTip.html("<b>" + d.class + "</b> <span>(" + d.value + ")</span>")
-            .style('left', (d.x - 20) + 'px')
+            .style('left', (d.x - 0) + 'px')
             .style('top', (d.y + d.value * 3 + 20) + 'px');
       })
           .on('mouseout', function (d) {
@@ -99,15 +103,21 @@ class Bubbles extends Component {
 
           });
 
-    });
 
   }
 
   render() {
     return <svg ref={node => this.node = node}
-                width={500} height={500}>
+                width={500} height={600}>
     </svg>
   }
 }
 
-export default Bubbles;
+const stateMap = (state) => {
+  return {
+    classNames: state.classNames
+  };
+};
+
+export default connect(stateMap)(Bubbles);
+

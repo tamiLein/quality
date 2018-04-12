@@ -15,7 +15,7 @@ import './styles/index.css';
 import App from './App';
 import Footer from './components/Footer';
 import Header from './components/Header';
-import registerServiceWorker from './registerServiceWorker';
+//import registerServiceWorker from './registerServiceWorker';
 
 ReactDOM.render(<Header />, document.getElementById('header'));
 ReactDOM.render(<div><Provider store={store}><App /></Provider></div>, document.getElementById('root'));

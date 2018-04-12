@@ -1,24 +1,23 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 
-import json from './../../json/classnames.json'
 
 class Classnames extends Component {
 
+
+  constructor(props) {
+    super(props);
+  }
+
   render() {
-
+    let data = this.props.classNames;
     let items = [];
-    let array = [];
 
-    for (let i = 0; i < json.length; i++) {
-      array[json[i].VALUE] = json[i].CLASS
-    }
-
-    array.forEach((item, index) => {
+    for (let i = 0; i < data.length; i++) {
       items.push((
-          <li key={index}><span className="classname index">[ {index} ]</span> {item}</li>
+          <li key={i}><span className="classname index">[ {data[i].VALUE} ]</span> {data[i].CLASS}</li>
       ))
-    });
-
+    }
 
     if (items.length > 0) {
       return (
@@ -30,4 +29,10 @@ class Classnames extends Component {
   }
 }
 
-export default Classnames;
+const stateMap = (state) => {
+  return {
+    classNames: state.classNames
+  };
+};
+
+export default connect(stateMap)(Classnames);

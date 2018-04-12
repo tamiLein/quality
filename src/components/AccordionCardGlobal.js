@@ -52,7 +52,7 @@ class AccordionCardGlobal extends Component {
               <div className="row">
                 <div id="chordChart" className="col-md-6">
                   <ChordDiagramm/>
-                  {/*<ParseHtml/>*/}
+                  <ParseHtml/>
                 </div>
               </div>
             </div>

@@ -19,3 +19,10 @@ export function setPagespeeddataMobile(data) {
     payload: data,
   };
 }
+
+export function setClassNameList(data) {
+  return {
+    type: 'SET_CLASSNAMELIST',
+    payload: data,
+  };
+}

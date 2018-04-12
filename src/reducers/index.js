@@ -1,6 +1,9 @@
 const initialState = {
   //url: '',
   url: 'http://www.biohof-sadleder.at/',
+  pagespeeddata: '',
+  pagespeeddatamobile: '',
+  classNames: 'empty',
 };
 
 const urlReducer = function (state = initialState, action) {
@@ -22,6 +25,12 @@ const urlReducer = function (state = initialState, action) {
       return {
         ...state,
         pagespeeddatamobile: action.payload
+
+      };
+    case 'SET_CLASSNAMELIST':
+      return {
+        ...state,
+        classNames: action.payload
 
       };
     default:

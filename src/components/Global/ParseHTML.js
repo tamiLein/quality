@@ -1,49 +1,92 @@
-import React, {Component} from 'react';
+import /*React, */ {Component} from 'react';
 import {connect} from 'react-redux';
 import htmlparser from 'htmlparser';
+import htmlparser2 from 'htmlparser2';
+
+import {setClassNameList} from './../../redux/actions';
 
 
 class ParseHTML extends Component {
 
   constructor(props) {
     super(props);
+    this.renderDom2 = this.renderDom2.bind(this);
+
   }
 
   componentDidMount() {
 
 
-    var request = this.makeHttpObject();
-    request.open("GET", this.props.url, true);
-    request.send(null);
-    request.onreadystatechange = function() {
-      if (request.readyState == 4)
-        console.log('parse', request);
+    const that = this;
+    const request = new XMLHttpRequest();
+    //console.log('url', this.props.url);
+
+    request.onreadystatechange = function () {
+      if (this.readyState === 4 && this.status === 200)
+      //that.renderDom(request);
+      that.renderDom2();
     };
+    //request.open("GET", this.props.url, true);
+    request.open("GET", 'test.txt', true);
+    request.send();
 
 
-    var rawHtml = "Xyz <script language= javascript>var foo = '<<bar>>';< /  script><!--<!-- Waah! -- -->";
-    var handler = new htmlparser.DefaultHandler(function (error, dom) {
+  }
+
+  renderDom(request) {
+    const rawHtml = document.body.innerHTML;
+    //var rawHtml = request.response;
+    const handler = new htmlparser.DefaultHandler(function (error, dom) {
       if (error)
         console.log('error', error);
       else
         console.log('no error');
+    }, {
+      verbose: false,
+      ignoreWhitespace: true
     });
-    var parser = new htmlparser.Parser(handler);
+
+    const parser = new htmlparser.Parser(handler);
     parser.parseComplete(rawHtml);
+
     console.log('dom', handler.dom);
   }
 
+  renderDom2(){
 
-   makeHttpObject() {
-   try {return new XMLHttpRequest();}
-   catch (error) {}
-   /*try {return new ActiveXObject("Msxml2.XMLHTTP");}
-   catch (error) {}
-   try {return new ActiveXObject("Microsoft.XMLHTTP");}
-   catch (error) {}
-   */
-   throw new Error("Could not create HTTP request object.");
-   }
+    let classNamesArray = [];
+    let classList;
+    const that = this;
+
+    const parser = new htmlparser2.Parser({
+      onopentag: function(name, attributes){
+        if(attributes.class){
+          classList = attributes.class.split(" ");
+          classList.forEach(function(element){
+            let findobj = classNamesArray.find(function (findobj) {
+              return findobj.CLASS === element;
+            });
+            if(findobj && findobj.CLASS === element){
+              findobj.VALUE = findobj.VALUE + 1;
+            }else{
+              let obj = {
+                'CLASS': element,
+                'VALUE': 1
+              };
+              classNamesArray.push(obj);
+            }
+          });
+        }
+      },
+      onend: function () {
+        that.props.dispatch(setClassNameList(classNamesArray));
+      }
+    }, {decodeEntities: true});
+
+    parser.write(document.body.innerHTML);
+    parser.end();
+
+  }
 
 
   render() {
@@ -53,7 +96,7 @@ class ParseHTML extends Component {
 
 const stateMap = (state) => {
   return {
-    url: state.url
+    classNames: state.classNames
   };
 };
 

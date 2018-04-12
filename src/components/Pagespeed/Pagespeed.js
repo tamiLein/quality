@@ -50,10 +50,11 @@ class Pagespeed extends Component {
           throw err
         });
 
-    fetch(pagespeedUrlMobile)
+    /*fetch(pagespeedUrlMobile)
         .then(res => res.json())
         .then((out) => {
-          //console.log('out mobile', out);
+          console.log('out mobile', out);
+          console.log('out mobile', pagespeedUrlMobile);
           this.setState({
             responseMobile: out,
             pageStatsMobile: [
@@ -68,7 +69,7 @@ class Pagespeed extends Component {
     })
         .catch(err => {
           throw err
-        });
+        });*/
   }
 
 
@@ -190,7 +191,7 @@ class Pagespeed extends Component {
                 <Barchart/>
               </div>
               <div className="tab-pane" id="tab_default_2">
-                <BarchartMobile/>
+                {/*<BarchartMobile/>*/}
               </div>
             </div>
           </div>

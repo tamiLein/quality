@@ -90,7 +90,7 @@ class ChordDiagramm extends Component {
             return chords.groups;
           })
           .enter().append("svg:g")
-          .attr("class", "group")
+          .attr("class", "group");
 
       g.append("svg:path")
           .style("stroke", "grey")
@@ -102,7 +102,7 @@ class ChordDiagramm extends Component {
             svg.selectAll("path.chord")
                 .filter(function (d) {
 
-                  return d.source.index != i && d.target.index != i;
+                  return d.source.index !== i && d.target.index !== i;
                 })
                 .transition()
                 .style("opacity", .1);
@@ -110,7 +110,7 @@ class ChordDiagramm extends Component {
           .on('mouseout', function (g, i) {
             svg.selectAll("path.chord ")
                 .filter(function (d) {
-                  return d.source.index != i && d.target.index != i;
+                  return d.source.index !== i && d.target.index !== i;
                 })
                 .transition()
                 .style("opacity", 1);
@@ -157,7 +157,7 @@ class ChordDiagramm extends Component {
           .on('mouseover', function (g, i) {
             svg.selectAll("path.chord")
                 .filter(function (d) {
-                  return d.source.index != g.source.index || d.target.index != g.target.index;
+                  return d.source.index !== g.source.index || d.target.index !== g.target.index;
                 })
                 .transition()
                 .style("opacity", .1);
@@ -170,7 +170,7 @@ class ChordDiagramm extends Component {
           .on('mouseout', function (g, i) {
             svg.selectAll("path.chord ")
                 .filter(function (d) {
-                  return d.source.index != g.source.index || d.target.index != g.target.index;
+                  return d.source.index !== g.source.index || d.target.index !== g.target.index;
                 })
                 .transition()
                 .style("opacity", 1);

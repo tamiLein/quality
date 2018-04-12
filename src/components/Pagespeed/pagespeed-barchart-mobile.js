@@ -25,7 +25,7 @@ class PagespeedchartMobile extends Component {
       "interest_rate": "SPEED",
       "Passed": 0,
       "AvoidLandingPageRedirects": this.props.pagespeeddatamobile.AvoidLandingPageRedirects.ruleImpact,
-      "AvoidPlugins": this.props.pagespeeddatamobile.AvoidPlugins.ruleImpact,
+      //"AvoidPlugins": this.props.pagespeeddatamobile.AvoidPlugins.ruleImpact,
       "ConfigureViewport": this.props.pagespeeddatamobile.ConfigureViewport.ruleImpact,
       "EnableGzipCompression": this.props.pagespeeddatamobile.EnableGzipCompression.ruleImpact,
       "LeverageBrowserCaching": this.props.pagespeeddatamobile.LeverageBrowserCaching.ruleImpact,

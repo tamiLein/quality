@@ -63,12 +63,13 @@ class Pagespeedchart extends Component {
           left: 60
         },
         width = 750 - margin.left - margin.right,
-        height = 450 - margin.top - margin.bottom,
+        //height = 450 - margin.top - margin.bottom,
+        height = 550 - margin.top - margin.bottom,
         that = this;
 
     //define scale
-    const x = d3.scaleOrdinal([0, 400], .3);
-    const y = d3.scaleLinear().range([400, 0]);
+    const x = d3.scaleOrdinal([0, 300], .3);
+    const y = d3.scaleLinear().range([500, 0]);
 
     //define colors
     const colors = ['#fbc98d', '#ef8160', '#db476a', '#9f2f7f', '#5e257c', '#262150'];
@@ -125,7 +126,7 @@ class Pagespeedchart extends Component {
         .append("g")
         .attr("class", "interest-rate")
         .attr("transform", function (d) {
-          return "translate(" + 30 + ",0)";
+          return "translate(" + 20 + ",0)";
         });
 
     // create bars
@@ -135,7 +136,7 @@ class Pagespeedchart extends Component {
         })
         .enter()
         .append("rect")
-        .attr("width", width / 4)
+        .attr("width", width / 5)
         .attr("y", function (d) {
           return y(d.y1);
         })
@@ -157,7 +158,7 @@ class Pagespeedchart extends Component {
     });
 
     interest_rate.append("text")
-        .attr("x", width / 4 / 2)
+        .attr("x", width / 5 / 2)
         .attr("y", height)
         .attr("width", x)
         .attr("class", "passed-lable")
@@ -172,7 +173,7 @@ class Pagespeedchart extends Component {
     // legend
     const legends = svg.append("g")
         .attr("class", "legends")
-        .attr("transform", "translate(-150,0)");
+        .attr("transform", "translate(-200,0)");
 
     const legend = legends.selectAll(".legend")
         .data(color.domain().slice().reverse())

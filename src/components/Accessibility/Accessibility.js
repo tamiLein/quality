@@ -26,17 +26,16 @@ class Accessibility extends Component {
   }
 
   validateAccessibility(url) {
-    var self = this;
-    var querystring = require('querystring');
-    var http = require('http');
+    const self = this;
+    const querystring = require('querystring');
 
-    var data = querystring.stringify({
+    const data = querystring.stringify({
       url: url,
       key: 'd87facba59114e94ca97dbad2c96d1df',
 
     });
 
-    var options = {
+    const options = {
       host: 'tenon.io',
       port: 443,
       path: '/api/',
@@ -59,17 +58,17 @@ class Accessibility extends Component {
   }
 
   httpRequest(params, postData) {
-    var querystring = require('querystring');
-    var http = require('http');
+
+    const http = require('http');
 
     return new Promise(function (resolve, reject) {
-      var req = http.request(params, function (res) {
+      let req = http.request(params, function (res) {
         // reject on bad status
         if (res.statusCode < 200 || res.statusCode >= 300) {
           return reject(new Error('statusCode=' + res.statusCode));
         }
         // cumulate data
-        var myData = '';
+        let myData = '';
         res.on('data', (chunk) => {
           myData += chunk;
         });
@@ -113,10 +112,12 @@ class Accessibility extends Component {
           classChecked = this.state.showHideInfo;
         }
         errorItems.push(
+
             <div className={'error col-md-12 ' + classChecked} key={i}>
               <div className="col-md-6">
                 <span className="codeLine">In line: {error[i].position.line}</span>
-                <p className="codeSnipped">{error[i].errorSnippet}</p>
+                <p className="codeSnipped">{ decodeURI(encodeURI(error[i].errorSnippet))}</p>
+                <p className="codeSnipped">{ error[i].errorSnippet}</p>
               </div>
 
               <div className="col-md-6">
