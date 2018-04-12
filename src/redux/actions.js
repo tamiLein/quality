@@ -26,3 +26,9 @@ export function setClassNameList(data) {
     payload: data,
   };
 }
+export function setChordData(data) {
+  return {
+    type: 'SET_CHORDDATA',
+    payload: data,
+  };
+}

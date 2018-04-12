@@ -61,9 +61,7 @@ class Bubbles extends Component {
         return d.VALUE;
       });
 
-      console.log('max', max);
-
-      const range = (max + 1) / 5;
+    const range = (max + 1) / 5;
       // -----
 
 

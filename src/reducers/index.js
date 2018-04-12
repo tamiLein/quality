@@ -4,6 +4,7 @@ const initialState = {
   pagespeeddata: '',
   pagespeeddatamobile: '',
   classNames: 'empty',
+  chordData: '',
 };
 
 const urlReducer = function (state = initialState, action) {
@@ -31,6 +32,12 @@ const urlReducer = function (state = initialState, action) {
       return {
         ...state,
         classNames: action.payload
+
+      };
+    case 'SET_CHORDDATA':
+      return {
+        ...state,
+        chordData: action.payload
 
       };
     default:
