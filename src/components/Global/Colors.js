@@ -1,30 +1,43 @@
 import React, {Component} from 'react';
 import * as d3 from 'd3';
+import {connect} from 'react-redux';
 
 class Colors extends Component {
 
   constructor(props) {
     super(props);
-    this.createBubbles = this.createBubbles.bind(this);
+    this.createColors = this.createColors.bind(this);
   }
 
   componentDidMount() {
-    this.createBubbles();
-  }
+    if(this.props.colorData !== '') {
+      this.createColors();
+    }
+
+   }
 
   componentDidUpdate() {
-    this.createBubbles();
+    if(this.props.colorData  !== '') {
+         this.createColors();
+    }
   }
 
-  createBubbles() {
+  createColors() {
+    console.log('################################################# create colors');
     const svg = this.node;
     const nodeWidth = 60;
 
-    d3.json('./json/colors-' + this.props.data + '.json', function (error, data) {
+    /*d3.json('./json/colors-' + this.props.data + '.json', function (error, data) {
       console.log('read data');
       if (error) {
         console.log('error', error.currentTarget.responseText);
-      }
+      }*/
+
+    const type = this.props.data;
+
+    const data = this.props.colorData[type];
+
+    console.log('data', data);
 
       const node = d3.select(svg)
           .selectAll('.node')
@@ -57,7 +70,7 @@ class Colors extends Component {
             return d.COLOR;
           });
 
-    });
+    //});
 
   }
 
@@ -73,4 +86,10 @@ class Colors extends Component {
   }
 }
 
-export default Colors;
+const stateMap = (state) => {
+  return {
+    colorData: state.colorData
+  };
+};
+
+export default connect(stateMap)(Colors);

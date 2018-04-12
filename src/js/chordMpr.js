@@ -18,8 +18,9 @@ export default function chordMpr (data) {
       };
       mpr.getMatrix = function () {
         matrix = [];
+
         _.each(mmap, function (a) {
-          if (!matrix[a.id]) matrix[a.id] = [];
+                    if (!matrix[a.id]) matrix[a.id] = [];
           _.each(mmap, function (b) {
             let recs = _.filter(data, function (row) {
               return filter(row, a, b);
@@ -39,14 +40,15 @@ export default function chordMpr (data) {
       };
       mpr.addToMap = function (value, info) {
         if (!mmap[value]) {
-          mmap[value] = { name: value, id: n++, data: info }
+          mmap[value] = { name: value, id: n++, data: info };
         }
       };
       mpr.addValuesToMap = function (varName, info) {
         let values = _.uniq(_.pluck(data, varName));
+
         _.map(values, function (v) {
           if (!mmap[v]) {
-            mmap[v] = { name: v, id: n++, data: info }
+            mmap[v] = { name: v, id: n++, data: info };
           }
         });
         return this;

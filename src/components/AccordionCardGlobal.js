@@ -7,6 +7,7 @@ import Classnames from './Global/Classnames';
 import Colors from './Global/Colors';
 import ChordDiagramm from './Global/ChordDiagramm';
 import ParseHtml from './Global/ParseHTML';
+import ParseCSS from './Global/ParseCSS';
 
 
 class AccordionCardGlobal extends Component {
@@ -43,16 +44,16 @@ class AccordionCardGlobal extends Component {
               </div>
               <div className="row">
                 <div id="colorChart" className="col-md-6">
-                  <Colors data="font"/>
-                  <Colors data="background"/>
+                  <Colors data="colors"/>
+                  <Colors data="backgrounds"/>
                   <Colors data="border"/>
-
                 </div>
               </div>
               <div className="row">
                 <div id="chordChart" className="col-md-6">
                   <ChordDiagramm/>
                   <ParseHtml/>
+                  <ParseCSS/>
                 </div>
               </div>
             </div>

@@ -13,7 +13,6 @@ class ChordDiagramm extends Component {
       map: '',
     };
     this.createChord = this.createChord.bind(this);
-    this.drawChords = this.drawChords.bind(this);
   }
 
   /*componentDidMount() {
@@ -22,7 +21,7 @@ class ChordDiagramm extends Component {
 
   componentDidUpdate() {
     if (this.props.chordData !== '') {
-
+      console.log('draw cord');
       this.createChord();
     }
   }
@@ -33,12 +32,10 @@ class ChordDiagramm extends Component {
         .attr('class', 'tooltip')
         .style('opacity', 0);
 
+    const toolTipCategory = d3.select('#chordChart').append('div')
+        .attr('class', 'tooltip-category')
+        .style('opacity', 0);
 
-    /*d3.json('./json/chord_v4_data.json', function (error, data) {
-
-     if (error) {
-     console.log('error', error.currentTarget.responseText);
-     }*/
 
     const data = this.props.chordData;
 
@@ -47,11 +44,14 @@ class ChordDiagramm extends Component {
         .addValuesToMap('root')
         .addValuesToMap('node')
         .setFilter(function (row, a, b) {
-          return (row.root === a.name && row.node === b.name)
+          //return (row.root === a.name && row.node === b.name);
+          return (row.root === a.name && row.node === b.name);
         })
         .setAccessor(function (recs, a, b) {
           if (!recs[0]) return 0;
-          return +recs[0].count;
+
+          //return +recs[0].count;
+          return recs.length;
         });
 
     const matrix = mpr.getMatrix();
@@ -90,6 +90,7 @@ class ChordDiagramm extends Component {
     const mapReader = chordRdr(matrix, mmap);
 
 
+
     const g = svg.selectAll("g.group")
         .data(function (chords) {
           return chords.groups;
@@ -99,9 +100,6 @@ class ChordDiagramm extends Component {
 
     g.append("svg:path")
         .style("stroke", "grey")
-        .style("fill", function (d) {
-          return mapReader(d).gdata;
-        })
         .attr("d", arc)
         .on('mouseover', function (g, i) {
           svg.selectAll("path.chord")
@@ -111,6 +109,11 @@ class ChordDiagramm extends Component {
               })
               .transition()
               .style("opacity", .1);
+
+
+          toolTipCategory.transition().duration(200).style('opacity', 1);
+          toolTipCategory.html("<b>Info:</b> <br>" +
+              "<span>There " + (mapReader(g).gvalue === 0 ? "is 1" : "are " + mapReader(g).gvalue) + " " + mapReader(g).gname + " Element(s) in the HTML source code</span>")
         })
         .on('mouseout', function (g, i) {
           svg.selectAll("path.chord ")
@@ -128,7 +131,7 @@ class ChordDiagramm extends Component {
         })
         .attr("dy", ".35em")
         .style("font-family", "helvetica, arial, sans-serif")
-        .style("font-size", "9px")
+        .style("font-size", "15px")
         .attr("text-anchor", function (d) {
           return d.angle > Math.PI ? "end" : null;
         })
@@ -142,7 +145,6 @@ class ChordDiagramm extends Component {
         });
 
     const colors = d3.scaleOrdinal()
-    //.domain(["New York", "San Francisco", "Austin"])
         .range(["#fbc98d", "#ef8160", "#db476a", "#9f2f7f", "#5e257c", "#262150"]);
 
     const chordPaths = svg.selectAll("path.chord")
@@ -167,7 +169,12 @@ class ChordDiagramm extends Component {
               .transition()
               .style("opacity", .1);
           toolTip.transition().duration(200).style('opacity', 1);
-          toolTip.html("<b>Info:</b> <span>(source: " + g.source.index + " target: " + g.target.index + ")</span>")
+
+          toolTip.html("<b>Info:</b> <br>" +
+              "<span>There are " + g.source.value + "  " + mapReader(g).sname + " in " + mapReader(g).tname + " Elements. " +
+              "<br>There are " + g.target.value + "  " + mapReader(g).tname + " in " + mapReader(g).sname + " Elements." +
+              "</span>")
+
           //.style('left', (d.x - 20) + 'px')
           //.style('top', (d.y + d.value * 3 + 20) + 'px')
           ;
@@ -179,16 +186,8 @@ class ChordDiagramm extends Component {
               })
               .transition()
               .style("opacity", 1);
-
+          toolTip.transition().duration(200).style('opacity', 0);
         });
-
-
-    //});
-  }
-
-  drawChords(matrix, mmap) {
-
-
   }
 
 

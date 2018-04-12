@@ -18,16 +18,16 @@ class ParseHTML extends Component {
   componentDidMount() {
     const that = this;
     /*const request = new XMLHttpRequest();
-    //console.log('url', this.props.url);
+     //console.log('url', this.props.url);
 
-    request.onreadystatechange = function () {
-      if (this.readyState === 4 && this.status === 200)
-        that.renderDom(request);
-        that.renderDom2();
-    };
-    //request.open("GET", this.props.url, true);
-    request.open("GET", 'test.txt', true);
-    request.send();*/
+     request.onreadystatechange = function () {
+     if (this.readyState === 4 && this.status === 200)
+     that.renderDom(request);
+     that.renderDom2();
+     };
+     //request.open("GET", this.props.url, true);
+     request.open("GET", 'test.txt', true);
+     request.send();*/
 
     that.renderDom('');
     that.renderDom2();
@@ -35,6 +35,7 @@ class ParseHTML extends Component {
 
   renderDom(request) {
     const rawHtml = document.body.innerHTML;
+    //console.log('rawHTML', rawHtml);
     //var rawHtml = request.response;
     const handler = new htmlparser.DefaultHandler(function (error, dom) {
       if (error)
@@ -49,7 +50,7 @@ class ParseHTML extends Component {
     const parser = new htmlparser.Parser(handler);
     parser.parseComplete(rawHtml);
 
-    console.log('dom', handler.dom);
+    //console.log('dom', handler.dom);
     this.parseDomArray(handler.dom);
   }
 
@@ -59,41 +60,48 @@ class ParseHTML extends Component {
     for (let i = 0; i < dom.length; i++) {
       if (dom[i].type === "tag") {
         if (dom[i].children) {
-        let returnElement = [];
+          let returnElement = [];
           let getchildren = this.checkChildren(dom[i], returnElement);
 
-          for(let j = 0; j < getchildren.length; j++) {
+          for (let j = 0; j < getchildren.length; j++) {
             chordData[chordData.length] = getchildren[j];
           }
         } else {
           chordData.push({
-            'root': dom[i].name,
-            'node': 'no children',
+            'node': dom[i].name,
+            'root': 'plain text',
             'count': 1,
           })
         }
       }
 
       this.props.dispatch(setChordData(chordData));
+      //console.log('chorddata', chordData);
     }
   }
 
   checkChildren = function (domElement, returnElement) {
 
     if (!domElement.children) {
-      returnElement.push({
-        'root': domElement.name,
-        'node': 'no children tag in recursion',
-        'count': 1
-      });
+      /*if (domElement.name) {
+       returnElement.push({
+       'node': domElement.name,
+       'root': 'no children - check' + domElement.name,
+       'count': 0
+       });
+       }*/
     } else {
-      for (let i = 0, count = domElement.children.length; i < count; i++){
-        returnElement.push({
-          'root': domElement.name,
-          'node': domElement.children[i].name ? domElement.children[i].name : 'no children tag --> from check',
-          'count': 1
-        });
-        /*return */this.checkChildren(domElement.children[i], returnElement);
+      for (let i = 0, count = domElement.children.length; i < count; i++) {
+        if (domElement.name) {
+          returnElement.push({
+            'node': domElement.name,
+            'root': domElement.children[i].name ? domElement.children[i].name : 'plain text',
+            'count': 1
+          });
+          this.checkChildren(domElement.children[i], returnElement);
+        }
+
+
       }
     }
     return returnElement;
@@ -133,7 +141,7 @@ class ParseHTML extends Component {
     parser.write(document.body.innerHTML);
     parser.end();
 
-  }
+  };
 
 
   render() {
@@ -141,19 +149,10 @@ class ParseHTML extends Component {
   }
 }
 
-const
-    stateMap = (state) => {
-      return {
-        classNames: state.classNames
-      };
-    };
+const stateMap = (state) => {
+  return {
+    chordData: state.chordData
+  };
+};
 
-export
-default
-
-connect(stateMap)
-
-(
-    ParseHTML
-)
-;
+export default connect(stateMap)(ParseHTML);

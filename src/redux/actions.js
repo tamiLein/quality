@@ -31,4 +31,9 @@ export function setChordData(data) {
     type: 'SET_CHORDDATA',
     payload: data,
   };
+}export function setColorData(data) {
+  return {
+    type: 'SET_COLORDATA',
+    payload: data,
+  };
 }

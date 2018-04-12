@@ -33,7 +33,7 @@ class Bubbles extends Component {
       'rgb(251, 201, 141)', 'rgb(239, 129, 96)', 'rgb(219, 71, 106)', 'rgb(159, 47, 127)', 'rgb(94, 37, 124)'
     ];
 
-    const pack = d3.pack()
+    const pack = d3.pack(data)
         .size([width, height])
         .padding(1.5);
 
@@ -86,8 +86,33 @@ class Bubbles extends Component {
           })
           .transition().duration(2000)
           .attr('r', function (d) {
-            return d.count;
+            return d.r;
           });
+
+    node.append("text")
+        .attr("dy", "-0.2em")
+        .style("text-anchor", "middle")
+        .text(function(d) {
+          return d.count;
+        })
+        .attr("font-size", function(d){
+          return d.r/2;
+        })
+        .attr("fill", "white");
+
+    node.append("text")
+        .attr("dy", "1.3em")
+        .style("text-anchor", "middle")
+        .text(function(d) {
+          return d.class;
+        })
+
+        .attr("font-size", function(d){
+          return d.r/4;
+        })
+        .attr("fill", "white");
+
+
 
 
       node.on('mouseover', function (d) {
