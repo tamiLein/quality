@@ -1,11 +1,13 @@
 const initialState = {
   //url: '',
   url: 'http://www.biohof-sadleder.at/',
+  //url: 'http://www.vorderweissenbach.at/',
   pagespeeddata: '',
   pagespeeddatamobile: '',
-  classNames: 'empty',
+  classNames: '',
   chordData: '',
   colorData: '',
+  cssChartData: '',
 };
 
 const urlReducer = function (state = initialState, action) {
@@ -45,6 +47,12 @@ const urlReducer = function (state = initialState, action) {
       return {
         ...state,
         colorData: action.payload
+
+      };
+    case 'SET_CSS_CHARTDATA':
+      return {
+        ...state,
+        cssChartData: action.payload
 
       };
     default:

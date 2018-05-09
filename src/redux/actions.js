@@ -37,3 +37,10 @@ export function setChordData(data) {
     payload: data,
   };
 }
+export function setCSSChartdata(data) {
+  return {
+    type: 'SET_CSS_CHARTDATA',
+    payload: data,
+  };
+}
+

@@ -24,6 +24,7 @@ class AccordionCardCSS extends Component {
 
           <div id="collapse2" className="panel-collapse collapse">
             <div className="panel-body">
+
               <CSS/>
             </div>
           </div>

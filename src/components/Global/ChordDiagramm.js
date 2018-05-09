@@ -29,12 +29,10 @@ class ChordDiagramm extends Component {
   createChord() {
 
     const toolTip = d3.select('#chordChart').append('div')
-        .attr('class', 'tooltip')
-        .style('opacity', 0);
+        .attr('class', 'tooltip-chord');
 
     const toolTipCategory = d3.select('#chordChart').append('div')
-        .attr('class', 'tooltip-category')
-        .style('opacity', 0);
+        .attr('class', 'tooltip-category');
 
 
     const data = this.props.chordData;
@@ -112,7 +110,7 @@ class ChordDiagramm extends Component {
 
 
           toolTipCategory.transition().duration(200).style('opacity', 1);
-          toolTipCategory.html("<b>Info:</b> <br>" +
+          toolTipCategory.html("<b>Categorical Info:</b> <br>" +
               "<span>There " + (mapReader(g).gvalue === 0 ? "is 1" : "are " + mapReader(g).gvalue) + " " + mapReader(g).gname + " Element(s) in the HTML source code</span>")
         })
         .on('mouseout', function (g, i) {
@@ -186,7 +184,7 @@ class ChordDiagramm extends Component {
               })
               .transition()
               .style("opacity", 1);
-          toolTip.transition().duration(200).style('opacity', 0);
+          //toolTip.transition().duration(200).style('opacity', 0);
         });
   }
 

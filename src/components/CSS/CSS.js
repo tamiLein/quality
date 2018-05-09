@@ -1,6 +1,10 @@
 import React, {Component} from 'react';
 import cssValiator from 'w3c-css';
 import {connect} from 'react-redux';
+import {setCSSChartdata as setCSSChartdata} from './../../redux/actions';
+
+
+import CSSBarchart from './CSSBarchart';
 
 class CSS extends Component {
 
@@ -13,9 +17,12 @@ class CSS extends Component {
       showHideInfo: 'checked',
       errorcount: 0,
       warningcount: 0,
+      warningTypes: '',
+      errorTypes: '',
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleInputChangeInfo = this.handleInputChangeInfo.bind(this);
+    this.generateDataForBarchart = this.generateDataForBarchart.bind(this);
   }
 
   componentWillMount() {
@@ -29,6 +36,7 @@ class CSS extends Component {
         console.log('crashed', err);
       } else {
         // validation errors
+        console.log('css data', data);
         this.setState({
           errors: data.errors,
           errorcount: data.errors.length,
@@ -39,6 +47,8 @@ class CSS extends Component {
           warnings: data.warnings,
           warningcount: data.warnings.length,
         });
+        this.generateDataForBarchart();
+
       }
     });
   }
@@ -62,6 +72,36 @@ class CSS extends Component {
     );
   }
 
+  generateDataForBarchart(){
+    const error = this.state.errors;
+    const warning = this.state.warnings;
+
+    let errorTypes = {};
+    let warningTypes = {};
+
+    for (let i = 0; i < error.length; i++) {
+      errorTypes[error[i].type] = errorTypes[error[i].type] ? errorTypes[error[i].type] + 1 : 1 ;
+      if(i == error.length-1){
+        this.setState({
+          errorTypes: errorTypes,
+        });
+      }
+    }
+
+    for (let i = 0; i < warning.length; i++) {
+      warningTypes[warning[i].type] = warningTypes[warning[i].type] ? warningTypes[warning[i].type] + 1 : 1 ;
+      if(i == warning.length-1){
+        //this.props.dispatch(setCSSChartdata(warningTypes));
+        this.setState({
+          warningTypes: warningTypes,
+        });
+      }
+    }
+
+
+
+  }
+
 
   render() {
 
@@ -71,10 +111,11 @@ class CSS extends Component {
     const error = this.state.errors;
     const warning = this.state.warnings;
 
+
     //add filter options
-    errorItems.push(
+    errorItems.push(<div>
         <div className="col-md-12 error-filter" key="filter">
-          <span>Filter result list:</span>
+          <span>Filter result:</span>
           <form>
 
             <input type="checkbox" id="error-checkbox" checked={this.state.showHideError}
@@ -85,6 +126,9 @@ class CSS extends Component {
                    onChange={this.handleInputChangeInfo}/>
             <label htmlFor="info-checkbox">Warnings ({this.state.warningcount})</label>
           </form>
+        </div>
+          <CSSBarchart warningTypes={this.state.warningTypes} errorTypes={this.state.errorTypes} warnings={this.state.showHideInfo} errors={this.state.showHideError}/>
+
         </div>
     );
 
@@ -125,6 +169,9 @@ class CSS extends Component {
           </div>
       )
     }
+
+
+
 
     if (errorItems !== '' && warningItems !== '') {
       errorItems.push(warningItems);

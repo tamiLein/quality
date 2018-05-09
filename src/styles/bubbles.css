@@ -45,3 +45,11 @@ g {
     text-align: right;
     margin-right: 10px;
 }
+
+*[class^='class-'].active{
+    font-style: italic;
+    cursor: pointer;
+    fill: lightgray;
+    color: lightgray;
+}
+

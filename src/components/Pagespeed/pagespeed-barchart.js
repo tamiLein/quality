@@ -154,7 +154,7 @@ class Pagespeedchart extends Component {
               .html('<div className="tip">' + that.createTooltip(rule) + '</div>');
 
         }).on('mouseout', function () {
-      d3.select(".chart-tip").style('opacity', '0');
+      //d3.select(".chart-tip").style('opacity', '0');
     });
 
     interest_rate.append("text")
@@ -213,9 +213,36 @@ class Pagespeedchart extends Component {
       const summary = 'summary' in this.props.pagespeeddata[rule] ? this.props.pagespeeddata[rule].summary.format : '';
       const help = 'summary' in this.props.pagespeeddata[rule] && 'args' in this.props.pagespeeddata[rule].summary ? this.props.pagespeeddata[rule].summary.args[0].value : '';
       const impact = this.props.pagespeeddata[rule].ruleImpact;
-      const urlBlocks = 'urlBlocks' in this.props.pagespeeddata[rule] ? this.props.pagespeeddata[rule].urlBlocks[0].header.format : '';
+      const urlBlocks = 'urlBlocks' in this.props.pagespeeddata[rule] ? this.props.pagespeeddata[rule].urlBlocks[this.props.pagespeeddata[rule].urlBlocks.length-1].header : '';
+      const urlBlocksUrls = 'urls' in this.props.pagespeeddata[rule].urlBlocks[this.props.pagespeeddata[rule].urlBlocks.length-1] ? this.props.pagespeeddata[rule].urlBlocks[this.props.pagespeeddata[rule].urlBlocks.length-1].urls : '';
 
-      return ('<strong>' + title + '</strong><p>' + summary + '</p><p>' + help + '</p><p>' + impact + '</p><p>' + urlBlocks + '</p>');
+      let urlBlocksFormat  = '';
+      let urls = '';
+
+      if(urlBlocks !== '' ){
+        urlBlocksFormat = urlBlocks.format;
+        for(let i = 0; i < urlBlocks.args.length; i++){
+          if(urlBlocks.args[i].key === 'LINK'){
+            urlBlocksFormat = urlBlocksFormat.replace('{{BEGIN_LINK}}', '<a href="' + urlBlocks.args[i].value + '" target="_blank">');
+            urlBlocksFormat = urlBlocksFormat.replace('{{END_LINK}}', '</a>');
+          }
+          urlBlocksFormat = urlBlocksFormat.replace('{{' + urlBlocks.args[i].key + '}}', urlBlocks.args[i].value);
+        }
+
+      }
+
+      if(urlBlocksUrls !== ''){
+
+        for(let i = 0; i < urlBlocksUrls.length; i++){
+          urls += urlBlocksUrls[i].result.format + '<br>';
+          for(let j = 0; j < urlBlocksUrls[i].result.args.length; j++){
+            urls = urls.replace('{{' + urlBlocksUrls[i].result.args[j].key + '}}', urlBlocksUrls[i].result.args[j].value)
+          }
+        }
+
+      }
+
+      return ('<strong>' + title + '</strong><p>' + summary + '</p><p>Impact: ' + impact + '</p><p>' + urlBlocksFormat + '</p><small>' + urls + '</small>');
 
     }else{
       return('you passed!');

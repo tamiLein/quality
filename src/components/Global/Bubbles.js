@@ -10,13 +10,13 @@ class Bubbles extends Component {
   }
 
   componentDidMount() {
-    if(this.props.classNames !== "empty") {
+    if(this.props.classNames !== "") {
       this.createBubbles();
     }
   }
 
   componentDidUpdate() {
-    if(this.props.classNames !== "empty") {
+    if(this.props.classNames !== "") {
       this.createBubbles();
     }
   }
@@ -80,7 +80,9 @@ class Bubbles extends Component {
             return d.class;
           })
           .attr('r', 0)
-
+          .attr('class', function (d) {
+            return 'class-' + d.class;
+          })
           .attr('fill', function (d) {
             return colors[Math.floor(d.value / range)];
           })
@@ -116,14 +118,20 @@ class Bubbles extends Component {
 
 
       node.on('mouseover', function (d) {
-        toolTip.transition().duration(200).style('opacity', 1);
-        toolTip.html("<b>" + d.class + "</b> <span>(" + d.value + ")</span>")
-            .style('left', (d.x - 0) + 'px')
-            .style('top', (d.y + d.value * 3 + 20) + 'px');
+       // toolTip.transition().duration(200).style('opacity', 1);
+      //  toolTip.html("<b>" + d.class + "</b> <span>(" + d.value + ")</span>")
+        //    .style('left', (d.x - 0) + 'px')
+         //   .style('top', (d.y + d.value * 3 + 20) + 'px');
+
+        let elements = document.getElementsByClassName('class-' + d.class);
+        elements[0].classList.add('active');
+        elements[1].classList.add('active');
       })
           .on('mouseout', function (d) {
-            toolTip.transition().duration(200).style('opacity', 0);
-
+            //toolTip.transition().duration(200).style('opacity', 0);
+            let elements = document.getElementsByClassName('class-' + d.class);
+            elements[0].classList.remove('active');
+            elements[1].classList.remove('active');
           });
 
 

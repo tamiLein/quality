@@ -29,11 +29,13 @@ class HTML extends Component {
     const options = {
       url: url,
       //validator: 'http://html5.validator.nu',
-      format: 'json'
+      format: 'json',
+      verbose: true,
     };
 
     htmlValiator(options)
         .then((data) => {
+      console.log('html data', data);
           this.setState({
             data: data,
           });
