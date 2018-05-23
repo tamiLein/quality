@@ -6,18 +6,21 @@ class PagespeedchartMobile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-
+      'passed' : '',
     };
     this.createBarchart = this.createBarchart.bind(this);
     this.createTooltip = this.createTooltip.bind(this);
-
   }
 
-  componentDidUpdate() {
+  componentDidMount() {
     if(this.props.pagespeeddatamobile){
       this.createBarchart();
     }
 
+  }componentDidUpdate() {
+    if(this.props.pagespeeddatamobile){
+      this.createBarchart();
+    }
   }
 
   createBarchart() {
@@ -25,8 +28,6 @@ class PagespeedchartMobile extends Component {
       "interest_rate": "SPEED",
       "Passed": 0,
       "AvoidLandingPageRedirects": this.props.pagespeeddatamobile.AvoidLandingPageRedirects.ruleImpact,
-      //"AvoidPlugins": this.props.pagespeeddatamobile.AvoidPlugins.ruleImpact,
-      "ConfigureViewport": this.props.pagespeeddatamobile.ConfigureViewport.ruleImpact,
       "EnableGzipCompression": this.props.pagespeeddatamobile.EnableGzipCompression.ruleImpact,
       "LeverageBrowserCaching": this.props.pagespeeddatamobile.LeverageBrowserCaching.ruleImpact,
       "MainResourceServerResponseTime": this.props.pagespeeddatamobile.MainResourceServerResponseTime.ruleImpact,
@@ -35,10 +36,7 @@ class PagespeedchartMobile extends Component {
       "MinifyJavaScript": this.props.pagespeeddatamobile.MinifyJavaScript.ruleImpact,
       "MinimizeRenderBlockingResources": this.props.pagespeeddatamobile.MinimizeRenderBlockingResources.ruleImpact,
       "OptimizeImages": this.props.pagespeeddatamobile.OptimizeImages.ruleImpact,
-      "PrioritizeVisibleContent": this.props.pagespeeddatamobile.PrioritizeVisibleContent.ruleImpact,
-      "SizeContentToViewport": this.props.pagespeeddatamobile.SizeContentToViewport.ruleImpact,
-      "SizeTapTargetsAppropriately": this.props.pagespeeddatamobile.SizeTapTargetsAppropriately.ruleImpact,
-      "UseLegibleFontSizes": this.props.pagespeeddatamobile.UseLegibleFontSizes.ruleImpact,
+      "PrioritizeVisibleContent": this.props.pagespeeddatamobile.PrioritizeVisibleContent.ruleImpact
     }];
 
     //calculate score
@@ -70,12 +68,12 @@ class PagespeedchartMobile extends Component {
           left: 60
         },
         width = 750 - margin.left - margin.right,
-        height = 450 - margin.top - margin.bottom,
+        height = 550 - margin.top - margin.bottom,
         that = this;
 
     //define scale
-    const x = d3.scaleOrdinal([0, 400], .3);
-    const y = d3.scaleLinear().range([400, 0]);
+    const x = d3.scaleOrdinal([0, 300], .3);
+    const y = d3.scaleLinear().range([500, 0]);
 
     //define colors
     const colors = ['#fbc98d', '#ef8160', '#db476a', '#9f2f7f', '#5e257c', '#262150'];
@@ -132,7 +130,7 @@ class PagespeedchartMobile extends Component {
         .append("g")
         .attr("class", "interest-rate")
         .attr("transform", function(d) {
-          return "translate(" + 30 + ",0)";
+          return "translate(" + 20 + ",0)";
         });
 
     // create bars
@@ -142,7 +140,7 @@ class PagespeedchartMobile extends Component {
         })
         .enter()
         .append("rect")
-        .attr("width", width / 4)
+        .attr("width", width / 5)
         .attr("y", function(d) {
           return y(d.y1);
         })
@@ -159,37 +157,36 @@ class PagespeedchartMobile extends Component {
               .style('opacity', '1')
               .html('<div className="tip">' + that.createTooltip(rule) + '</div>');
         }).on('mouseout', function() {
-      d3.select(".chart-tip-mobile").style('opacity', '0');
+      //d3.select(".chart-tip-mobile").style('opacity', '0');
     });
 
     interest_rate.append("text")
-        .attr("x", width / 4 / 2)
+        .attr("x", width / 5 / 2)
         .attr("y", height)
         .attr("width", x)
         .attr("class", "passed-lable")
         .attr("dy", "-.35em")
         .style("text-anchor", "middle")
         .style("fill", "white")
-        .text(function(d) {
+        .text(function (d) {
           return Math.ceil(myData[0].Passed);
         });
 
-
-    // legend
+    /// legend
     const legends = svg.append("g")
         .attr("class", "legends")
-        .attr("transform", "translate(-150,0)");
+        .attr("transform", "translate(-200,0)");
 
     const legend = legends.selectAll(".legend")
         .data(color.domain().slice().reverse())
         .enter()
         .append("g")
         .attr("class", "legend")
-        .attr("transform", function(d, i) {
+        .attr("transform", function (d, i) {
           return "translate(-250, " + i * 20 + ")";
         })
-        .attr("class", function(d, i) {
-          let x = myData[0].rates[15 - i].amount;
+        .attr("class", function (d, i) {
+          let x = myData[0].rates[10 - i].amount;
           return x > 0 ? "show" : "hide";
         });
 
@@ -205,7 +202,7 @@ class PagespeedchartMobile extends Component {
         .attr("width", 40)
         .attr("dy", ".35em")
         .style("text-anchor", "start")
-        .text(function(d) {
+        .text(function (d) {
           return d;
         });
 
@@ -214,13 +211,40 @@ class PagespeedchartMobile extends Component {
   createTooltip(rule) {
     if (rule != "Passed") {
 
-      const title = this.props.pagespeeddata[rule].localizedRuleName;
-      const summary = 'summary' in this.props.pagespeeddata[rule] ? this.props.pagespeeddata[rule].summary.format : '';
-      const help = 'summary' in this.props.pagespeeddata[rule] && 'args' in this.props.pagespeeddata[rule].summary ? this.props.pagespeeddata[rule].summary.args[0].value : '';
-      const impact = this.props.pagespeeddata[rule].ruleImpact;
-      const urlBlocks = 'urlBlocks' in this.props.pagespeeddata[rule] ? this.props.pagespeeddata[rule].urlBlocks[0].header.format : '';
+      const title = this.props.pagespeeddatamobile[rule].localizedRuleName;
+      const summary = 'summary' in this.props.pagespeeddatamobile[rule] ? this.props.pagespeeddatamobile[rule].summary.format : '';
+      const help = 'summary' in this.props.pagespeeddatamobile[rule] && 'args' in this.props.pagespeeddatamobile[rule].summary ? this.props.pagespeeddatamobile[rule].summary.args[0].value : '';
+      const impact = this.props.pagespeeddatamobile[rule].ruleImpact;
+      const urlBlocks = 'urlBlocks' in this.props.pagespeeddatamobile[rule] ? this.props.pagespeeddatamobile[rule].urlBlocks[this.props.pagespeeddatamobile[rule].urlBlocks.length-1].header : '';
+      const urlBlocksUrls = 'urls' in this.props.pagespeeddatamobile[rule].urlBlocks[this.props.pagespeeddatamobile[rule].urlBlocks.length-1] ? this.props.pagespeeddatamobile[rule].urlBlocks[this.props.pagespeeddatamobile[rule].urlBlocks.length-1].urls : '';
 
-      return ('<strong>' + title + '</strong><p>' + summary + '</p><p>' + help + '</p><p>' + impact + '</p><p>' + urlBlocks + '</p>');
+      let urlBlocksFormat  = '';
+      let urls = '';
+
+      if(urlBlocks !== '' ){
+        urlBlocksFormat = urlBlocks.format;
+        for(let i = 0; i < urlBlocks.args.length; i++){
+          if(urlBlocks.args[i].key === 'LINK'){
+            urlBlocksFormat = urlBlocksFormat.replace('{{BEGIN_LINK}}', '<a href="' + urlBlocks.args[i].value + '" target="_blank">');
+            urlBlocksFormat = urlBlocksFormat.replace('{{END_LINK}}', '</a>');
+          }
+          urlBlocksFormat = urlBlocksFormat.replace('{{' + urlBlocks.args[i].key + '}}', urlBlocks.args[i].value);
+        }
+
+      }
+
+      if(urlBlocksUrls !== ''){
+
+        for(let i = 0; i < urlBlocksUrls.length; i++){
+          urls += urlBlocksUrls[i].result.format + '<br>';
+          for(let j = 0; j < urlBlocksUrls[i].result.args.length; j++){
+            urls = urls.replace('{{' + urlBlocksUrls[i].result.args[j].key + '}}', urlBlocksUrls[i].result.args[j].value)
+          }
+        }
+
+      }
+
+      return ('<strong>' + title + '</strong><p>' + summary + '</p><p>Impact: ' + impact + '</p><p>' + urlBlocksFormat + '</p><small>' + urls + '</small>');
 
     }else{
       return('you passed!');
@@ -243,7 +267,6 @@ class PagespeedchartMobile extends Component {
 const stateMap = (state) => {
   return {
     url: state.url,
-    pagespeeddata: state.pagespeeddata,
     pagespeeddatamobile: state.pagespeeddatamobile,
   };
 };

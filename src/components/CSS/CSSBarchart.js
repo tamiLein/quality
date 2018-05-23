@@ -72,11 +72,11 @@ class CSSBarchart extends Component {
     };
 
 
-    console.log('*************************', data);
-    const width = 960 - margin.left - margin.right,
+    //console.log('*************************', data);
+    const width = 900 - margin.left - margin.right,
         height = (data.length*30);
 
-    console.log('************************* height', height);
+    //console.log('************************* height', height);
 
     document.getElementById('cssBarChart') ? document.getElementById('cssBarChart').remove() : '';
 
@@ -153,7 +153,7 @@ class CSSBarchart extends Component {
 
 
   render() {
-    return (<div>
+    return (<div id="barchart-css">
       <h5>Pareto-Analyse CSS</h5>
       <p>The dark bars make 70% of the errors. So try to eliminate these to get a better result. Orange is 10%.</p>
       <div id="graphic"></div>

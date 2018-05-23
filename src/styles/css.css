@@ -5,3 +5,16 @@
 #panel-css .error.col-md-12.checked{
     display: block;
 }
+
+#barchart-css{
+    padding: 120px 20px;
+}
+
+#barchart-css .tick{
+    font-size: 12px;
+    font-family: 'Raleway', sans-serif;
+}
+
+#barchart-css .tick text{
+    margin-right: 15px;
+}

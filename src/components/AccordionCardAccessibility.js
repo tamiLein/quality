@@ -23,7 +23,6 @@ class AccordionCardAccessibility extends Component {
           </a>
           <div id="collapse4" className="panel-collapse collapse">
             <div className="panel-body">
-              Coming soon... Testing the accessibility of the page.
               <Accessibility/>
             </div>
           </div>

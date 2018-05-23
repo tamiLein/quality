@@ -12,6 +12,13 @@ class Pagespeedchart extends Component {
     this.createTooltip = this.createTooltip.bind(this);
   }
 
+  componentDidMount() {
+    if (this.props.pagespeeddata) {
+      this.createBarchart();
+    }
+
+  }
+
   componentDidUpdate() {
     if (this.props.pagespeeddata) {
       this.createBarchart();
@@ -63,7 +70,6 @@ class Pagespeedchart extends Component {
           left: 60
         },
         width = 750 - margin.left - margin.right,
-        //height = 450 - margin.top - margin.bottom,
         height = 550 - margin.top - margin.bottom,
         that = this;
 

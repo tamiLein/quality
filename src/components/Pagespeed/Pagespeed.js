@@ -20,7 +20,7 @@ class Pagespeed extends Component {
     this.createPieChart = this.createPieChart.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.validatePagespeed();
   }
 
@@ -44,17 +44,20 @@ class Pagespeed extends Component {
           })
         }).then(() => {
           this.props.dispatch(setPagespeeddata(this.state.response.formattedResults.ruleResults));
+
+        })
+        .then(() => {
           this.createPieChart();
         })
         .catch(err => {
           throw err
         });
 
-    /*fetch(pagespeedUrlMobile)
+    fetch(pagespeedUrlMobile)
         .then(res => res.json())
         .then((out) => {
-          console.log('out mobile', out);
-          console.log('out mobile', pagespeedUrlMobile);
+          //console.log('out mobile', out);
+          //console.log('out mobile', pagespeedUrlMobile);
           this.setState({
             responseMobile: out,
             pageStatsMobile: [
@@ -69,7 +72,7 @@ class Pagespeed extends Component {
     })
         .catch(err => {
           throw err
-        });*/
+        });
   }
 
 
@@ -170,7 +173,7 @@ class Pagespeed extends Component {
       }
     }*/
 
-    if (this.state.response !== '') {
+    if (this.state.response !== '' && this.state.responseMobile !== '') {
       return (<div>
         {/*{ruleItems}*/}
 
@@ -191,7 +194,7 @@ class Pagespeed extends Component {
                 <Barchart/>
               </div>
               <div className="tab-pane" id="tab_default_2">
-                {/*<BarchartMobile/>*/}
+                <BarchartMobile/>
               </div>
             </div>
           </div>

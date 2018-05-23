@@ -40,8 +40,9 @@ class ParseHTML extends Component {
     const handler = new htmlparser.DefaultHandler(function (error, dom) {
       if (error)
         console.log('error', error);
-      else
-        console.log('no error');
+      else {
+      //console.log('no error');
+      }
     }, {
       verbose: false,
       ignoreWhitespace: true
@@ -75,9 +76,10 @@ class ParseHTML extends Component {
         }
       }
 
-      this.props.dispatch(setChordData(chordData));
-      //console.log('chorddata', chordData);
+
     }
+    this.props.dispatch(setChordData(chordData));
+    //console.log('chorddata', chordData);
   }
 
   checkChildren = function (domElement, returnElement) {

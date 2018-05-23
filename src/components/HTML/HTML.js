@@ -35,14 +35,14 @@ class HTML extends Component {
 
     htmlValiator(options)
         .then((data) => {
-      console.log('html data', data);
+      //console.log('html data', data);
           this.setState({
             data: data,
           });
           this.countErrors(data);
         })
         .catch((error) => {
-          console.error(error);
+          //console.error(error);
           this.state.error = error;
         });
   }

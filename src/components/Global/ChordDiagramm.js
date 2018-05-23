@@ -21,7 +21,7 @@ class ChordDiagramm extends Component {
 
   componentDidUpdate() {
     if (this.props.chordData !== '') {
-      console.log('draw cord');
+      //console.log('draw cord');
       this.createChord();
     }
   }

@@ -31,7 +31,7 @@ class Accessibility extends Component {
 
     const data = querystring.stringify({
       url: url,
-      key: 'd87facba59114e94ca97dbad2c96d1df',
+      key: 'ea1b2a113ec5b42248d0c0c493bfcb00',
 
     });
 
@@ -48,7 +48,7 @@ class Accessibility extends Component {
 
     this.httpRequest(options, data)
         .then(function (myData) {
-          console.log('data test promise', JSON.parse(myData));
+          //console.log('data test promise', JSON.parse(myData));
           self.setState({
             data: JSON.parse(myData),
           });
@@ -74,7 +74,7 @@ class Accessibility extends Component {
         });
         // resolve on end
         res.on('end', function () {
-          console.log(JSON.parse(myData));
+          //console.log(JSON.parse(myData));
           resolve(myData);
         });
       });
@@ -96,7 +96,7 @@ class Accessibility extends Component {
 
     let errorItems = [];
 
-    console.log('state test', this.state.data);
+    //console.log('state test', this.state.data);
 
     if (this.state.data !== '') {
 

@@ -36,7 +36,7 @@ class CSS extends Component {
         console.log('crashed', err);
       } else {
         // validation errors
-        console.log('css data', data);
+        //console.log('css data', data);
         this.setState({
           errors: data.errors,
           errorcount: data.errors.length,

@@ -19,7 +19,7 @@ class ParseCSS extends Component {
 
 
   parseCSS() {
-    console.log('-------------------------- parse CSS --------------------------');
+    //console.log('-------------------------- parse CSS --------------------------');
 
     let backgrounds = [];
     let colors = [];
@@ -33,7 +33,7 @@ class ParseCSS extends Component {
 
     let cssObject = cssparser.parse(css);
     let cssRules = cssObject.stylesheet.rules;
-    console.log('css test', cssRules);
+    //console.log('css test', cssRules);
 
     for(let i = 0; i < cssRules.length; i++){
       for(let j = 0; j < cssRules[i].declarations.length; j++) {
@@ -62,9 +62,9 @@ class ParseCSS extends Component {
       }
 
     }
-    console.log('fonts', border);
-    console.log('colors', colors);
-    console.log('backgrounds', backgrounds);
+    //console.log('fonts', border);
+    //console.log('colors', colors);
+    //console.log('backgrounds', backgrounds);
 
 
     this.props.dispatch(setColorData({

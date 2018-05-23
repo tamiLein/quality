@@ -23,7 +23,6 @@ class Colors extends Component {
   }
 
   createColors() {
-    console.log('################################################# create colors');
     const svg = this.node;
     const nodeWidth = 60;
 
@@ -36,10 +35,7 @@ class Colors extends Component {
     const type = this.props.data;
 
     const data = this.props.colorData[type];
-
-    console.log('data', data);
-
-      const node = d3.select(svg)
+          const node = d3.select(svg)
           .selectAll('.node')
           .data(data)
           .enter()
