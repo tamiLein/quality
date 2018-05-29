@@ -18,11 +18,13 @@ class Pagespeed extends Component {
       url: '',
     };
     this.validatePagespeed = this.validatePagespeed.bind(this);
-    this.createPieChart = this.createPieChart.bind(this);
+    //this.createPieChart = this.createPieChart.bind(this);
+    this.createPieChart2 = this.createPieChart2.bind(this);
   }
 
   componentDidMount() {
     this.validatePagespeed();
+    this.createPieChart2();
   }
 
   componentDidUpdate() {
@@ -30,6 +32,8 @@ class Pagespeed extends Component {
       document.getElementById('pagespeed-pie') ? document.getElementById('pagespeed-pie').innerHTML = '' : '';
       this.validatePagespeed();
     }
+    this.createPieChart2();
+
   }
 
   validatePagespeed(url) {
@@ -80,113 +84,135 @@ class Pagespeed extends Component {
         }).then(() => {
       this.props.dispatch(setPagespeeddataMobile(this.state.responseMobile));
     })
-        .then(() => {
-      this.createPieChart();
-    })
         .catch(err => {
           throw err
         });
   }
 
 
-  createPieChart() {
-    console.log('pie **************************');
 
-    const svg = this.node;
-    const width = 300;
-    const height = 300;
-    const radius = (Math.min(width, height) - 40 ) / 2;
-    const g = d3.select(svg).append("g").attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+  createPieChart2(){
+
+    document.getElementById('pagespeed-pie') ? document.getElementById('pagespeed-pie').remove() : '';
+
+    //const svgNode = this.node;
+
+    const width = 990,
+        height = 600,
+        radius = Math.min(450, 450) / 2;
+
+    const svg = d3.select('#pie-div')
+        .append('svg')
+        .attr('id', 'pagespeed-pie')
+        .attr('width',width)
+        .attr('height', height)
+        .append('g')
+        .attr("transform", "translate(" + width/2 + "," + height/2 + ")");
+
+    svg.append("g")
+        .attr("class", "slices");
+    const textLabel = svg.append("g")
+        .attr("class", "labelName");
+    svg.append("g")
+        .attr("class", "lines");
+
 
 
     const pie = d3.pie()
         .sort(null)
-        .value(function (d) {
+        .value(function(d) {
           return d.count;
         });
 
-    const path = d3.arc()
-        .outerRadius(radius - 10)
-        .innerRadius(40);
+    const arc = d3.arc()
+        .outerRadius(radius * 0.8)
+        .innerRadius(radius * 0.4);
 
-    const label = d3.arc()
-        .outerRadius(radius - 40)
-        .innerRadius(radius - 0);
+    const outerArc = d3.arc()
+        .innerRadius(radius * 0.9)
+        .outerRadius(radius * 0.9);
+
+    const legendRectSize = radius * 0.05;
+    const legendSpacing = radius * 0.02;
 
     const data = this.state.pageStats;
 
-    const arc = g.selectAll(".arc")
-        .data(pie(data))
-        .enter().append("g")
-        .attr("class", "arc");
-
-    arc.append("path")
-        .attr("d", path)
-        .attr("fill", function (d) {
-          return d.data.color;
+    const slice = svg
+        .select(".slices")
+        .selectAll("path.slice")
+        .data(pie(data), function(d){
+          return d.data.label
         });
 
-    arc.append("text")
-        .attr("transform", function (d) {
-          return "translate(" + label.centroid(d) + ")";
+    slice.enter()
+        .insert("path")
+        .style("fill", function(d) { return d.data.color; })
+        .style("opacity", 0.7)
+        .attr("class", "slice")
+        .attr("d", arc);
+
+
+    //Labels
+
+    let text = textLabel
+        .selectAll('text')
+        .data(pie(data), function (d) {
+          return d.data.label
+        });
+
+    text.enter()
+        .append('text')
+        .attr('dy', '.35em')
+        .text(function(d){
+          return d.data.label+": "+d.value+" Bytes";
         })
-        .attr("dy", "0.35em")
-        .text(function (d) {
-          return d.data.label;
+        .attr('transform', function(d){
+
+          let centroid = outerArc.centroid(d);
+          let x = centroid[0] > 0 ? 150 : -150;
+          let y = centroid[1] > 0 ? centroid[1]*1.3 : centroid[1]*1.3;
+
+          return 'translate (' + x + ',' + y + ')';
+        })
+        .attr('text-anchor', function (d) {
+          let centroid = outerArc.centroid(d);
+          return centroid[0] > 0 ? 'start' : 'end';
         });
+
+    //Lines
+
+    let polyline = svg.select('.lines')
+        .selectAll('polyline')
+        .data(pie(data), function (d) {
+          return d.data.label
+        });
+
+    polyline.enter()
+        .append('polyline')
+        .attr('points', function(d){
+
+          let centroid = outerArc.centroid(d);
+          let centroidArc = arc.centroid(d);
+
+          let x1 = centroidArc[0];
+          let y1 = centroidArc[1];
+
+          let x2 = centroid[0];
+          let y2 = centroid[1];
+
+          let x3 = centroid[0] > 0 ? 135 : -135;
+          let y3 = centroid[1] > 0 ? centroid[1]*1.3 : centroid[1]*1.3;
+
+          return [x1 ,y1, x2, y2, x3, y3];
+        });
+
+
   }
 
+
+
   render() {
-
-    /*let ruleItems = [];
-
-     if (this.state.response !== '') {
-
-     const ruleResults = this.state.response.formattedResults.ruleResults;
-
-     //console.log('ruleResults', ruleResults);
-
-     ruleItems.push(
-     <div className='error col-md-12' key="score">
-     <div className="col-md-12">
-     <span className="errorType">Score: {this.state.response.ruleGroups.SPEED.score}</span>
-
-     </div>
-     </div>
-     )
-
-     //add rules
-     let rule = '';
-     for (let key in ruleResults) {
-     if(ruleResults[key].ruleImpact > 0) {
-     rule = ruleResults[key];
-     //console.log('rule', rule);
-     //console.log('test',rule.hasOwnProperty('summary') );
-     if(rule.hasOwnProperty('summary')) {
-     ruleItems.push(
-     <div className='error col-md-12' key={key}>
-     <div className="col-md-12">
-     <span className="errorType">[{ruleResults[key].groups[0]}] {ruleResults[key].localizedRuleName}</span>
-     <p className="errorMessage">{ruleResults[key].summary.format}</p>
-     <p>Rule impact: {ruleResults[key].ruleImpact}</p>
-     </div>
-     </div>
-     )
-     }
-     else if(rule.hasOwnProperty('urlBlocks')) {
-     ruleItems.push(
-     <div className='error col-md-12' key={key}>
-     <div className="col-md-12">
-     <span className="errorType">[{ruleResults[key].groups[0]}] {ruleResults[key].localizedRuleName}</span>
-     <p className="errorMessage">{ruleResults[key].urlBlocks[0].header.format}</p>
-     <p>Rule impact: {ruleResults[key].ruleImpact}</p>
-     </div>
-     </div>
-     )
-     }
-     }
-     }
-     }*/
 
     if (this.state.response !== '' && this.state.responseMobile !== '') {
       return (<div>
@@ -214,19 +240,15 @@ class Pagespeed extends Component {
             </div>
           </div>
         </div>
-
-        <svg id="pagespeed-pie" ref={node => this.node = node}
-             width={300} height={300}>
-        </svg>
+        <div className="col-md-12" id="pie-div">
+        </div>
       </div>);
     } else {
       return null;
     }
   }
 
-  /*return <svg ref={node => this.node = node}
-   width={300} height={300}>
-   </svg>*/
+
 }
 
 
