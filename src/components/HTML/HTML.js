@@ -1,6 +1,11 @@
 import React, {Component} from 'react';
 import htmlValiator from 'html-validator';
+import stringSimilarity from 'string-similarity';
 import {connect} from 'react-redux';
+import {setHTMLChartdata as sethtmlChartdata} from './../../redux/actions';
+
+
+import HTMLBarchart from './HTMLBarchart';
 
 class HTML extends Component {
   constructor(props) {
@@ -12,11 +17,18 @@ class HTML extends Component {
       showHideInfo: 'checked',
       errorcount: 0,
       warningcount: 0,
+      warningTypes: '',
+      errorTypes: '',
+      url: '',
+      errors: '',
+      warnings: '',
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleInputChangeInfo = this.handleInputChangeInfo.bind(this);
     this.countErrors = this.countErrors.bind(this);
+    this.generateDataForBarchart = this.generateDataForBarchart.bind(this);
+
   }
 
 
@@ -24,6 +36,11 @@ class HTML extends Component {
     this.validateHTML(this.props.url);
   }
 
+  componentDidUpdate() {
+    if (this.state.url != this.props.url) {
+      this.validateHTML(this.props.url);
+    }
+  }
 
   validateHTML(url) {
     const options = {
@@ -38,9 +55,11 @@ class HTML extends Component {
       //console.log('html data', data);
           this.setState({
             data: data,
+            url: this.props.url,
           });
           this.countErrors(data);
         })
+        .then(() => this.generateDataForBarchart())
         .catch((error) => {
           //console.error(error);
           this.state.error = error;
@@ -68,21 +87,79 @@ class HTML extends Component {
   countErrors(data) {
     let counterError = 0;
     let counterWarning = 0;
+    let errors= [];
+    let warnings = [];
     if (data !== '') {
       const error = data.messages;
 
       for (let i = 0; i < error.length; i++) {
         if (error[i].type === 'error') {
           counterError++;
+          errors.push(error[i]);
         } else {
           counterWarning++;
+          warnings.push(error[i]);
         }
       }
       this.setState({
         errorcount: counterError,
         warningcount: counterWarning,
+        errors: errors,
+        warnings: warnings,
       })
     }
+  }
+
+  generateDataForBarchart(){
+    const errors = this.state.errors;
+    const warnings = this.state.warnings;
+
+    let errorTypes = {};
+    let warningTypes = {};
+
+    let currentErrorMessage = '';
+    let found = false;
+
+    for(let i = 0; i < errors.length; i++){
+      currentErrorMessage = errors[i].message;
+      for(let index in errorTypes){
+        if(stringSimilarity.compareTwoStrings(currentErrorMessage, index) == 1){
+          errorTypes[index] = errorTypes[index] + 1;
+          found = true;
+        }
+      }
+      if(!found) errorTypes[currentErrorMessage] = 1;
+
+      found = false;
+
+      if(i == errors.length-1){
+        this.setState({
+          errorTypes: errorTypes,
+        });
+      }
+    }
+
+    found = false;
+    for(let i = 0; i < warnings.length; i++){
+      currentErrorMessage = warnings[i].message;
+      for(let index in warningTypes){
+        if(stringSimilarity.compareTwoStrings(currentErrorMessage, index) == 1){
+          warningTypes[index] = warningTypes[index] + 1;
+          found = true;
+        }
+      }
+      if(!found) warningTypes[currentErrorMessage] = 1;
+
+      found = false;
+
+      if(i == warnings.length-1){
+        this.setState({
+          warningTypes: warningTypes,
+        });
+      }
+    }
+
+
   }
 
 
@@ -96,6 +173,7 @@ class HTML extends Component {
 
       //add filter options
       errorItems.push(
+          <div>
           <div className="col-md-12 error-filter" key="filter">
             <span>Filter result list:</span>
             <form>
@@ -109,6 +187,8 @@ class HTML extends Component {
               <label htmlFor="info-checkbox">Warnings ({this.state.warningcount})</label>
             </form>
           </div>
+          <HTMLBarchart warningTypes={this.state.warningTypes} errorTypes={this.state.errorTypes} warnings={this.state.showHideInfo} errors={this.state.showHideError}/>
+    </div>
       );
 
 

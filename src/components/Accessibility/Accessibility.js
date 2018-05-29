@@ -4,6 +4,10 @@ Tamara*/
 
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import decodeHTML from 'decode-html';
+
+import AccessibilityBar from './/Accessibility-Bar';
+
 
 class Accessibility extends Component {
   constructor(props) {
@@ -15,6 +19,7 @@ class Accessibility extends Component {
       showHideInfo: 'checked',
       errorcount: 0,
       warningcount: 0,
+      url: '',
     };
 
     this.validateAccessibility = this.validateAccessibility.bind(this);
@@ -25,13 +30,22 @@ class Accessibility extends Component {
     this.validateAccessibility(this.props.url);
   }
 
+  componentDidUpdate() {
+    if (this.state.url != this.props.url) {
+      this.validateAccessibility(this.props.url);
+    }
+  }
+
+
+
   validateAccessibility(url) {
     const self = this;
     const querystring = require('querystring');
 
     const data = querystring.stringify({
       url: url,
-      key: 'ea1b2a113ec5b42248d0c0c493bfcb00',
+      key: '311dd7a96bb12a81a31a22e5bfb8c79f',
+      //key: '54e59553de302a9570b79c88b481ce46',
 
     });
 
@@ -48,9 +62,10 @@ class Accessibility extends Component {
 
     this.httpRequest(options, data)
         .then(function (myData) {
-          //console.log('data test promise', JSON.parse(myData));
+          console.log('data test promise', JSON.parse(myData));
           self.setState({
             data: JSON.parse(myData),
+            url: self.props.url,
           });
         });
 
@@ -95,16 +110,23 @@ class Accessibility extends Component {
   render() {
 
     let errorItems = [];
+    let passed = '';
+    let failed = '';
 
     //console.log('state test', this.state.data);
 
     if (this.state.data !== '') {
+       passed = this.state.data.resultSummary.tests.passing;
+       failed = this.state.data.resultSummary.tests.failing;
 
       const error = this.state.data.resultSet;
-
+      let codeSnipped = '';
 
       //add warnings and errors
       for (let i = 0; i < error.length; i++) {
+
+        codeSnipped = decodeHTML(error[i].errorSnippet);
+
         let classChecked = '';
         if (error[i].certainity === 100) {
           classChecked = this.state.showHideError;
@@ -116,13 +138,13 @@ class Accessibility extends Component {
             <div className={'error col-md-12 ' + classChecked} key={i}>
               <div className="col-md-6">
                 <span className="codeLine">In line: {error[i].position.line}</span>
-                <p className="codeSnipped">{ decodeURI(encodeURI(error[i].errorSnippet))}</p>
-                <p className="codeSnipped">{ error[i].errorSnippet}</p>
+                <p className="codeSnipped">{ codeSnipped}</p>
               </div>
 
               <div className="col-md-6">
                 <span className={'errorType ' + error[i].certainity}><i className="fa"></i> {error[i].errorTitle}</span>
-                <span className="errorMessage">Description: {error[i].errorDescription}</span>
+                <span className="priority">Priority: {error[i].priority}</span>
+                <br/><span className="errorMessage">Description: {error[i].errorDescription}</span>
                 <br/><span className="standardsMessage">Standard: {error[i].standards[0]}</span>
                 <br/><span className="errorMessage">Solution: {error[i].resultTitle}</span>
               </div>
@@ -132,7 +154,10 @@ class Accessibility extends Component {
     }
 
     if (errorItems !== '') {
-      return (errorItems);
+      return (<div>
+        <AccessibilityBar passed={passed} failed={failed}/>
+        {errorItems}
+      </div>);
     } else {
       return null;
     }

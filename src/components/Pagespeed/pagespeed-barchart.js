@@ -27,29 +27,27 @@ class Pagespeedchart extends Component {
   }
 
   createBarchart() {
+
+    document.getElementById('pagespeed-chart') ? document.getElementById('pagespeed-chart').remove() : '';
+
+    const formatedResults = this.props.pagespeeddata.formattedResults.ruleResults;
+
+
     let myData = [{
       "interest_rate": "SPEED",
-      "Passed": 0,
-      "AvoidLandingPageRedirects": this.props.pagespeeddata.AvoidLandingPageRedirects.ruleImpact,
-      "EnableGzipCompression": this.props.pagespeeddata.EnableGzipCompression.ruleImpact,
-      "LeverageBrowserCaching": this.props.pagespeeddata.LeverageBrowserCaching.ruleImpact,
-      "MainResourceServerResponseTime": this.props.pagespeeddata.MainResourceServerResponseTime.ruleImpact,
-      "MinifyCss": this.props.pagespeeddata.MinifyCss.ruleImpact,
-      "MinifyHTML": this.props.pagespeeddata.MinifyHTML.ruleImpact,
-      "MinifyJavaScript": this.props.pagespeeddata.MinifyJavaScript.ruleImpact,
-      "MinimizeRenderBlockingResources": this.props.pagespeeddata.MinimizeRenderBlockingResources.ruleImpact,
-      "OptimizeImages": this.props.pagespeeddata.OptimizeImages.ruleImpact,
-      "PrioritizeVisibleContent": this.props.pagespeeddata.PrioritizeVisibleContent.ruleImpact
+      "Passed": this.props.pagespeeddata.ruleGroups.SPEED.score,
+      "AvoidLandingPageRedirects": formatedResults.AvoidLandingPageRedirects.ruleImpact,
+      "EnableGzipCompression": formatedResults.EnableGzipCompression.ruleImpact,
+      "LeverageBrowserCaching": formatedResults.LeverageBrowserCaching.ruleImpact,
+      "MainResourceServerResponseTime": formatedResults.MainResourceServerResponseTime.ruleImpact,
+      "MinifyCss": formatedResults.MinifyCss.ruleImpact,
+      "MinifyHTML": formatedResults.MinifyHTML.ruleImpact,
+      "MinifyJavaScript": formatedResults.MinifyJavaScript.ruleImpact,
+      "MinimizeRenderBlockingResources": formatedResults.MinimizeRenderBlockingResources.ruleImpact,
+      "OptimizeImages": formatedResults.OptimizeImages.ruleImpact,
+      "PrioritizeVisibleContent": formatedResults.PrioritizeVisibleContent.ruleImpact
     }];
 
-    //calculate score
-    let score = 100;
-    for (let index in myData[0]) {
-      if (typeof myData[0][index] != 'string') {
-        score = score - myData[0][index];
-      }
-    }
-    myData[0].Passed = score;
 
     // sort data set
     const list = myData[0];
@@ -88,6 +86,7 @@ class Pagespeedchart extends Component {
     //create svg element
     const svg = d3.select(".pagespeed-chart")
         .append("svg")
+        .attr('id', 'pagespeed-chart')
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
@@ -154,11 +153,7 @@ class Pagespeedchart extends Component {
         })
         .attr('opacity', '0.3')
         .on('mouseover', function (d) {
-          let rule = d.name;
-          const charttip = d3.select(".chart-tip")
-              .style('opacity', '1')
-              .html('<div className="tip">' + that.createTooltip(rule) + '</div>');
-
+          that.mouseover(d.name);
         }).on('mouseout', function () {
       //d3.select(".chart-tip").style('opacity', '0');
     });
@@ -198,7 +193,10 @@ class Pagespeedchart extends Component {
         .attr("x", width + -53)
         .attr("width", 10)
         .attr("height", 10)
-        .style("fill", color);
+        .style("fill", color)
+        .on('mouseover', function (d, i) {
+          that.mouseover(d);
+        });
 
     legend.append("text")
         .attr("x", width - 40)
@@ -208,19 +206,32 @@ class Pagespeedchart extends Component {
         .style("text-anchor", "start")
         .text(function (d) {
           return d;
+        })
+        .on('mouseover', function (d, i) {
+          that.mouseover(d);
         });
+
+  }
+  mouseover(d){
+    let rule = d;
+    const charttip = d3.select(".chart-tip")
+        .style('opacity', '1')
+        .html('<div className="tip">' + this.createTooltip(rule) + '</div>');
 
   }
 
   createTooltip(rule) {
     if (rule != "Passed") {
 
-      const title = this.props.pagespeeddata[rule].localizedRuleName;
-      const summary = 'summary' in this.props.pagespeeddata[rule] ? this.props.pagespeeddata[rule].summary.format : '';
-      const help = 'summary' in this.props.pagespeeddata[rule] && 'args' in this.props.pagespeeddata[rule].summary ? this.props.pagespeeddata[rule].summary.args[0].value : '';
-      const impact = this.props.pagespeeddata[rule].ruleImpact;
-      const urlBlocks = 'urlBlocks' in this.props.pagespeeddata[rule] ? this.props.pagespeeddata[rule].urlBlocks[this.props.pagespeeddata[rule].urlBlocks.length-1].header : '';
-      const urlBlocksUrls = 'urls' in this.props.pagespeeddata[rule].urlBlocks[this.props.pagespeeddata[rule].urlBlocks.length-1] ? this.props.pagespeeddata[rule].urlBlocks[this.props.pagespeeddata[rule].urlBlocks.length-1].urls : '';
+      const formatedResults = this.props.pagespeeddata.formattedResults.ruleResults;
+
+
+      const title = formatedResults[rule].localizedRuleName;
+      const summary = 'summary' in formatedResults[rule] ? formatedResults[rule].summary.format : '';
+      const help = 'summary' in formatedResults[rule] && 'args' in formatedResults[rule].summary ? formatedResults[rule].summary.args[0].value : '';
+      const impact = formatedResults[rule].ruleImpact;
+      const urlBlocks = 'urlBlocks' in formatedResults[rule] ? formatedResults[rule].urlBlocks[formatedResults[rule].urlBlocks.length-1].header : '';
+      const urlBlocksUrls = 'urls' in formatedResults[rule].urlBlocks[formatedResults[rule].urlBlocks.length-1] ? formatedResults[rule].urlBlocks[formatedResults[rule].urlBlocks.length-1].urls : '';
 
       let urlBlocksFormat  = '';
       let urls = '';

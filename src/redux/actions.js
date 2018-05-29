@@ -43,4 +43,10 @@ export function setCSSChartdata(data) {
     payload: data,
   };
 }
+export function setHTMLChartdata(data) {
+  return {
+    type: 'SET_HTML_CHARTDATA',
+    payload: data,
+  };
+}
 

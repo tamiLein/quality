@@ -15,6 +15,7 @@ class Pagespeed extends Component {
       pageStats: '',
       responseMobile: '',
       pageStatsMobile: '',
+      url: '',
     };
     this.validatePagespeed = this.validatePagespeed.bind(this);
     this.createPieChart = this.createPieChart.bind(this);
@@ -24,7 +25,18 @@ class Pagespeed extends Component {
     this.validatePagespeed();
   }
 
+  componentDidUpdate() {
+    if (this.state.url != this.props.url) {
+      document.getElementById('pagespeed-pie') ? document.getElementById('pagespeed-pie').innerHTML = '' : '';
+      this.validatePagespeed();
+    }
+  }
+
   validatePagespeed(url) {
+
+    this.setState({
+      url: this.props.url,
+    });
 
     let pagespeedUrlMobile = 'https://www.googleapis.com/pagespeedonline/v4/runPagespeed?url=' + this.props.url + '&strategy=mobile&key=' + this.state.key;
     let pagespeedUrl = 'https://www.googleapis.com/pagespeedonline/v4/runPagespeed?url=' + this.props.url + '&strategy=desktop&key=' + this.state.key;
@@ -43,12 +55,10 @@ class Pagespeed extends Component {
             ],
           })
         }).then(() => {
-          this.props.dispatch(setPagespeeddata(this.state.response.formattedResults.ruleResults));
+      this.props.dispatch(setPagespeeddata(this.state.response));
 
-        })
-        .then(() => {
-          this.createPieChart();
-        })
+    })
+
         .catch(err => {
           throw err
         });
@@ -68,7 +78,10 @@ class Pagespeed extends Component {
             ],
           })
         }).then(() => {
-      this.props.dispatch(setPagespeeddataMobile(this.state.responseMobile.formattedResults.ruleResults));
+      this.props.dispatch(setPagespeeddataMobile(this.state.responseMobile));
+    })
+        .then(() => {
+      this.createPieChart();
     })
         .catch(err => {
           throw err
@@ -77,6 +90,8 @@ class Pagespeed extends Component {
 
 
   createPieChart() {
+    console.log('pie **************************');
+
     const svg = this.node;
     const width = 300;
     const height = 300;
@@ -125,53 +140,53 @@ class Pagespeed extends Component {
 
     /*let ruleItems = [];
 
-    if (this.state.response !== '') {
+     if (this.state.response !== '') {
 
-      const ruleResults = this.state.response.formattedResults.ruleResults;
+     const ruleResults = this.state.response.formattedResults.ruleResults;
 
-      //console.log('ruleResults', ruleResults);
+     //console.log('ruleResults', ruleResults);
 
-      ruleItems.push(
-          <div className='error col-md-12' key="score">
-            <div className="col-md-12">
-              <span className="errorType">Score: {this.state.response.ruleGroups.SPEED.score}</span>
+     ruleItems.push(
+     <div className='error col-md-12' key="score">
+     <div className="col-md-12">
+     <span className="errorType">Score: {this.state.response.ruleGroups.SPEED.score}</span>
 
-            </div>
-          </div>
-      )
+     </div>
+     </div>
+     )
 
-      //add rules
-      let rule = '';
-      for (let key in ruleResults) {
-        if(ruleResults[key].ruleImpact > 0) {
-          rule = ruleResults[key];
-          //console.log('rule', rule);
-          //console.log('test',rule.hasOwnProperty('summary') );
-          if(rule.hasOwnProperty('summary')) {
-            ruleItems.push(
-                <div className='error col-md-12' key={key}>
-                  <div className="col-md-12">
-                    <span className="errorType">[{ruleResults[key].groups[0]}] {ruleResults[key].localizedRuleName}</span>
-                    <p className="errorMessage">{ruleResults[key].summary.format}</p>
-                    <p>Rule impact: {ruleResults[key].ruleImpact}</p>
-                  </div>
-                </div>
-            )
-          }
-          else if(rule.hasOwnProperty('urlBlocks')) {
-            ruleItems.push(
-                <div className='error col-md-12' key={key}>
-                  <div className="col-md-12">
-                    <span className="errorType">[{ruleResults[key].groups[0]}] {ruleResults[key].localizedRuleName}</span>
-                    <p className="errorMessage">{ruleResults[key].urlBlocks[0].header.format}</p>
-                    <p>Rule impact: {ruleResults[key].ruleImpact}</p>
-                  </div>
-                </div>
-            )
-          }
-        }
-      }
-    }*/
+     //add rules
+     let rule = '';
+     for (let key in ruleResults) {
+     if(ruleResults[key].ruleImpact > 0) {
+     rule = ruleResults[key];
+     //console.log('rule', rule);
+     //console.log('test',rule.hasOwnProperty('summary') );
+     if(rule.hasOwnProperty('summary')) {
+     ruleItems.push(
+     <div className='error col-md-12' key={key}>
+     <div className="col-md-12">
+     <span className="errorType">[{ruleResults[key].groups[0]}] {ruleResults[key].localizedRuleName}</span>
+     <p className="errorMessage">{ruleResults[key].summary.format}</p>
+     <p>Rule impact: {ruleResults[key].ruleImpact}</p>
+     </div>
+     </div>
+     )
+     }
+     else if(rule.hasOwnProperty('urlBlocks')) {
+     ruleItems.push(
+     <div className='error col-md-12' key={key}>
+     <div className="col-md-12">
+     <span className="errorType">[{ruleResults[key].groups[0]}] {ruleResults[key].localizedRuleName}</span>
+     <p className="errorMessage">{ruleResults[key].urlBlocks[0].header.format}</p>
+     <p>Rule impact: {ruleResults[key].ruleImpact}</p>
+     </div>
+     </div>
+     )
+     }
+     }
+     }
+     }*/
 
     if (this.state.response !== '' && this.state.responseMobile !== '') {
       return (<div>
@@ -200,7 +215,7 @@ class Pagespeed extends Component {
           </div>
         </div>
 
-        <svg ref={node => this.node = node}
+        <svg id="pagespeed-pie" ref={node => this.node = node}
              width={300} height={300}>
         </svg>
       </div>);

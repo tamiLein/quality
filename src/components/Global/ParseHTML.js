@@ -1,4 +1,5 @@
 import /*React, */ {Component} from 'react';
+import http from 'http';
 import {connect} from 'react-redux';
 import htmlparser from 'htmlparser';
 import htmlparser2 from 'htmlparser2';
@@ -12,6 +13,7 @@ class ParseHTML extends Component {
     super(props);
     this.renderDom2 = this.renderDom2.bind(this);
     this.parseDomArray = this.parseDomArray.bind(this);
+    this.httpRequest = this.httpRequest.bind(this);
 
   }
 
@@ -31,6 +33,29 @@ class ParseHTML extends Component {
 
     that.renderDom('');
     that.renderDom2();
+    that.httpRequest();
+  }
+
+  httpRequest(){
+    console.log('--------------------------', this.props.url);
+
+    http.get(this.props.url, (resp) => {
+      let data = '';
+
+      // A chunk of data has been recieved.
+      resp.on('data', (chunk) => {
+        console.log('----chunk', chunk);
+        data += chunk;
+      });
+
+      // The whole response has been received. Print out the result.
+      resp.on('end', () => {
+        console.log(JSON.parse(data).explanation);
+      });
+
+    }).on("error", (err) => {
+      console.log("Error: " + err.message);
+    });
   }
 
   renderDom(request) {
@@ -153,7 +178,8 @@ class ParseHTML extends Component {
 
 const stateMap = (state) => {
   return {
-    chordData: state.chordData
+    chordData: state.chordData,
+    url: state.url,
   };
 };
 

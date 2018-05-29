@@ -3,7 +3,6 @@ import '../styles/App.css';
 
 import Accessibility from './Accessibility/Accessibility';
 
-
 class AccordionCardAccessibility extends Component {
   render() {
     return (

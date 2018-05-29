@@ -19,6 +19,7 @@ class CSS extends Component {
       warningcount: 0,
       warningTypes: '',
       errorTypes: '',
+      url: '',
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleInputChangeInfo = this.handleInputChangeInfo.bind(this);
@@ -27,6 +28,13 @@ class CSS extends Component {
 
   componentWillMount() {
     this.validateCss(this.props.url);
+  }
+
+
+  componentDidUpdate() {
+    if (this.state.url != this.props.url) {
+      this.validateCss(this.props.url);
+    }
   }
 
 
@@ -46,6 +54,7 @@ class CSS extends Component {
         this.setState({
           warnings: data.warnings,
           warningcount: data.warnings.length,
+          url: url,
         });
         this.generateDataForBarchart();
 
@@ -87,6 +96,7 @@ class CSS extends Component {
         });
       }
     }
+
 
     for (let i = 0; i < warning.length; i++) {
       warningTypes[warning[i].type] = warningTypes[warning[i].type] ? warningTypes[warning[i].type] + 1 : 1 ;
