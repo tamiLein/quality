@@ -39,7 +39,7 @@ class ParseHTML extends Component {
   httpRequest(){
     console.log('--------------------------', this.props.url);
 
-    /*http.get(this.props.url, (resp) => {
+    http.get(this.props.url, (resp) => {
       let data = '';
 
       // A chunk of data has been recieved.
@@ -55,7 +55,7 @@ class ParseHTML extends Component {
 
     }).on("error", (err) => {
       console.log("Error: " + err.message);
-    });*/
+    });
   }
 
   renderDom(request) {
