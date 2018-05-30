@@ -138,7 +138,7 @@ class CSS extends Component {
           </form>
         </div>
           <CSSBarchart warningTypes={this.state.warningTypes} errorTypes={this.state.errorTypes} warnings={this.state.showHideInfo} errors={this.state.showHideError}/>
-
+      <h5>Error-List</h5>
         </div>
     );
 

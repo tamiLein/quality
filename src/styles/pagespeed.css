@@ -47,3 +47,7 @@ polyline {
     stroke-width: 2px;
     fill: none;
 }
+
+#pie-div, #collapse5{
+    padding:20px;
+}

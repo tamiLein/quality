@@ -6,15 +6,38 @@
     display: block;
 }
 
-#barchart-css{
-    padding: 120px 20px;
+#barchart-css > div, #barchart-html > div{
+    padding: 0 20px;
 }
 
-#barchart-css .tick{
+#barchart-css .tick, #barchart-html .tick{
     font-size: 12px;
     font-family: 'Raleway', sans-serif;
 }
 
-#barchart-css .tick text{
+#barchart-css .tick text, #barchart-html .tick text{
     margin-right: 15px;
+}
+
+.error-filter{
+    margin-bottom: 40px;
+}
+
+.section-pareto{
+    width: 20px;
+    height: 20px;
+    float: left;
+    margin: 0 15px 0 30px;
+}
+.pareto-info{
+    margin: 15px 0 30px 0;
+}
+#sectionA{
+     background-color: #9f2f7f;
+ }
+#sectionB{
+    background-color: #db476a;
+}
+#sectionC{
+    background-color: #ef8160;
 }

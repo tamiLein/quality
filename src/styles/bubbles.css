@@ -51,5 +51,14 @@ g {
     cursor: pointer;
     fill: lightgray;
     color: lightgray;
+    transition-duration: 300ms;
+}
+
+ul li:hover{
+    font-style: italic;
+    cursor: pointer;
+    fill: lightgray;
+    color: lightgray;
+    cursor: pointer;
 }
 

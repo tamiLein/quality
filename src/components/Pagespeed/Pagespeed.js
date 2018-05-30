@@ -24,7 +24,9 @@ class Pagespeed extends Component {
 
   componentDidMount() {
     this.validatePagespeed();
-    this.createPieChart2();
+    if(this.state.pageStats != ''){
+      this.createPieChart2();
+    }
   }
 
   componentDidUpdate() {
@@ -32,7 +34,9 @@ class Pagespeed extends Component {
       document.getElementById('pagespeed-pie') ? document.getElementById('pagespeed-pie').innerHTML = '' : '';
       this.validatePagespeed();
     }
-    this.createPieChart2();
+    if(this.state.pageStats != ''){
+      this.createPieChart2();
+    }
 
   }
 
@@ -136,7 +140,17 @@ class Pagespeed extends Component {
     const legendRectSize = radius * 0.05;
     const legendSpacing = radius * 0.02;
 
-    const data = this.state.pageStats;
+    let data = this.state.pageStats;
+
+    console.log('kdjflajsdf data', data);
+
+    const sortedData = data
+        .sort((a, b) => {
+          return (a.count > b.count) ? 1 : ((b.count < a.count) ? -1 : 0);
+        });
+
+    data = sortedData;
+    console.log('sorted', sortedData);
 
     const slice = svg
         .select(".slices")
@@ -150,7 +164,12 @@ class Pagespeed extends Component {
         .style("fill", function(d) { return d.data.color; })
         .style("opacity", 0.7)
         .attr("class", "slice")
-        .attr("d", arc);
+        .attr("d", arc)
+        .on('mouseover', function (d) {
+          d3.select(this).style('opacity', 1);
+        }).on('mouseout', function (d) {
+          d3.select(this).style('opacity', 0.7);
+        });
 
 
     //Labels
@@ -170,8 +189,8 @@ class Pagespeed extends Component {
         .attr('transform', function(d){
 
           let centroid = outerArc.centroid(d);
-          let x = centroid[0] > 0 ? 150 : -150;
-          let y = centroid[1] > 0 ? centroid[1]*1.3 : centroid[1]*1.3;
+          let x = centroid[0] > 0 ? 250 : -250;
+          let y = centroid[1] > 0 ? centroid[1]*1.2 : centroid[1]*1.2;
 
           return 'translate (' + x + ',' + y + ')';
         })
@@ -201,8 +220,8 @@ class Pagespeed extends Component {
           let x2 = centroid[0];
           let y2 = centroid[1];
 
-          let x3 = centroid[0] > 0 ? 135 : -135;
-          let y3 = centroid[1] > 0 ? centroid[1]*1.3 : centroid[1]*1.3;
+          let x3 = centroid[0] > 0 ? 230 : -230;
+          let y3 = centroid[1] > 0 ? centroid[1]*1.2 : centroid[1]*1.2;
 
           return [x1 ,y1, x2, y2, x3, y3];
         });
@@ -241,6 +260,7 @@ class Pagespeed extends Component {
           </div>
         </div>
         <div className="col-md-12" id="pie-div">
+          <h5>Your Webpage ressources in bytes:</h5>
         </div>
       </div>);
     } else {

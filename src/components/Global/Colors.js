@@ -72,8 +72,7 @@ class Colors extends Component {
 
   render() {
     return ( <div>
-          <h5>Colors</h5>
-          <h6>{this.props.data}</h6>
+          <h5>Used Colors - {this.props.data}</h5>
           <svg ref={node => this.node = node}
                width={500} height={100}>
           </svg>

@@ -262,7 +262,7 @@ class Pagespeedchart extends Component {
       return ('<strong>' + title + '</strong><p>' + summary + '</p><p>Impact: ' + impact + '</p><p>' + urlBlocksFormat + '</p><small>' + urls + '</small>');
 
     }else{
-      return('you passed!');
+      return('Your pagespeed score is ' + this.props.pagespeeddata.ruleGroups.SPEED.score + '!');
     }
   }
 

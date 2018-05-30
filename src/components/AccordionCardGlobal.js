@@ -30,12 +30,12 @@ class AccordionCardGlobal extends Component {
           <div id="collapse5" className="panel-collapse collapse">
             <div className="panel-body">
               <div className="row">
+                <h5>Classnames</h5>
                 <div id="bubbleChart" className="col-md-6">
                   <Bubbles/>
 
                 </div>
                 <div id="classnames" className="col-md-6">
-                  <h5>Classnames</h5>
                   <p>The following classnames are used in the given source code:</p>
                   <ul>
                     <Classnames/>
@@ -43,14 +43,14 @@ class AccordionCardGlobal extends Component {
                 </div>
               </div>
               <div className="row">
-                <div id="colorChart" className="col-md-6">
+                <div id="colorChart" className="col-md-12">
                   <Colors data="colors"/>
                   <Colors data="backgrounds"/>
                   <Colors data="border"/>
                 </div>
               </div>
               <div className="row">
-                <div id="chordChart" className="col-md-6">
+                <div id="chordChart" className="col-md-12">
                   <ChordDiagramm/>
                   <ParseHtml/>
                   <ParseCSS/>

@@ -62,3 +62,21 @@ footer .container div {
     width: 1px;
     word-wrap: normal !important;
 }
+
+h5{
+    border-bottom: 1px solid #ef8160;
+    font-size: 15px;
+    text-transform: uppercase;
+    padding: 15px 25px;
+    margin: 25px;
+}
+
+.row{
+    margin-left: -20px;
+    margin-right: -20px;
+}
+
+.tooltip-category, .tooltip-chord{
+    min-height: 80px;
+    text-align: center;
+}

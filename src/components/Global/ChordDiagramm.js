@@ -120,6 +120,7 @@ class ChordDiagramm extends Component {
               })
               .transition()
               .style("opacity", 1);
+          toolTipCategory.transition().duration(200).style('opacity', 0.4);
 
         });
 
@@ -184,7 +185,7 @@ class ChordDiagramm extends Component {
               })
               .transition()
               .style("opacity", 1);
-          //toolTip.transition().duration(200).style('opacity', 0);
+          toolTip.transition().duration(200).style('opacity', 0.4);
         });
   }
 

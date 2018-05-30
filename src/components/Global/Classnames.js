@@ -7,24 +7,52 @@ class Classnames extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      'bubbleArray' : '',
+      'selected': '',
+    };
+    this.mouseover = this.mouseover.bind(this);
+    this.mouseout = this.mouseout.bind(this);
+  }
+
+  componentDidUpdate(){
+    if(this.state.bubbleArray == '') {
+
+      let bubbles = document.getElementById('bubbleChart');
+
+      let bubblesList = bubbles.childNodes[0].childNodes;
+
+      let bubbleArray = [];
+      for (let i = 0; i < bubblesList.length; i++) {
+        bubbleArray[i] = bubblesList[i].childNodes[0];
+      }
+      this.setState({
+        'bubbleArray': bubbleArray,
+      });
+    }
   }
 
   mouseover(event){
-    //console.log(event);
-    /*let elements = document.getElementsByClassName('class-' + classname);
-    if(elements.length > 0) {
-      elements[0].classList.add('active');
-      elements[1].classList.add('active');
-    }*/
+    let classname = event.target.className;
+    let array = this.state.bubbleArray;
+
+    let selected = null;
+    for (let i = 0; i < array.length; i++){
+      if(array[i].className.baseVal == classname){
+        selected = array[i];
+        selected.classList.add('active');
+        this.setState({
+          'selected': selected,
+        });
+        i = array.length;
+      }
+    }
   }
 
-  mouseout(event){
-    /*let elements = document.getElementsByClassName('class-' + classname);
-   if(elements.length > 0) {
-      elements[0].classList.remove('active');
-      elements[1].classList.remove('active');
-    }*/
 
+
+  mouseout(event){
+    this.state.selected.classList.remove('active');
   }
 
   render() {

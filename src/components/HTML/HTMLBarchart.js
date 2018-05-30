@@ -156,8 +156,12 @@ class HTMLBarchart extends Component {
   render() {
     return (<div id="barchart-html">
       <h5>Pareto-Analyse HTML</h5>
-      <p>The dark bars make 70% of the errors. So try to eliminate these to get a better result. Orange is 10%.</p>
-      <div id="graphic-html"></div>
+      <div className="pareto-info">
+        <p>This chart is divided into 3 areas:</p>
+        <i class="section-pareto" id="sectionA"></i> <p><bold>Section A</bold> includes 70% of the occured errors.</p>
+        <i class="section-pareto" id="sectionB"></i> <p><bold>Section B</bold> includes 20% of the occured errors.</p>
+        <i class="section-pareto" id="sectionC"></i> <p><bold>Section C</bold> includes 10% of the occured errors.</p>
+      </div>      <div id="graphic-html"></div>
         </div>);
   }
 }
