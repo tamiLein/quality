@@ -6,28 +6,40 @@ class Bubbles extends Component {
 
   constructor(props) {
     super(props);
+    this.state = ({
+      url: '',
+      length: 0,
+    });
+
     this.createBubbles = this.createBubbles.bind(this);
   }
 
-  componentDidMount() {
+  /*componentDidMount() {
     if(this.props.classNames !== "") {
       this.createBubbles();
     }
-  }
+  }*/
 
   componentDidUpdate() {
-    if(this.props.classNames !== "") {
-      this.createBubbles();
-    }
+      if (this.props.classNames.length > this.state.length){
+        this.createBubbles();
+      }
   }
 
   createBubbles() {
-    const svg = this.node;
+
+    this.setState({
+      length: this.props.classNames.length,
+    });
+
+    document.getElementById('bubbleSVG') ? document.getElementById('bubbleSVG').remove() : '';
+
     const width = 500;
     const height = 500;
 
     const data = this.props.classNames;
 
+    console.log('bubbles data', data);
 
     const colors = [
       'rgb(251, 201, 141)', 'rgb(239, 129, 96)', 'rgb(219, 71, 106)', 'rgb(159, 47, 127)', 'rgb(94, 37, 124)'
@@ -65,7 +77,13 @@ class Bubbles extends Component {
       // -----
 
 
-      const node = d3.select(svg)
+      const svg = d3.select('#bubbleChart')
+          .append('svg')
+          .attr('id', 'bubbleSVG')
+          .attr('width', width)
+          .attr('height', height);
+
+    const node = d3.select('#bubbleSVG')
           .selectAll('.node')
           .data(pack(root).leaves())
           .enter()
@@ -138,15 +156,14 @@ class Bubbles extends Component {
   }
 
   render() {
-    return <svg ref={node => this.node = node}
-                width={500} height={600}>
-    </svg>
+    return null;
   }
 }
 
 const stateMap = (state) => {
   return {
-    classNames: state.classNames
+    classNames: state.classNames,
+    url: state.url,
   };
 };
 

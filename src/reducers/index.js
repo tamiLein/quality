@@ -1,6 +1,6 @@
 const initialState = {
-  url: '',
-  //url: 'http://www.fh-ooe.at/',
+  //url: '',
+  url: 'http://www.fh-ooe.at/',
   //url: 'http://www.vorderweissenbach.at/',
   pagespeeddata: '',
   pagespeeddatamobile: '',

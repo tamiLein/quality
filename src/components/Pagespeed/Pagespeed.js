@@ -142,15 +142,12 @@ class Pagespeed extends Component {
 
     let data = this.state.pageStats;
 
-    console.log('kdjflajsdf data', data);
-
     const sortedData = data
         .sort((a, b) => {
           return (a.count > b.count) ? 1 : ((b.count < a.count) ? -1 : 0);
         });
 
     data = sortedData;
-    console.log('sorted', sortedData);
 
     const slice = svg
         .select(".slices")

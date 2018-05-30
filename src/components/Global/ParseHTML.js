@@ -18,28 +18,25 @@ class ParseHTML extends Component {
   }
 
   componentDidMount() {
-    const that = this;
-    /*const request = new XMLHttpRequest();
-     //console.log('url', this.props.url);
-
-     request.onreadystatechange = function () {
-     if (this.readyState === 4 && this.status === 200)
-     that.renderDom(request);
-     that.renderDom2();
-     };
-     //request.open("GET", this.props.url, true);
-     request.open("GET", 'test.txt', true);
-     request.send();*/
-
-    that.renderDom('');
-    that.renderDom2();
-    that.httpRequest();
+    this.httpRequest();
   }
 
   httpRequest(){
-    console.log('--------------------------', this.props.url);
+    const that = this;
+    let url = 'https://cors-anywhere.herokuapp.com/' + this.props.url;
+    const request = new XMLHttpRequest();
 
-    http.get(this.props.url, (resp) => {
+    request.onreadystatechange = function () {
+      if (this.readyState === 4 && this.status === 200)
+        that.renderDom(this.responseText);
+        that.renderDom2(this.responseText);
+    };
+    request.open("GET", url, true);
+    request.send();
+
+
+
+    /*http.get(url, (resp) => {
       let data = '';
 
       // A chunk of data has been recieved.
@@ -55,13 +52,25 @@ class ParseHTML extends Component {
 
     }).on("error", (err) => {
       console.log("Error: " + err.message);
-    });
+    });*/
+
+    /*fetch(url)
+        .then(res => res.html())
+        .then((out) => {
+          console.log('out html', out);
+        }).then(() => {
+    })
+        .catch(err => {
+          console.log('parse html error', err);
+          throw err
+        });*/
+
   }
 
-  renderDom(request) {
-    const rawHtml = document.body.innerHTML;
+  renderDom(responseText) {
+    //const rawHtml = document.body.innerHTML;
     //console.log('rawHTML', rawHtml);
-    //var rawHtml = request.response;
+    const rawHtml = responseText;
     const handler = new htmlparser.DefaultHandler(function (error, dom) {
       if (error)
         console.log('error', error);
@@ -76,7 +85,6 @@ class ParseHTML extends Component {
     const parser = new htmlparser.Parser(handler);
     parser.parseComplete(rawHtml);
 
-    //console.log('dom', handler.dom);
     this.parseDomArray(handler.dom);
   }
 
@@ -104,7 +112,6 @@ class ParseHTML extends Component {
 
     }
     this.props.dispatch(setChordData(chordData));
-    //console.log('chorddata', chordData);
   }
 
   checkChildren = function (domElement, returnElement) {
@@ -134,7 +141,7 @@ class ParseHTML extends Component {
     return returnElement;
   };
 
-  renderDom2() {
+  renderDom2(responseText) {
 
     let classNamesArray = [];
     let classList;
@@ -165,7 +172,7 @@ class ParseHTML extends Component {
       }
     }, {decodeEntities: true});
 
-    parser.write(document.body.innerHTML);
+    parser.write(responseText);
     parser.end();
 
   };

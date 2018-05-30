@@ -11,6 +11,7 @@ class ChordDiagramm extends Component {
     this.state = {
       matrix: '',
       map: '',
+      url: '',
     };
     this.createChord = this.createChord.bind(this);
   }
@@ -20,13 +21,24 @@ class ChordDiagramm extends Component {
    }*/
 
   componentDidUpdate() {
-    if (this.props.chordData !== '') {
+    if (this.props.url != this.state.url) {
       //console.log('draw cord');
-      this.createChord();
+      if (this.props.chordData.length > 0){
+        this.createChord();
+      }
     }
   }
 
   createChord() {
+
+    this.setState({
+      url: this.props.url,
+    });
+
+    document.getElementById('chordSVG') ? document.getElementById('chordSVG').remove() : '';
+
+
+    console.log('++++++++++++++++++++++++++chord chart');
 
     const toolTip = d3.select('#chordChart').append('div')
         .attr('class', 'tooltip-chord');
@@ -73,7 +85,9 @@ class ChordDiagramm extends Component {
         .radius(r0);
 
 
-    const svg = d3.select("#chordChart").append("svg:svg")
+    const svg = d3.select("#chordChart")
+        .append("svg:svg")
+        .attr('id', 'chordSVG')
         .attr("width", w)
         .attr("height", h)
         .append("svg:g")
@@ -201,7 +215,8 @@ class ChordDiagramm extends Component {
 
 const stateMap = (state) => {
   return {
-    chordData: state.chordData
+    chordData: state.chordData,
+    url: state.url,
   };
 };
 

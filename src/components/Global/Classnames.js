@@ -16,7 +16,7 @@ class Classnames extends Component {
   }
 
   componentDidUpdate(){
-    if(this.state.bubbleArray == '') {
+    /*if(this.state.bubbleArray == '') {
 
       let bubbles = document.getElementById('bubbleChart');
 
@@ -29,11 +29,11 @@ class Classnames extends Component {
       this.setState({
         'bubbleArray': bubbleArray,
       });
-    }
+    }*/
   }
 
   mouseover(event){
-    let classname = event.target.className;
+    /*let classname = event.target.className;
     let array = this.state.bubbleArray;
 
     let selected = null;
@@ -46,13 +46,13 @@ class Classnames extends Component {
         });
         i = array.length;
       }
-    }
+    }*/
   }
 
 
 
   mouseout(event){
-    this.state.selected.classList.remove('active');
+    //this.state.selected.classList.remove('active');
   }
 
   render() {

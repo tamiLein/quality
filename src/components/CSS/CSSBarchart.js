@@ -160,6 +160,7 @@ class CSSBarchart extends Component {
         <i class="section-pareto" id="sectionA"></i> <p><bold>Section A</bold> includes 70% of the occured errors.</p>
         <i class="section-pareto" id="sectionB"></i> <p><bold>Section B</bold> includes 20% of the occured errors.</p>
         <i class="section-pareto" id="sectionC"></i> <p><bold>Section C</bold> includes 10% of the occured errors.</p>
+        <p>Try to eliminate the errors from section A at first to get a visible improve of the page.</p>
       </div>
       <div id="graphic"></div>
         </div>);

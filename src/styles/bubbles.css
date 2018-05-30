@@ -54,7 +54,7 @@ g {
     transition-duration: 300ms;
 }
 
-ul li:hover{
+#classnames ul li:hover{
     font-style: italic;
     cursor: pointer;
     fill: lightgray;
@@ -62,3 +62,7 @@ ul li:hover{
     cursor: pointer;
 }
 
+#classnames ul{
+    max-height: 500px;
+    overflow-y: scroll;
+}
