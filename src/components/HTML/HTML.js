@@ -2,8 +2,6 @@ import React, {Component} from 'react';
 import htmlValiator from 'html-validator';
 import stringSimilarity from 'string-similarity';
 import {connect} from 'react-redux';
-import {setHTMLChartdata as sethtmlChartdata} from './../../redux/actions';
-
 
 import HTMLBarchart from './HTMLBarchart';
 
@@ -37,7 +35,7 @@ class HTML extends Component {
   }
 
   componentDidUpdate() {
-    if (this.state.url != this.props.url) {
+    if (this.state.url !== this.props.url) {
       this.validateHTML(this.props.url);
     }
   }
@@ -52,7 +50,6 @@ class HTML extends Component {
 
     htmlValiator(options)
         .then((data) => {
-      //console.log('html data', data);
           this.setState({
             data: data,
             url: this.props.url,
@@ -61,8 +58,9 @@ class HTML extends Component {
         })
         .then(() => this.generateDataForBarchart())
         .catch((error) => {
-          //console.error(error);
-          this.state.error = error;
+          this.setState({
+            error: error,
+          });
         });
   }
 
@@ -87,7 +85,7 @@ class HTML extends Component {
   countErrors(data) {
     let counterError = 0;
     let counterWarning = 0;
-    let errors= [];
+    let errors = [];
     let warnings = [];
     if (data !== '') {
       const error = data.messages;
@@ -110,7 +108,7 @@ class HTML extends Component {
     }
   }
 
-  generateDataForBarchart(){
+  generateDataForBarchart() {
     const errors = this.state.errors;
     const warnings = this.state.warnings;
 
@@ -120,19 +118,19 @@ class HTML extends Component {
     let currentErrorMessage = '';
     let found = false;
 
-    for(let i = 0; i < errors.length; i++){
+    for (let i = 0; i < errors.length; i++) {
       currentErrorMessage = errors[i].message;
-      for(let index in errorTypes){
-        if(stringSimilarity.compareTwoStrings(currentErrorMessage, index) == 1){
+      for (let index in errorTypes) {
+        if (stringSimilarity.compareTwoStrings(currentErrorMessage, index) === 1) {
           errorTypes[index] = errorTypes[index] + 1;
           found = true;
         }
       }
-      if(!found) errorTypes[currentErrorMessage] = 1;
+      if (!found) errorTypes[currentErrorMessage] = 1;
 
       found = false;
 
-      if(i == errors.length-1){
+      if (i === errors.length - 1) {
         this.setState({
           errorTypes: errorTypes,
         });
@@ -140,19 +138,19 @@ class HTML extends Component {
     }
 
     found = false;
-    for(let i = 0; i < warnings.length; i++){
+    for (let i = 0; i < warnings.length; i++) {
       currentErrorMessage = warnings[i].message;
-      for(let index in warningTypes){
-        if(stringSimilarity.compareTwoStrings(currentErrorMessage, index) == 1){
+      for (let index in warningTypes) {
+        if (stringSimilarity.compareTwoStrings(currentErrorMessage, index) === 1) {
           warningTypes[index] = warningTypes[index] + 1;
           found = true;
         }
       }
-      if(!found) warningTypes[currentErrorMessage] = 1;
+      if (!found) warningTypes[currentErrorMessage] = 1;
 
       found = false;
 
-      if(i == warnings.length-1){
+      if (i === warnings.length - 1) {
         this.setState({
           warningTypes: warningTypes,
         });
@@ -173,23 +171,24 @@ class HTML extends Component {
 
       //add filter options
       errorItems.push(
-          <div>
-          <div className="col-md-12 error-filter" key="filter">
-            <span>Filter result list:</span>
-            <form>
+          <div key="filter">
+            <div className="col-md-12 error-filter">
+              <span>Filter result list:</span>
+              <form>
 
-              <input type="checkbox" id="error-checkbox" checked={this.state.showHideError}
-                     onChange={this.handleInputChange}/>
-              <label htmlFor="error-checkbox"><i className="fa error"></i>Errors ({this.state.errorcount})</label>
+                <input type="checkbox" id="error-checkbox" checked={this.state.showHideError}
+                       onChange={this.handleInputChange}/>
+                <label htmlFor="error-checkbox"><i className="fa error"></i>Errors ({this.state.errorcount})</label>
 
-              <input type="checkbox" id="error-checkbox" checked={this.state.showHideInfo}
-                     onChange={this.handleInputChangeInfo}/>
-              <label htmlFor="info-checkbox">Warnings ({this.state.warningcount})</label>
-            </form>
-          </div>
-          <HTMLBarchart warningTypes={this.state.warningTypes} errorTypes={this.state.errorTypes} warnings={this.state.showHideInfo} errors={this.state.showHideError}/>
+                <input type="checkbox" id="error-checkbox" checked={this.state.showHideInfo}
+                       onChange={this.handleInputChangeInfo}/>
+                <label htmlFor="info-checkbox">Warnings ({this.state.warningcount})</label>
+              </form>
+            </div>
+            <HTMLBarchart warningTypes={this.state.warningTypes} errorTypes={this.state.errorTypes}
+                          warnings={this.state.showHideInfo} errors={this.state.showHideError}/>
             <h5>Error-List</h5>
-    </div>
+          </div>
       );
 
 

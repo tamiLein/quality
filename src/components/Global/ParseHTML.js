@@ -1,16 +1,18 @@
 import /*React, */ {Component} from 'react';
-import http from 'http';
 import {connect} from 'react-redux';
 import htmlparser from 'htmlparser';
 import htmlparser2 from 'htmlparser2';
 
-import {setClassNameList, setChordData} from './../../redux/actions';
+import {setClassNameList, setChordData, setCSSLinks} from './../../redux/actions';
 
 
 class ParseHTML extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      url: '',
+    };
     this.renderDom2 = this.renderDom2.bind(this);
     this.parseDomArray = this.parseDomArray.bind(this);
     this.httpRequest = this.httpRequest.bind(this);
@@ -21,7 +23,18 @@ class ParseHTML extends Component {
     this.httpRequest();
   }
 
-  httpRequest(){
+  componentDidUpdate() {
+    if (this.props.url !== this.state.url) {
+      this.httpRequest();
+    }
+  }
+
+  httpRequest() {
+
+    this.setState({
+      url: this.props.url,
+    });
+
     const that = this;
     let url = 'https://cors-anywhere.herokuapp.com/' + this.props.url;
     const request = new XMLHttpRequest();
@@ -29,54 +42,20 @@ class ParseHTML extends Component {
     request.onreadystatechange = function () {
       if (this.readyState === 4 && this.status === 200)
         that.renderDom(this.responseText);
-        that.renderDom2(this.responseText);
+      that.renderDom2(this.responseText);
     };
     request.open("GET", url, true);
     request.send();
-
-
-
-    /*http.get(url, (resp) => {
-      let data = '';
-
-      // A chunk of data has been recieved.
-      resp.on('data', (chunk) => {
-        console.log('----chunk', chunk);
-        data += chunk;
-      });
-
-      // The whole response has been received. Print out the result.
-      resp.on('end', () => {
-        console.log(JSON.parse(data).explanation);
-      });
-
-    }).on("error", (err) => {
-      console.log("Error: " + err.message);
-    });*/
-
-    /*fetch(url)
-        .then(res => res.html())
-        .then((out) => {
-          console.log('out html', out);
-        }).then(() => {
-    })
-        .catch(err => {
-          console.log('parse html error', err);
-          throw err
-        });*/
 
   }
 
   renderDom(responseText) {
     //const rawHtml = document.body.innerHTML;
-    //console.log('rawHTML', rawHtml);
     const rawHtml = responseText;
+
     const handler = new htmlparser.DefaultHandler(function (error, dom) {
       if (error)
         console.log('error', error);
-      else {
-      //console.log('no error');
-      }
     }, {
       verbose: false,
       ignoreWhitespace: true
@@ -91,8 +70,12 @@ class ParseHTML extends Component {
   parseDomArray(dom) {
     let chordData = [];
 
+    let cssLinks = [];
+
     for (let i = 0; i < dom.length; i++) {
+
       if (dom[i].type === "tag") {
+
         if (dom[i].children) {
           let returnElement = [];
           let getchildren = this.checkChildren(dom[i], returnElement);
@@ -108,10 +91,29 @@ class ParseHTML extends Component {
           })
         }
       }
-
-
     }
+
+    // get css links
+    let html = dom[dom.length - 1].children;
+    let head = '';
+
+    for (let i = 0; i < html.length; i++) {
+      if (html[i].type === 'tag' && html[i].name === 'head') {
+        head = html[i].children;
+      }
+    }
+
+    for (let i = 0; i < head.length; i++) {
+      if (head[i].type === 'tag' && head[i].name === 'link') {
+        if (head[i].attribs.rel === 'stylesheet') {
+          cssLinks.push(head[i].attribs.href);
+        }
+      }
+    }
+
+
     this.props.dispatch(setChordData(chordData));
+    this.props.dispatch(setCSSLinks(cssLinks));
   }
 
   checkChildren = function (domElement, returnElement) {

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import {Component} from 'react';
 import * as d3 from 'd3';
 import {connect} from 'react-redux';
 
@@ -15,21 +15,25 @@ class Bubbles extends Component {
   }
 
   /*componentDidMount() {
-    if(this.props.classNames !== "") {
-      this.createBubbles();
-    }
-  }*/
+   if(this.props.classNames !== "") {
+   this.createBubbles();
+   }
+   }*/
 
   componentDidUpdate() {
-      if (this.props.classNames.length > this.state.length){
-        this.createBubbles();
-      }
+    if (this.props.classNames.length > this.state.length) {
+      this.createBubbles();
+    }
+    if (this.props.url !== this.state.url) {
+      this.createBubbles();
+    }
   }
 
   createBubbles() {
 
     this.setState({
       length: this.props.classNames.length,
+      url: this.props.url,
     });
 
     document.getElementById('bubbleSVG') ? document.getElementById('bubbleSVG').remove() : '';
@@ -39,8 +43,6 @@ class Bubbles extends Component {
 
     const data = this.props.classNames;
 
-    console.log('bubbles data', data);
-
     const colors = [
       'rgb(251, 201, 141)', 'rgb(239, 129, 96)', 'rgb(219, 71, 106)', 'rgb(159, 47, 127)', 'rgb(94, 37, 124)'
     ];
@@ -49,108 +51,106 @@ class Bubbles extends Component {
         .size([width, height])
         .padding(1.5);
 
-    const toolTip = d3.select('#bubbleChart').append('div')
+    d3.select('#bubbleChart').append('div')
         .attr('class', 'tooltip')
         .style('opacity', 0);
 
-      const root = d3.hierarchy({
-        children: data
-      })
-          .sum(function (d) {
-            return d.VALUE;
-          })
-          .each(function (d) {
-            d.class = d.data.CLASS;
-            d.count = d.data.VALUE;
-          });
+    const root = d3.hierarchy({
+      children: data
+    })
+        .sum(function (d) {
+          return d.VALUE;
+        })
+        .each(function (d) {
+          d.class = d.data.CLASS;
+          d.count = d.data.VALUE;
+        });
 
-      // ----- find max VALUE in csv for color defining
-      data.forEach(function (d) {
-        d.VALUE = +d.VALUE;
-      });
+    // ----- find max VALUE in csv for color defining
+    data.forEach(function (d) {
+      d.VALUE = +d.VALUE;
+    });
 
-      const max = d3.max(data, function (d) {
-        return d.VALUE;
-      });
+    const max = d3.max(data, function (d) {
+      return d.VALUE;
+    });
 
     const range = (max + 1) / 5;
-      // -----
+    // -----
 
 
-      const svg = d3.select('#bubbleChart')
-          .append('svg')
-          .attr('id', 'bubbleSVG')
-          .attr('width', width)
-          .attr('height', height);
+    d3.select('#bubbleChart')
+        .append('svg')
+        .attr('id', 'bubbleSVG')
+        .attr('width', width)
+        .attr('height', height);
 
     const node = d3.select('#bubbleSVG')
-          .selectAll('.node')
-          .data(pack(root).leaves())
-          .enter()
-          .append('g')
-          .attr('class', 'node')
-          .attr('transform', function (d) {
-            return "translate(" + d.x + "," + d.y + ")";
-          });
+        .selectAll('.node')
+        .data(pack(root).leaves())
+        .enter()
+        .append('g')
+        .attr('class', 'node')
+        .attr('transform', function (d) {
+          return "translate(" + d.x + "," + d.y + ")";
+        });
 
-      node.append('circle')
-          .attr('name', function (d) {
-            return d.class;
-          })
-          .attr('r', 0)
-          .attr('class', function (d) {
-            return 'class-' + d.class;
-          })
-          .attr('fill', function (d) {
-            return colors[Math.floor(d.value / range)];
-          })
-          .transition().duration(2000)
-          .attr('r', function (d) {
-            return d.r;
-          });
+    node.append('circle')
+        .attr('name', function (d) {
+          return d.class;
+        })
+        .attr('r', 0)
+        .attr('class', function (d) {
+          return 'class-' + d.class;
+        })
+        .attr('fill', function (d) {
+          return colors[Math.floor(d.value / range)];
+        })
+        .transition().duration(2000)
+        .attr('r', function (d) {
+          return d.r;
+        });
 
     node.append("text")
         .attr("dy", "-0.2em")
         .style("text-anchor", "middle")
-        .text(function(d) {
+        .text(function (d) {
           return d.count;
         })
-        .attr("font-size", function(d){
-          return d.r/2;
+        .attr("font-size", function (d) {
+          return d.r / 2;
         })
         .attr("fill", "white");
 
     node.append("text")
         .attr("dy", "1.3em")
         .style("text-anchor", "middle")
-        .text(function(d) {
+        .text(function (d) {
           return d.class;
         })
 
-        .attr("font-size", function(d){
-          return d.r/4;
+        .attr("font-size", function (d) {
+          return d.r / 4;
         })
         .attr("fill", "white");
 
 
-
-
-      node.on('mouseover', function (d) {
-       // toolTip.transition().duration(200).style('opacity', 1);
+    node.on('mouseover', function (d) {
+      // toolTip.transition().duration(200).style('opacity', 1);
       //  toolTip.html("<b>" + d.class + "</b> <span>(" + d.value + ")</span>")
-        //    .style('left', (d.x - 0) + 'px')
-         //   .style('top', (d.y + d.value * 3 + 20) + 'px');
+      //    .style('left', (d.x - 0) + 'px')
+      //   .style('top', (d.y + d.value * 3 + 20) + 'px');
 
-        let elements = document.getElementsByClassName('class-' + d.class);
-        elements[0].classList.add('active');
-        elements[1].classList.add('active');
-      })
-          .on('mouseout', function (d) {
-            //toolTip.transition().duration(200).style('opacity', 0);
-            let elements = document.getElementsByClassName('class-' + d.class);
-            elements[0].classList.remove('active');
-            elements[1].classList.remove('active');
-          });
+      let elements = document.getElementsByClassName('class-' + d.class);
+      elements[0].classList.add('active');
+      elements[1].classList.add('active');
+    })
+        .on('mouseout', function (d) {
+          //toolTip.transition().duration(200).style('opacity', 0);
+          let elements = document.getElementsByClassName('class-' + d.class);
+          elements[0].classList.remove('active');
+          elements[1].classList.remove('active');
+        });
 
 
   }

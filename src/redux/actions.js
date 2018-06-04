@@ -49,4 +49,10 @@ export function setHTMLChartdata(data) {
     payload: data,
   };
 }
+export function setCSSLinks(data) {
+  return {
+    type: 'SET_CSSLINKS',
+    payload: data,
+  };
+}
 

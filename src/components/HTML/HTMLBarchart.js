@@ -12,13 +12,13 @@ class HTMLBarchart extends Component {
   }
 
   componentDidMount() {
-    if(this.props.warningTypes !== "" || this.props.errorTypes !== '') {
+    if (this.props.warningTypes !== "" || this.props.errorTypes !== '') {
       this.createBarchart();
     }
   }
 
   componentDidUpdate() {
-    if(this.props.warningTypes !== "" || this.props.errorTypes !== '') {
+    if (this.props.warningTypes !== "" || this.props.errorTypes !== '') {
       this.createBarchart();
     }
   }
@@ -32,20 +32,20 @@ class HTMLBarchart extends Component {
     let sum = 0;
 
 
-    if(showError) {
+    if (showError) {
       for (let prop in errorTypes) {
         sum = sum + errorTypes[prop];
         data.push({
-          "name": prop.substring(0,30) + "...",
+          "name": prop.substring(0, 30) + "...",
           "value": errorTypes[prop]
         });
       }
     }
-    if(showWarning){
+    if (showWarning) {
       for (let prop in warningTypes) {
         sum = sum + warningTypes[prop];
         data.push({
-          "name": prop.substring(0,30) + "...",
+          "name": prop.substring(0, 30) + "...",
           "value": warningTypes[prop]
         });
       }
@@ -59,7 +59,6 @@ class HTMLBarchart extends Component {
     const colors = ['rgb(239, 129, 96)', 'rgb(219, 71, 106)', 'rgb(159, 47, 127)'];
     let color = 0;
     let counter = 0;
-    const sectionA = sum * 0.7;
     const sectionB = sum * 0.2;
     const sectionC = sum * 0.1;
 
@@ -72,11 +71,8 @@ class HTMLBarchart extends Component {
     };
 
 
-    //console.log('*************************', data);
     const width = 900 - margin.left - margin.right,
-        height = (data.length*30);
-
-    //console.log('************************* height', height);
+        height = (data.length * 30);
 
     document.getElementById('htmlBarChart') ? document.getElementById('htmlBarChart').remove() : '';
 
@@ -95,8 +91,12 @@ class HTMLBarchart extends Component {
         .range([height, 0])
         .padding(0.1);
 
-    x.domain([0, d3.max(data, function(d){ return d.value; })]);
-    y.domain(data.map(function(d) { return d.name; }));
+    x.domain([0, d3.max(data, function (d) {
+      return d.value;
+    })]);
+    y.domain(data.map(function (d) {
+      return d.name;
+    }));
 
     // append the rectangles for the bar chart
     let bars = svg.selectAll(".bar")
@@ -108,21 +108,25 @@ class HTMLBarchart extends Component {
         .attr("class", "bar")
         //.attr("x", function(d) { return x(d.value); })
 
-        .attr("y", function(d) { return y(d.name); })
+        .attr("y", function (d) {
+          return y(d.name);
+        })
         .attr("height", y.bandwidth())
         .attr('fill', function (d) {
           counter += d.value;
-          if(counter > sectionC){
+          if (counter > sectionC) {
             color = 1;
           }
-          if(counter > sectionB){
+          if (counter > sectionB) {
             color = 2;
           }
           return colors[color];
         })
         .attr("width", 0)
         .transition().duration(2000)
-        .attr("width", function(d) {return x(d.value); } );
+        .attr("width", function (d) {
+          return x(d.value);
+        });
 
 
     // add the x Axis
@@ -158,12 +162,22 @@ class HTMLBarchart extends Component {
       <h5>Pareto-Analyse HTML</h5>
       <div className="pareto-info">
         <p>This chart is divided into 3 areas:</p>
-        <i class="section-pareto" id="sectionA"></i> <p><bold>Section A</bold> includes 70% of the occured errors.</p>
-        <i class="section-pareto" id="sectionB"></i> <p><bold>Section B</bold> includes 20% of the occured errors.</p>
-        <i class="section-pareto" id="sectionC"></i> <p><bold>Section C</bold> includes 10% of the occured errors.</p>
+        <i className="section-pareto" id="sectionA"></i>
+        <p>
+          Section A includes 70% of the occured errors.
+        </p>
+        <i className="section-pareto" id="sectionB"></i>
+        <p>
+          Section B includes 20% of the occured errors.
+        </p>
+        <i className="section-pareto" id="sectionC"></i>
+        <p>
+          Section C includes 10% of the occured errors.
+        </p>
         <p>Try to eliminate the errors from section A at first to get a visible improve of the page.</p>
-      </div>      <div id="graphic-html"></div>
-        </div>);
+      </div>
+      <div id="graphic-html"></div>
+    </div>);
   }
 }
 

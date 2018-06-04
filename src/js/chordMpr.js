@@ -35,7 +35,6 @@ export default function chordMpr (data) {
       };
       mpr.printMatrix = function () {
         _.each(matrix, function (elem) {
-          console.log(elem);
         })
       };
       mpr.addToMap = function (value, info) {

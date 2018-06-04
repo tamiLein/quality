@@ -1,6 +1,6 @@
 const initialState = {
-  //url: '',
-  url: 'http://www.fh-ooe.at/',
+  url: '',
+  //url: 'http://www.fh-ooe.at/',
   //url: 'http://www.vorderweissenbach.at/',
   pagespeeddata: '',
   pagespeeddatamobile: '',
@@ -9,6 +9,7 @@ const initialState = {
   colorData: '',
   cssChartData: '',
   htmlChartData: '',
+  cssLinks: '',
 };
 
 const urlReducer = function (state = initialState, action) {
@@ -60,6 +61,12 @@ const urlReducer = function (state = initialState, action) {
       return {
         ...state,
         htmlChartData: action.payload
+
+      };
+    case 'SET_CSSLINKS':
+      return {
+        ...state,
+        cssLinks: action.payload
 
       };
     default:

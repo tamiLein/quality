@@ -40,7 +40,6 @@ class Input extends Component {
     event.preventDefault();
 
     let newURL = this.checkUrl(this.state.url);
-    //console.log("new url", newURL);
     this.props.dispatch(setUrlAction(newURL));
   }
 

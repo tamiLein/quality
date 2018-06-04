@@ -6,19 +6,21 @@ class PagespeedchartMobile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      'passed' : '',
+      'passed': '',
     };
     this.createBarchart = this.createBarchart.bind(this);
     this.createTooltip = this.createTooltip.bind(this);
   }
 
   componentDidMount() {
-    if(this.props.pagespeeddatamobile){
+    if (this.props.pagespeeddatamobile) {
       this.createBarchart();
     }
 
-  }componentDidUpdate() {
-    if(this.props.pagespeeddatamobile){
+  }
+
+  componentDidUpdate() {
+    if (this.props.pagespeeddatamobile) {
       this.createBarchart();
     }
   }
@@ -47,7 +49,6 @@ class PagespeedchartMobile extends Component {
 
 
     // sort data set
-    //console.log('unsoreted data', myData);
     const list = myData[0];
     const sortedData = Object
         .keys(list)
@@ -57,8 +58,6 @@ class PagespeedchartMobile extends Component {
         }), {});
 
     myData[0] = sortedData;
-
-    //console.log('sorted data', sortedData);
 
     //constants for chart
     const margin = {
@@ -80,7 +79,6 @@ class PagespeedchartMobile extends Component {
     const color = d3.scaleOrdinal().range(colors);
 
     //define axis
-    const xAxis = d3.axisBottom(x);
     const yAxis = d3.axisLeft(y).ticks(10, ",%");
 
     //create svg element
@@ -92,14 +90,14 @@ class PagespeedchartMobile extends Component {
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    color.domain(d3.keys(myData[0]).filter(function(key) {
+    color.domain(d3.keys(myData[0]).filter(function (key) {
       return key !== "interest_rate";
     }));
 
-    myData.forEach(function(d) {
+    myData.forEach(function (d) {
       let y0 = 0;
 
-      d.rates = color.domain().map(function(name) {
+      d.rates = color.domain().map(function (name) {
         return {
           name: name,
           y0: y0,
@@ -107,16 +105,14 @@ class PagespeedchartMobile extends Component {
           amount: d[name]
         };
       });
-      d.rates.forEach(function(d) {
+      d.rates.forEach(function (d) {
         d.y0 /= y0;
         d.y1 /= y0;
       });
-      console.log(myData);
-
     });
 
 
-    x.domain(myData.map(function(d) {
+    x.domain(myData.map(function (d) {
       return d.interest_rate;
     }));
 
@@ -130,7 +126,7 @@ class PagespeedchartMobile extends Component {
         .enter()
         .append("g")
         .attr("class", "interest-rate")
-        .attr("transform", function(d) {
+        .attr("transform", function (d) {
           return "translate(" + 20 + ",0)";
         });
 
@@ -212,34 +208,34 @@ class PagespeedchartMobile extends Component {
         });
 
   }
-  mouseover(d){
+
+  mouseover(d) {
     let rule = d;
-    const charttip = d3.select(".chart-tip-mobile")
+    d3.select(".chart-tip-mobile")
         .style('opacity', '1')
         .html('<div className="tip">' + this.createTooltip(rule) + '</div>');
 
   }
 
   createTooltip(rule) {
-    if (rule != "Passed") {
+    if (rule !== "Passed") {
 
       const formatedResults = this.props.pagespeeddatamobile.formattedResults.ruleResults;
 
 
       const title = formatedResults[rule].localizedRuleName;
       const summary = 'summary' in formatedResults[rule] ? formatedResults[rule].summary.format : '';
-      const help = 'summary' in formatedResults[rule] && 'args' in formatedResults[rule].summary ? formatedResults[rule].summary.args[0].value : '';
       const impact = formatedResults[rule].ruleImpact;
-      const urlBlocks = 'urlBlocks' in formatedResults[rule] ? formatedResults[rule].urlBlocks[formatedResults[rule].urlBlocks.length-1].header : '';
-      const urlBlocksUrls = 'urls' in formatedResults[rule].urlBlocks[formatedResults[rule].urlBlocks.length-1] ? formatedResults[rule].urlBlocks[formatedResults[rule].urlBlocks.length-1].urls : '';
+      const urlBlocks = 'urlBlocks' in formatedResults[rule] ? formatedResults[rule].urlBlocks[formatedResults[rule].urlBlocks.length - 1].header : '';
+      const urlBlocksUrls = 'urls' in formatedResults[rule].urlBlocks[formatedResults[rule].urlBlocks.length - 1] ? formatedResults[rule].urlBlocks[formatedResults[rule].urlBlocks.length - 1].urls : '';
 
-      let urlBlocksFormat  = '';
+      let urlBlocksFormat = '';
       let urls = '';
 
-      if(urlBlocks !== '' ){
+      if (urlBlocks !== '') {
         urlBlocksFormat = urlBlocks.format;
-        for(let i = 0; i < urlBlocks.args.length; i++){
-          if(urlBlocks.args[i].key === 'LINK'){
+        for (let i = 0; i < urlBlocks.args.length; i++) {
+          if (urlBlocks.args[i].key === 'LINK') {
             urlBlocksFormat = urlBlocksFormat.replace('{{BEGIN_LINK}}', '<a href="' + urlBlocks.args[i].value + '" target="_blank">');
             urlBlocksFormat = urlBlocksFormat.replace('{{END_LINK}}', '</a>');
           }
@@ -248,11 +244,11 @@ class PagespeedchartMobile extends Component {
 
       }
 
-      if(urlBlocksUrls !== ''){
+      if (urlBlocksUrls !== '') {
 
-        for(let i = 0; i < urlBlocksUrls.length; i++){
+        for (let i = 0; i < urlBlocksUrls.length; i++) {
           urls += urlBlocksUrls[i].result.format + '<br>';
-          for(let j = 0; j < urlBlocksUrls[i].result.args.length; j++){
+          for (let j = 0; j < urlBlocksUrls[i].result.args.length; j++) {
             urls = urls.replace('{{' + urlBlocksUrls[i].result.args[j].key + '}}', urlBlocksUrls[i].result.args[j].value)
           }
         }
@@ -261,8 +257,8 @@ class PagespeedchartMobile extends Component {
 
       return ('<strong>' + title + '</strong><p>' + summary + '</p><p>Impact: ' + impact + '</p><p>' + urlBlocksFormat + '</p><small>' + urls + '</small>');
 
-    }else{
-      return('Your pagespeed score is ' + this.props.pagespeeddata.ruleGroups.SPEED.score + '!');
+    } else {
+      return ('Your pagespeed score is ' + this.props.pagespeeddata.ruleGroups.SPEED.score + '!');
     }
   }
 
@@ -276,7 +272,6 @@ class PagespeedchartMobile extends Component {
     );
   }
 }
-
 
 
 const stateMap = (state) => {

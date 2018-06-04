@@ -21,9 +21,8 @@ class ChordDiagramm extends Component {
    }*/
 
   componentDidUpdate() {
-    if (this.props.url != this.state.url) {
-      //console.log('draw cord');
-      if (this.props.chordData.length > 0){
+    if (this.props.url !== this.state.url) {
+      if (this.props.chordData.length > 0) {
         this.createChord();
       }
     }
@@ -36,9 +35,6 @@ class ChordDiagramm extends Component {
     });
 
     document.getElementById('chordSVG') ? document.getElementById('chordSVG').remove() : '';
-
-
-    console.log('++++++++++++++++++++++++++chord chart');
 
     const toolTip = d3.select('#chordChart').append('div')
         .attr('class', 'tooltip-chord');
@@ -102,7 +98,6 @@ class ChordDiagramm extends Component {
     const mapReader = chordRdr(matrix, mmap);
 
 
-
     const g = svg.selectAll("g.group")
         .data(function (chords) {
           return chords.groups;
@@ -160,7 +155,7 @@ class ChordDiagramm extends Component {
     const colors = d3.scaleOrdinal()
         .range(["#fbc98d", "#ef8160", "#db476a", "#9f2f7f", "#5e257c", "#262150"]);
 
-    const chordPaths = svg.selectAll("path.chord")
+    svg.selectAll("path.chord")
         .data(function (chords) {
           return chords;
         })

@@ -3,8 +3,8 @@ import * as d3 from 'd3';
 import {connect} from 'react-redux';
 import Barchart from './pagespeed-barchart';
 import BarchartMobile from './pagespeed-barchart-mobile';
-import {setPagespeeddata as setPagespeeddata} from './../../redux/actions';
-import {setPagespeeddataMobile as setPagespeeddataMobile} from './../../redux/actions';
+import {setPagespeeddata} from './../../redux/actions';
+import {setPagespeeddataMobile} from './../../redux/actions';
 
 class Pagespeed extends Component {
   constructor(props) {
@@ -24,17 +24,17 @@ class Pagespeed extends Component {
 
   componentDidMount() {
     this.validatePagespeed();
-    if(this.state.pageStats != ''){
+    if (this.state.pageStats !== '') {
       this.createPieChart2();
     }
   }
 
   componentDidUpdate() {
-    if (this.state.url != this.props.url) {
+    if (this.state.url !== this.props.url) {
       document.getElementById('pagespeed-pie') ? document.getElementById('pagespeed-pie').innerHTML = '' : '';
       this.validatePagespeed();
     }
-    if(this.state.pageStats != ''){
+    if (this.state.pageStats !== '') {
       this.createPieChart2();
     }
 
@@ -52,7 +52,6 @@ class Pagespeed extends Component {
     fetch(pagespeedUrl)
         .then(res => res.json())
         .then((out) => {
-          //console.log('out', out);
           this.setState({
             response: out,
             pageStats: [
@@ -74,8 +73,6 @@ class Pagespeed extends Component {
     fetch(pagespeedUrlMobile)
         .then(res => res.json())
         .then((out) => {
-          //console.log('out mobile', out);
-          //console.log('out mobile', pagespeedUrlMobile);
           this.setState({
             responseMobile: out,
             pageStatsMobile: [
@@ -94,13 +91,9 @@ class Pagespeed extends Component {
   }
 
 
-
-
-  createPieChart2(){
+  createPieChart2() {
 
     document.getElementById('pagespeed-pie') ? document.getElementById('pagespeed-pie').remove() : '';
-
-    //const svgNode = this.node;
 
     const width = 990,
         height = 600,
@@ -109,10 +102,10 @@ class Pagespeed extends Component {
     const svg = d3.select('#pie-div')
         .append('svg')
         .attr('id', 'pagespeed-pie')
-        .attr('width',width)
+        .attr('width', width)
         .attr('height', height)
         .append('g')
-        .attr("transform", "translate(" + width/2 + "," + height/2 + ")");
+        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
     svg.append("g")
         .attr("class", "slices");
@@ -122,10 +115,9 @@ class Pagespeed extends Component {
         .attr("class", "lines");
 
 
-
     const pie = d3.pie()
         .sort(null)
-        .value(function(d) {
+        .value(function (d) {
           return d.count;
         });
 
@@ -136,9 +128,6 @@ class Pagespeed extends Component {
     const outerArc = d3.arc()
         .innerRadius(radius * 0.9)
         .outerRadius(radius * 0.9);
-
-    const legendRectSize = radius * 0.05;
-    const legendSpacing = radius * 0.02;
 
     let data = this.state.pageStats;
 
@@ -152,21 +141,23 @@ class Pagespeed extends Component {
     const slice = svg
         .select(".slices")
         .selectAll("path.slice")
-        .data(pie(data), function(d){
+        .data(pie(data), function (d) {
           return d.data.label
         });
 
     slice.enter()
         .insert("path")
-        .style("fill", function(d) { return d.data.color; })
+        .style("fill", function (d) {
+          return d.data.color;
+        })
         .style("opacity", 0.7)
         .attr("class", "slice")
         .attr("d", arc)
         .on('mouseover', function (d) {
           d3.select(this).style('opacity', 1);
         }).on('mouseout', function (d) {
-          d3.select(this).style('opacity', 0.7);
-        });
+      d3.select(this).style('opacity', 0.7);
+    });
 
 
     //Labels
@@ -180,14 +171,14 @@ class Pagespeed extends Component {
     text.enter()
         .append('text')
         .attr('dy', '.35em')
-        .text(function(d){
-          return d.data.label+": "+d.value+" Bytes";
+        .text(function (d) {
+          return d.data.label + ": " + d.value + " Bytes";
         })
-        .attr('transform', function(d){
+        .attr('transform', function (d) {
 
           let centroid = outerArc.centroid(d);
           let x = centroid[0] > 0 ? 250 : -250;
-          let y = centroid[1] > 0 ? centroid[1]*1.2 : centroid[1]*1.2;
+          let y = centroid[1] > 0 ? centroid[1] * 1.2 : centroid[1] * 1.2;
 
           return 'translate (' + x + ',' + y + ')';
         })
@@ -206,7 +197,7 @@ class Pagespeed extends Component {
 
     polyline.enter()
         .append('polyline')
-        .attr('points', function(d){
+        .attr('points', function (d) {
 
           let centroid = outerArc.centroid(d);
           let centroidArc = arc.centroid(d);
@@ -218,14 +209,13 @@ class Pagespeed extends Component {
           let y2 = centroid[1];
 
           let x3 = centroid[0] > 0 ? 230 : -230;
-          let y3 = centroid[1] > 0 ? centroid[1]*1.2 : centroid[1]*1.2;
+          let y3 = centroid[1] > 0 ? centroid[1] * 1.2 : centroid[1] * 1.2;
 
-          return [x1 ,y1, x2, y2, x3, y3];
+          return [x1, y1, x2, y2, x3, y3];
         });
 
 
   }
-
 
 
   render() {

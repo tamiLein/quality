@@ -1,6 +1,6 @@
 /*Hello, my name is Tamara and I'm a master student at the university of applied science in upper austria - Hagenberg. I'm implementing a web quality analyzing tool to check websites based on their source code given by a url input. your project is very interesting and provides a very good validation on accessibility. Therefore, I would be very happy if I could have access to your API for free. My project will tell the audience that I use your API and the project will only run on my local computer and will not be published in the world wide web.
-    I'm looking forward to your answer! Have a nice day,
-Tamara*/
+ I'm looking forward to your answer! Have a nice day,
+ Tamara*/
 
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
@@ -31,11 +31,10 @@ class Accessibility extends Component {
   }
 
   componentDidUpdate() {
-    if (this.state.url != this.props.url) {
+    if (this.state.url !== this.props.url) {
       this.validateAccessibility(this.props.url);
     }
   }
-
 
 
   validateAccessibility(url) {
@@ -62,7 +61,6 @@ class Accessibility extends Component {
 
     this.httpRequest(options, data)
         .then(function (myData) {
-          console.log('data test promise', JSON.parse(myData));
           self.setState({
             data: JSON.parse(myData),
             url: self.props.url,
@@ -89,7 +87,6 @@ class Accessibility extends Component {
         });
         // resolve on end
         res.on('end', function () {
-          //console.log(JSON.parse(myData));
           resolve(myData);
         });
       });
@@ -113,11 +110,9 @@ class Accessibility extends Component {
     let passed = '';
     let failed = '';
 
-    //console.log('state test', this.state.data);
-
     if (this.state.data !== '') {
-       passed = this.state.data.resultSummary.tests.passing;
-       failed = this.state.data.resultSummary.tests.failing;
+      passed = this.state.data.resultSummary.tests.passing;
+      failed = this.state.data.resultSummary.tests.failing;
 
       const error = this.state.data.resultSet;
       let codeSnipped = '';
@@ -134,7 +129,6 @@ class Accessibility extends Component {
           classChecked = this.state.showHideInfo;
         }
         errorItems.push(
-
             <div className={'error col-md-12 ' + classChecked} key={i}>
               <div className="col-md-6">
                 <span className="codeLine">In line: {error[i].position.line}</span>

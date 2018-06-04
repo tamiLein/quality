@@ -1,7 +1,7 @@
 import /*React, */ {Component} from 'react';
 import {connect} from 'react-redux';
 import cssparser from 'css';
-import getCss from 'get-css';
+import colorJs from 'color-js';
 
 import {setColorData} from './../../redux/actions';
 
@@ -10,79 +10,124 @@ class ParseCSS extends Component {
 
   constructor(props) {
     super(props);
+    this.state = ({
+      url: '',
+    });
     this.parseCSS = this.parseCSS.bind(this);
     this.readCss = this.readCss.bind(this);
 
   }
 
   componentDidMount() {
-    this.readCss();
+    if (this.props.cssLinks !== '') {
+      this.readCss();
+    }
   }
 
-  readCss(){
-    let options = {
-      timeout: 5000
-    };
+  componentDidUpdate() {
+    if (this.props.url !== this.state.url) {
+      this.readCss();
+    }
+  }
 
-    getCss('http://github.com', options)
-        .then(function(response) {
-          console.log(response);
-          this.parseCSS(response);
-        })
-        .catch(function(error) {
-          console.error(error);
-        });
+  readCss() {
+    this.setState({
+      url: this.props.url,
+    });
 
+    let that = this;
+
+    let css = '';
+
+    for (let i = 0; i < this.props.cssLinks.length; i++) {
+      let url = this.props.cssLinks[i].startsWith("//") ? this.props.cssLinks[i] : 'https://cors-anywhere.herokuapp.com/' + this.props.url + '' + this.props.cssLinks[i];
+      if (url.includes('font') || url.includes('bootstrap') || url.includes('google')) {
+
+      } else {
+
+        const request = new XMLHttpRequest();
+
+        request.onreadystatechange = function () {
+          if (this.readyState === 4 && this.status === 200) {
+            css += this.responseText;
+            that.parseCSS(css);
+          }
+          if (this.readyState === 4 && this.status === 200) {
+            if (i === that.props.cssLinks.length - 1) {
+              that.parseCSS(css);
+            }
+          }
+        };
+        request.open("GET", url, true);
+        request.send();
+
+      }
+    }
   }
 
 
   parseCSS(css) {
-    //console.log('-------------------------- parse CSS --------------------------');
-
     let backgrounds = [];
     let colors = [];
     let border = [];
-
-    let backgroundPOS = 1;
-    let colorPOS = 1;
-    let borderPOS = 1;
-
-    //const css = '.panel-group .panel{-webkit-border-radius:0;-moz-border-radius:0;border-radius:0}.panel-default>.panel-heading{background-color:#fdfdfd}.panel-heading{padding:20px 25px;text-align:left;position:relative}.panel-title{display:inline}.panel-body{text-align:left;padding:0}.panel-body .col-md-12{padding-left:0;padding-right:0}.panel-collapse.collapse.in{border-top:2px solid gray}.panel-group .panel-heading+.panel-collapse>.list-group,.panel-group .panel-heading+.panel-collapse>.panel-body{border-top-width:2px}.colorbar{width:15px;height:62px;position:absolute;top:-1px;left:-15px}#panel-html .colorbar{background:#ef8160}#panel-css .colorbar{background:#db476a}#panel-performance .colorbar{background:#9f2f7f}#panel-accessibility .colorbar{background:#5e257c}#panel-global .colorbar{background:#262150}.fa{float:right;font-size:16px}.fa.arrow::before{content:"\F102"}a.collapsed .fa.arrow::before{content:"\F103"}.col-md-12.error-filter{padding:20px;border-bottom:2px solid gray}label{font-weight:400;margin:5px 10px}';
-
     let cssObject = cssparser.parse(css);
     let cssRules = cssObject.stylesheet.rules;
-    //console.log('css test', cssRules);
+    let color = '';
+    let colorString = '';
+    let index = '';
 
-    for(let i = 0; i < cssRules.length; i++){
-      for(let j = 0; j < cssRules[i].declarations.length; j++) {
-        //console.log('----------------------------------- property: ' + cssRules[i].declarations[j].property + '| value: ' + cssRules[i].declarations[j].value);
+    for (let i = 0; i < cssRules.length; i++) {
+      if (cssRules[i].declarations) {
+        for (let j = 0; j < cssRules[i].declarations.length; j++) {
 
-        if (cssRules[i].declarations[j].property === 'background-color' || cssRules[i].declarations[j].property === 'background') {
-          backgrounds.push({
-            'POS': backgroundPOS++,
-            'COLOR': cssRules[i].declarations[j].value,
-            'count': 1
-          });
+          if (cssRules[i].declarations[j].property === 'background-color' /*|| cssRules[i].declarations[j].property === 'background'*/) {
+            //check if color exists
+            color = colorJs(cssRules[i].declarations[j].value);
+            colorString = color.toCSS();
+            index = backgrounds.findIndex(element => element.COLOR === colorString);
+            if (index >= 0) {
+              backgrounds[index].count = backgrounds[index].count + 1;
 
-        } else if (cssRules[i].declarations[j].property === 'color') {
-          colors.push({
-            'POS': colorPOS++,
-            'COLOR': cssRules[i].declarations[j].value,
-            'count': 1
-          });
-        } else if (cssRules[i].declarations[j].property === 'border-color') {
-          border.push({
-            'POS': borderPOS++,
-            'COLOR': cssRules[i].declarations[j].value,
-            'count': 1
-          });
+            } else {
+              backgrounds.push({
+                'COLOR': colorString,
+                'count': 1
+              });
+            }
+
+          } else if (cssRules[i].declarations[j].property === 'color') {
+            //check if color exists
+            color = colorJs(cssRules[i].declarations[j].value);
+            colorString = color.toCSS();
+            index = colors.findIndex(element => element.COLOR === colorString);
+            if (index >= 0) {
+              colors[index].count = colors[index].count + 1;
+
+            } else {
+              colors.push({
+                'COLOR': colorString,
+                'count': 1
+              });
+            }
+          } else if (cssRules[i].declarations[j].property === 'border-color') {
+            //check if color exists
+            color = colorJs(cssRules[i].declarations[j].value);
+            colorString = color.toCSS();
+            index = border.findIndex(element => element.COLOR === colorString);
+            if (index >= 0) {
+              border[index].count = border[index].count + 1;
+
+            } else {
+              border.push({
+                'COLOR': colorString,
+                'count': 1
+              });
+            }
+          }
         }
       }
 
     }
-    //console.log('fonts', border);
-    //console.log('colors', colors);
-    //console.log('backgrounds', backgrounds);
 
 
     this.props.dispatch(setColorData({
@@ -94,8 +139,6 @@ class ParseCSS extends Component {
   }
 
 
-
-
   render() {
     return null;
   }
@@ -103,7 +146,9 @@ class ParseCSS extends Component {
 
 const stateMap = (state) => {
   return {
-    colorData: state.colorData
+    colorData: state.colorData,
+    cssLinks: state.cssLinks,
+    url: state.url,
   };
 };
 
