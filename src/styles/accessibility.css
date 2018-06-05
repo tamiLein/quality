@@ -1,23 +1,33 @@
-.standardsMessage{
+.standardsMessage {
     padding: 15px 0;
     display: inline-block;
     color: gray;
     font-style: italic;
 }
 
-.priority{
+.priority {
     color: #ef8160;
     font-weight: bold;
     padding: 0 0 15px 0;
     display: inline-block;
 }
 
-#passed, #failed{
+#passed, #failed {
     height: 50px;
     float: left;
     margin-top: 20px;
     padding: 15px;
-    font-size:20px;
+    font-size: 20px;
     color: #fff;
     line-height: 0.9;
+}
+
+#access-bar {
+    margin: 25px;
+    height: 250px;
+}
+
+#access-bar > h5{
+    margin-left:0;
+    margin-right:0;
 }

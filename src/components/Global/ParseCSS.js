@@ -70,7 +70,7 @@ class ParseCSS extends Component {
     let backgrounds = [];
     let colors = [];
     let border = [];
-    let cssObject = cssparser.parse(css);
+    let cssObject = cssparser.parse(css, {silent: true});
     let cssRules = cssObject.stylesheet.rules;
     let color = '';
     let colorString = '';

@@ -12,51 +12,31 @@ class CSSBarchart extends Component {
   }
 
   componentDidMount() {
-    if (this.props.warningTypes !== "") {
+    if (this.props.data !== "") {
       this.createBarchart();
     }
   }
 
   componentDidUpdate() {
-    if (this.props.warningTypes !== "") {
+    if (this.props.data !== "") {
       this.createBarchart();
     }
   }
 
   createBarchart() {
-    let warningTypes = this.props.warningTypes;
-    let errorTypes = this.props.errorTypes;
-    let showError = this.props.errors;
-    let showWarning = this.props.warnings;
-    let data = [];
+    let data =  this.props.data;
     let sum = 0;
 
 
-    if (showError) {
-      for (let prop in errorTypes) {
-        sum = sum + errorTypes[prop];
-        data.push({
-          "name": prop,
-          "value": errorTypes[prop]
-        });
+      for (let prop in data) {
+        sum = sum + data[prop].count;
       }
-    }
-    if (showWarning) {
-      for (let prop in warningTypes) {
-        sum = sum + warningTypes[prop];
-        data.push({
-          "name": prop,
-          "value": warningTypes[prop]
-        });
-      }
-    }
+
 
     //sort bars based on value
     data = data.sort(function (a, b) {
-      return d3.ascending(a.value, b.value);
+      return d3.ascending(a.count, b.count);
     });
-
-    console.log('+++++++++++++++++++++', data);
 
     const colors = ['rgb(239, 129, 96)', 'rgb(219, 71, 106)', 'rgb(159, 47, 127)'];
     let color = 0;
@@ -76,13 +56,13 @@ class CSSBarchart extends Component {
     const width = 900 - margin.left - margin.right,
         height = (data.length * 30);
 
-    document.getElementById('cssBarChart') ? document.getElementById('cssBarChart').remove() : '';
+    document.getElementById('accessBarChart') ? document.getElementById('accessBarChart').remove() : '';
 
-    let svg = d3.select("#graphic")
+    let svg = d3.select("#graphic-access")
         .append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
-        .attr("id", "cssBarChart")
+        .attr("id", "accessBarChart")
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + (margin.top - 5) + ")");
 
@@ -94,10 +74,10 @@ class CSSBarchart extends Component {
         .padding(0.1);
 
     x.domain([0, d3.max(data, function (d) {
-      return d.value;
+      return d.count;
     })]);
     y.domain(data.map(function (d) {
-      return d.name;
+      return d.description;
     }));
 
     // append the rectangles for the bar chart
@@ -111,11 +91,11 @@ class CSSBarchart extends Component {
         //.attr("x", function(d) { return x(d.value); })
 
         .attr("y", function (d) {
-          return y(d.name);
+          return y(d.description);
         })
         .attr("height", y.bandwidth())
         .attr('fill', function (d) {
-          counter += d.value;
+          counter += d.count;
           if (counter > sectionC) {
             color = 1;
           }
@@ -127,7 +107,7 @@ class CSSBarchart extends Component {
         .attr("width", 0)
         .transition().duration(2000)
         .attr("width", function (d) {
-          return x(d.value);
+          return x(d.count);
         });
 
 
@@ -145,21 +125,21 @@ class CSSBarchart extends Component {
         .attr("class", "label")
         //y position of the label is halfway down the bar
         .attr("y", function (d) {
-          return y(d.name) + y.bandwidth() / 2 + 4;
+          return y(d.description) + y.bandwidth() / 2 + 4;
         })
         //x position is 3 pixels to the right of the bar
         .attr("x", function (d) {
-          return x(d.value) + 3;
+          return x(d.count) + 3;
         })
         .text(function (d) {
-          return d.value;
+          return d.count;
         });
 
   }
 
 
   render() {
-    return (<div id="barchart-css">
+    return (<div id="barchart-access">
       <h5>Pareto-Analyse CSS</h5>
       <div className="pareto-info">
         <p>This chart is divided into 3 areas:</p>
@@ -177,7 +157,7 @@ class CSSBarchart extends Component {
         </p>
         <p>Try to eliminate the errors from section A at first to get a visible improve of the page.</p>
       </div>
-      <div id="graphic"></div>
+      <div id="graphic-access"></div>
     </div>);
   }
 }
