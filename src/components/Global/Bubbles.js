@@ -14,12 +14,6 @@ class Bubbles extends Component {
     this.createBubbles = this.createBubbles.bind(this);
   }
 
-  /*componentDidMount() {
-   if(this.props.classNames !== "") {
-   this.createBubbles();
-   }
-   }*/
-
   componentDidUpdate() {
     if (this.props.classNames.length > this.state.length) {
       this.createBubbles();
@@ -92,7 +86,7 @@ class Bubbles extends Component {
         .append('g')
         .attr('class', 'node')
         .attr('transform', function (d) {
-          return "translate(" + d.x + "," + d.y + ")";
+          return 'translate(' + d.x + ',' + d.y + ')';
         });
 
     node.append('circle')
@@ -111,36 +105,31 @@ class Bubbles extends Component {
           return d.r;
         });
 
-    node.append("text")
-        .attr("dy", "-0.2em")
-        .style("text-anchor", "middle")
+    node.append('text')
+        .attr('dy', '-0.2em')
+        .style('text-anchor', 'middle')
         .text(function (d) {
           return d.count;
         })
-        .attr("font-size", function (d) {
+        .attr('font-size', function (d) {
           return d.r / 2;
         })
-        .attr("fill", "white");
+        .attr('fill', 'white');
 
-    node.append("text")
-        .attr("dy", "1.3em")
-        .style("text-anchor", "middle")
+    node.append('text')
+        .attr('dy', '1.3em')
+        .style('text-anchor', 'middle')
         .text(function (d) {
           return d.class;
         })
 
-        .attr("font-size", function (d) {
+        .attr('font-size', function (d) {
           return d.r / 4;
         })
-        .attr("fill", "white");
+        .attr('fill', 'white');
 
 
     node.on('mouseover', function (d) {
-      // toolTip.transition().duration(200).style('opacity', 1);
-      //  toolTip.html("<b>" + d.class + "</b> <span>(" + d.value + ")</span>")
-      //    .style('left', (d.x - 0) + 'px')
-      //   .style('top', (d.y + d.value * 3 + 20) + 'px');
-
       let elements = document.getElementsByClassName('class-' + d.class);
       elements[0].classList.add('active');
       elements[1].classList.add('active');

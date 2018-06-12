@@ -12,13 +12,13 @@ class CSSBarchart extends Component {
   }
 
   componentDidMount() {
-    if (this.props.data !== "") {
+    if (this.props.data !== '') {
       this.createBarchart();
     }
   }
 
   componentDidUpdate() {
-    if (this.props.data !== "") {
+    if (this.props.data !== '') {
       this.createBarchart();
     }
   }
@@ -58,13 +58,13 @@ class CSSBarchart extends Component {
 
     document.getElementById('accessBarChart') ? document.getElementById('accessBarChart').remove() : '';
 
-    let svg = d3.select("#graphic-access")
-        .append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .attr("id", "accessBarChart")
-        .append("g")
-        .attr("transform", "translate(" + margin.left + "," + (margin.top - 5) + ")");
+    let svg = d3.select('#graphic-access')
+        .append('svg')
+        .attr('width', width + margin.left + margin.right)
+        .attr('height', height + margin.top + margin.bottom)
+        .attr('id', 'accessBarChart')
+        .append('g')
+        .attr('transform', 'translate(' + margin.left + ',' + (margin.top - 5) + ')');
 
     let x = d3.scaleLinear()
         .range([0, width]);
@@ -81,19 +81,17 @@ class CSSBarchart extends Component {
     }));
 
     // append the rectangles for the bar chart
-    let bars = svg.selectAll(".bar")
+    let bars = svg.selectAll('.bar')
         .data(data)
         .enter()
-        .append("g");
+        .append('g');
 
-    bars.append("rect")
-        .attr("class", "bar")
-        //.attr("x", function(d) { return x(d.value); })
-
-        .attr("y", function (d) {
+    bars.append('rect')
+        .attr('class', 'bar')
+        .attr('y', function (d) {
           return y(d.description);
         })
-        .attr("height", y.bandwidth())
+        .attr('height', y.bandwidth())
         .attr('fill', function (d) {
           counter += d.count;
           if (counter > sectionC) {
@@ -104,31 +102,31 @@ class CSSBarchart extends Component {
           }
           return colors[color];
         })
-        .attr("width", 0)
+        .attr('width', 0)
         .transition().duration(2000)
-        .attr("width", function (d) {
+        .attr('width', function (d) {
           return x(d.count);
         });
 
 
     // add the x Axis
-    svg.append("g")
-        .attr("transform", "translate(0," + height + ")")
+    svg.append('g')
+        .attr('transform', 'translate(0,' + height + ')')
         .call(d3.axisBottom(x));
 
     // add the y Axis
-    svg.append("g")
+    svg.append('g')
         .call(d3.axisLeft(y));
 
     //add a value label to the right of each bar
-    bars.append("text")
-        .attr("class", "label")
+    bars.append('text')
+        .attr('class', 'label')
         //y position of the label is halfway down the bar
-        .attr("y", function (d) {
+        .attr('y', function (d) {
           return y(d.description) + y.bandwidth() / 2 + 4;
         })
         //x position is 3 pixels to the right of the bar
-        .attr("x", function (d) {
+        .attr('x', function (d) {
           return x(d.count) + 3;
         })
         .text(function (d) {
@@ -139,25 +137,25 @@ class CSSBarchart extends Component {
 
 
   render() {
-    return (<div id="barchart-access">
+    return (<div id='barchart-access'>
       <h5>Pareto-Analyse CSS</h5>
-      <div className="pareto-info">
+      <div className='pareto-info'>
         <p>This chart is divided into 3 areas:</p>
-        <i className="section-pareto" id="sectionA"></i>
+        <i className='section-pareto' id='sectionA'></i>
         <p>
           Section A includes 70% of the occured errors.
         </p>
-        <i className="section-pareto" id="sectionB"></i>
+        <i className='section-pareto' id='sectionB'></i>
         <p>
           Section B includes 20% of the occured errors.
         </p>
-        <i className="section-pareto" id="sectionC"></i>
+        <i className='section-pareto' id='sectionC'></i>
         <p>
           Section C includes 10% of the occured errors.
         </p>
         <p>Try to eliminate the errors from section A at first to get a visible improve of the page.</p>
       </div>
-      <div id="graphic-access"></div>
+      <div id='graphic-access'></div>
     </div>);
   }
 }

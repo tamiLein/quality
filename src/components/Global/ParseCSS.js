@@ -1,4 +1,4 @@
-import /*React, */ {Component} from 'react';
+import {Component} from 'react';
 import {connect} from 'react-redux';
 import cssparser from 'css';
 import colorJs from 'color-js';
@@ -11,7 +11,7 @@ class ParseCSS extends Component {
   constructor(props) {
     super(props);
     this.state = ({
-      url: '',
+      cssLinks: '',
     });
     this.parseCSS = this.parseCSS.bind(this);
     this.readCss = this.readCss.bind(this);
@@ -25,14 +25,15 @@ class ParseCSS extends Component {
   }
 
   componentDidUpdate() {
-    if (this.props.url !== this.state.url) {
+    if (this.props.cssLinks !== this.state.cssLinks) {
+      console.log('update color');
       this.readCss();
     }
   }
 
   readCss() {
     this.setState({
-      url: this.props.url,
+      cssLinks: this.props.cssLinks,
     });
 
     let that = this;
@@ -40,7 +41,7 @@ class ParseCSS extends Component {
     let css = '';
 
     for (let i = 0; i < this.props.cssLinks.length; i++) {
-      let url = this.props.cssLinks[i].startsWith("//") ? this.props.cssLinks[i] : 'https://cors-anywhere.herokuapp.com/' + this.props.url + '' + this.props.cssLinks[i];
+      let url = this.props.cssLinks[i].startsWith('//') ? this.props.cssLinks[i] : 'https://cors-anywhere.herokuapp.com/' + this.props.url + '' + this.props.cssLinks[i];
       if (url.includes('font') || url.includes('bootstrap') || url.includes('google')) {
 
       } else {
@@ -52,13 +53,8 @@ class ParseCSS extends Component {
             css += this.responseText;
             that.parseCSS(css);
           }
-          if (this.readyState === 4 && this.status === 200) {
-            if (i === that.props.cssLinks.length - 1) {
-              that.parseCSS(css);
-            }
-          }
         };
-        request.open("GET", url, true);
+        request.open('GET', url, true);
         request.send();
 
       }
@@ -127,14 +123,15 @@ class ParseCSS extends Component {
         }
       }
 
+      if(i === cssRules.length-1){
+        this.props.dispatch(setColorData({
+          'border': border,
+          'colors': colors,
+          'backgrounds': backgrounds,
+        }));
+      }
+
     }
-
-
-    this.props.dispatch(setColorData({
-      'border': border,
-      'colors': colors,
-      'backgrounds': backgrounds,
-    }));
 
   }
 

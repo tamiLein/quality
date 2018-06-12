@@ -26,14 +26,6 @@
     text-transform: uppercase;
 }
 
-/*.errorType.info .fa::before{
-    content: ' '
-}
-
-.errorType.info .fa{
-    background-color: transparent;
-}*/
-
 .errorType.error .fa, .fa.error{
     float: none;
     background-color:#ef8160;

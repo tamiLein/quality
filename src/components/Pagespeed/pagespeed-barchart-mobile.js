@@ -31,20 +31,19 @@ class PagespeedchartMobile extends Component {
 
     const formatedResults = this.props.pagespeeddatamobile.formattedResults.ruleResults;
 
-
     let myData = [{
-      "interest_rate": "SPEED",
-      "Passed": this.props.pagespeeddatamobile.ruleGroups.SPEED.score,
-      "AvoidLandingPageRedirects": formatedResults.AvoidLandingPageRedirects.ruleImpact,
-      "EnableGzipCompression": formatedResults.EnableGzipCompression.ruleImpact,
-      "LeverageBrowserCaching": formatedResults.LeverageBrowserCaching.ruleImpact,
-      "MainResourceServerResponseTime": formatedResults.MainResourceServerResponseTime.ruleImpact,
-      "MinifyCss": formatedResults.MinifyCss.ruleImpact,
-      "MinifyHTML": formatedResults.MinifyHTML.ruleImpact,
-      "MinifyJavaScript": formatedResults.MinifyJavaScript.ruleImpact,
-      "MinimizeRenderBlockingResources": formatedResults.MinimizeRenderBlockingResources.ruleImpact,
-      "OptimizeImages": formatedResults.OptimizeImages.ruleImpact,
-      "PrioritizeVisibleContent": formatedResults.PrioritizeVisibleContent.ruleImpact
+      'interest_rate': 'SPEED',
+      'Passed': this.props.pagespeeddatamobile.ruleGroups.SPEED.score,
+      'AvoidLandingPageRedirects': formatedResults.AvoidLandingPageRedirects.ruleImpact,
+      'EnableGzipCompression': formatedResults.EnableGzipCompression.ruleImpact,
+      'LeverageBrowserCaching': formatedResults.LeverageBrowserCaching.ruleImpact,
+      'MainResourceServerResponseTime': formatedResults.MainResourceServerResponseTime.ruleImpact,
+      'MinifyCss': formatedResults.MinifyCss.ruleImpact,
+      'MinifyHTML': formatedResults.MinifyHTML.ruleImpact,
+      'MinifyJavaScript': formatedResults.MinifyJavaScript.ruleImpact,
+      'MinimizeRenderBlockingResources': formatedResults.MinimizeRenderBlockingResources.ruleImpact,
+      'OptimizeImages': formatedResults.OptimizeImages.ruleImpact,
+      'PrioritizeVisibleContent': formatedResults.PrioritizeVisibleContent.ruleImpact
     }];
 
 
@@ -79,19 +78,19 @@ class PagespeedchartMobile extends Component {
     const color = d3.scaleOrdinal().range(colors);
 
     //define axis
-    const yAxis = d3.axisLeft(y).ticks(10, ",%");
+    const yAxis = d3.axisLeft(y).ticks(10, ',%');
 
     //create svg element
-    const svg = d3.select(".pagespeed-chart-mobile")
-        .append("svg")
+    const svg = d3.select('.pagespeed-chart-mobile')
+        .append('svg')
         .attr('id', 'pagespeed-chart-mobile')
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        .attr('width', width + margin.left + margin.right)
+        .attr('height', height + margin.top + margin.bottom)
+        .append('g')
+        .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
     color.domain(d3.keys(myData[0]).filter(function (key) {
-      return key !== "interest_rate";
+      return key !== 'interest_rate';
     }));
 
     myData.forEach(function (d) {
@@ -117,89 +116,88 @@ class PagespeedchartMobile extends Component {
     }));
 
     //y axis
-    svg.append("g")
-        .attr("class", "y axis")
+    svg.append('g')
+        .attr('class', 'y axis')
         .call(yAxis);
 
-    const interest_rate = svg.selectAll(".interest-rate")
+    const interest_rate = svg.selectAll('.interest-rate')
         .data(myData)
         .enter()
-        .append("g")
-        .attr("class", "interest-rate")
-        .attr("transform", function (d) {
-          return "translate(" + 20 + ",0)";
+        .append('g')
+        .attr('class', 'interest-rate')
+        .attr('transform', function (d) {
+          return 'translate(' + 20 + ',0)';
         });
 
     // create bars
-    interest_rate.selectAll("rect")
+    interest_rate.selectAll('rect')
         .data(function (d) {
           return d.rates;
         })
         .enter()
-        .append("rect")
-        .attr("width", width / 5)
-        .attr("y", function (d) {
+        .append('rect')
+        .attr('width', width / 5)
+        .attr('y', function (d) {
           return y(d.y1);
         })
-        .attr("height", function (d) {
+        .attr('height', function (d) {
           return y(d.y0) - y(d.y1);
         })
-        .style("fill", function (d) {
+        .style('fill', function (d) {
           return color(d.name);
         })
         .attr('opacity', '0.3')
         .on('mouseover', function (d) {
           that.mouseover(d.name);
         }).on('mouseout', function () {
-      //d3.select(".chart-tip").style('opacity', '0');
     });
 
-    interest_rate.append("text")
-        .attr("x", width / 5 / 2)
-        .attr("y", height)
-        .attr("width", x)
-        .attr("class", "passed-lable")
-        .attr("dy", "-.35em")
-        .style("text-anchor", "middle")
-        .style("fill", "white")
+    interest_rate.append('text')
+        .attr('x', width / 5 / 2)
+        .attr('y', height)
+        .attr('width', x)
+        .attr('class', 'passed-lable')
+        .attr('dy', '-.35em')
+        .style('text-anchor', 'middle')
+        .style('fill', 'white')
         .text(function (d) {
           return Math.ceil(myData[0].Passed);
         });
 
 
     // legend
-    const legends = svg.append("g")
-        .attr("class", "legends")
-        .attr("transform", "translate(-200,0)");
+    const legends = svg.append('g')
+        .attr('class', 'legends')
+        .attr('transform', 'translate(-200,0)');
 
-    const legend = legends.selectAll(".legend")
+    const legend = legends.selectAll('.legend')
         .data(color.domain().slice().reverse())
         .enter()
-        .append("g")
-        .attr("class", "legend")
-        .attr("transform", function (d, i) {
-          return "translate(-250, " + i * 20 + ")";
+        .append('g')
+        .attr('class', 'legend')
+        .attr('transform', function (d, i) {
+          return 'translate(-250, ' + i * 20 + ')';
         })
-        .attr("class", function (d, i) {
+        .attr('class', function (d, i) {
           let x = myData[0].rates[10 - i].amount;
-          return x > 0 ? "show" : "hide";
+          return x > 0 ? 'show' : 'hide';
         });
 
-    legend.append("rect")
-        .attr("x", width + -53)
-        .attr("width", 10)
-        .attr("height", 10)
-        .style("fill", color)
+    legend.append('rect')
+        .attr('x', width + -53)
+        .attr('width', 10)
+        .attr('height', 10)
+        .style('fill', color)
         .on('mouseover', function (d, i) {
           that.mouseover(d);
         });
 
-    legend.append("text")
-        .attr("x", width - 40)
-        .attr("y", 5)
-        .attr("width", 40)
-        .attr("dy", ".35em")
-        .style("text-anchor", "start")
+    legend.append('text')
+        .attr('x', width - 40)
+        .attr('y', 5)
+        .attr('width', 40)
+        .attr('dy', '.35em')
+        .style('text-anchor', 'start')
         .text(function (d) {
           return d;
         })
@@ -211,14 +209,14 @@ class PagespeedchartMobile extends Component {
 
   mouseover(d) {
     let rule = d;
-    d3.select(".chart-tip-mobile")
+    d3.select('.chart-tip-mobile')
         .style('opacity', '1')
         .html('<div className="tip">' + this.createTooltip(rule) + '</div>');
 
   }
 
   createTooltip(rule) {
-    if (rule !== "Passed") {
+    if (rule !== 'Passed') {
 
       const formatedResults = this.props.pagespeeddatamobile.formattedResults.ruleResults;
 
@@ -258,15 +256,15 @@ class PagespeedchartMobile extends Component {
       return ('<strong>' + title + '</strong><p>' + summary + '</p><p>Impact: ' + impact + '</p><p>' + urlBlocksFormat + '</p><small>' + urls + '</small>');
 
     } else {
-      return ('Your pagespeed score is ' + this.props.pagespeeddata.ruleGroups.SPEED.score + '!');
+      return ('Your pagespeed score is ' + this.props.pagespeeddatamobile.ruleGroups.SPEED.score + '!');
     }
   }
 
   render() {
     return (
-        <div id="pagespeed-barchart-mobile" className="col-md-12">
-          <div className="pagespeed-chart-mobile col-md-6"></div>
-          <div className="chart-tip-mobile col-md-6"></div>
+        <div id='pagespeed-barchart-mobile' className='col-md-12'>
+          <div className='pagespeed-chart-mobile col-md-6'></div>
+          <div className='chart-tip-mobile col-md-6'></div>
         </div>
 
     );

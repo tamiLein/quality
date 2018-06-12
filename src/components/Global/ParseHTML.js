@@ -25,6 +25,7 @@ class ParseHTML extends Component {
 
   componentDidUpdate() {
     if (this.props.url !== this.state.url) {
+      console.log('update');
       this.httpRequest();
     }
   }
@@ -42,17 +43,14 @@ class ParseHTML extends Component {
     request.onreadystatechange = function () {
       if (this.readyState === 4 && this.status === 200)
         that.renderDom(this.responseText);
-      that.renderDom2(this.responseText);
+        that.renderDom2(this.responseText);
     };
-    request.open("GET", url, true);
+    request.open('GET', url, true);
     request.send();
 
   }
 
-  renderDom(responseText) {
-    //const rawHtml = document.body.innerHTML;
-    const rawHtml = responseText;
-
+  renderDom(rawHtml) {
     const handler = new htmlparser.DefaultHandler(function (error, dom) {
       if (error)
         console.log('error', error);
@@ -74,7 +72,7 @@ class ParseHTML extends Component {
 
     for (let i = 0; i < dom.length; i++) {
 
-      if (dom[i].type === "tag") {
+      if (dom[i].type === 'tag') {
 
         if (dom[i].children) {
           let returnElement = [];
@@ -111,7 +109,7 @@ class ParseHTML extends Component {
       }
     }
 
-
+console.log('set now');
     this.props.dispatch(setChordData(chordData));
     this.props.dispatch(setCSSLinks(cssLinks));
   }
@@ -152,7 +150,7 @@ class ParseHTML extends Component {
     const parser = new htmlparser2.Parser({
       onopentag: function (name, attributes) {
         if (attributes.class) {
-          classList = attributes.class.split(" ");
+          classList = attributes.class.split(' ');
           classList.forEach(function (element) {
             let findobj = classNamesArray.find(function (findobj) {
               return findobj.CLASS === element;

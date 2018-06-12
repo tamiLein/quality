@@ -18,7 +18,6 @@ class Pagespeed extends Component {
       url: '',
     };
     this.validatePagespeed = this.validatePagespeed.bind(this);
-    //this.createPieChart = this.createPieChart.bind(this);
     this.createPieChart2 = this.createPieChart2.bind(this);
   }
 
@@ -105,14 +104,14 @@ class Pagespeed extends Component {
         .attr('width', width)
         .attr('height', height)
         .append('g')
-        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+        .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')');
 
-    svg.append("g")
-        .attr("class", "slices");
-    const textLabel = svg.append("g")
-        .attr("class", "labelName");
-    svg.append("g")
-        .attr("class", "lines");
+    svg.append('g')
+        .attr('class', 'slices');
+    const textLabel = svg.append('g')
+        .attr('class', 'labelName');
+    svg.append('g')
+        .attr('class', 'lines');
 
 
     const pie = d3.pie()
@@ -139,20 +138,20 @@ class Pagespeed extends Component {
     data = sortedData;
 
     const slice = svg
-        .select(".slices")
-        .selectAll("path.slice")
+        .select('.slices')
+        .selectAll('path.slice')
         .data(pie(data), function (d) {
           return d.data.label
         });
 
     slice.enter()
-        .insert("path")
-        .style("fill", function (d) {
+        .insert('path')
+        .style('fill', function (d) {
           return d.data.color;
         })
-        .style("opacity", 0.7)
-        .attr("class", "slice")
-        .attr("d", arc)
+        .style('opacity', 0.7)
+        .attr('class', 'slice')
+        .attr('d', arc)
         .on('mouseover', function (d) {
           d3.select(this).style('opacity', 1);
         }).on('mouseout', function (d) {
@@ -172,7 +171,7 @@ class Pagespeed extends Component {
         .append('text')
         .attr('dy', '.35em')
         .text(function (d) {
-          return d.data.label + ": " + d.value + " Bytes";
+          return d.data.label + ': ' + d.value + ' Bytes';
         })
         .attr('transform', function (d) {
 
@@ -222,31 +221,29 @@ class Pagespeed extends Component {
 
     if (this.state.response !== '' && this.state.responseMobile !== '') {
       return (<div>
-        {/*{ruleItems}*/}
-
-        <div className="tabbable-panel">
-          <div className="tabbable-line">
-            <ul className="nav nav-tabs ">
-              <li className="col-md-6 active">
-                <a href="#tab_default_1" data-toggle="tab">
+         <div className='tabbable-panel'>
+          <div className='tabbable-line'>
+            <ul className='nav nav-tabs '>
+              <li className='col-md-6 active'>
+                <a href='#tab_default_1' data-toggle='tab'>
                   Desktop </a>
               </li>
-              <li className="col-md-6">
-                <a href="#tab_default_2" data-toggle="tab">
+              <li className='col-md-6'>
+                <a href='#tab_default_2' data-toggle='tab'>
                   Mobile </a>
               </li>
             </ul>
-            <div className="tab-content">
-              <div className="tab-pane active" id="tab_default_1">
+            <div className='tab-content'>
+              <div className='tab-pane active' id='tab_default_1'>
                 <Barchart/>
               </div>
-              <div className="tab-pane" id="tab_default_2">
+              <div className='tab-pane' id='tab_default_2'>
                 <BarchartMobile/>
               </div>
             </div>
           </div>
         </div>
-        <div className="col-md-12" id="pie-div">
+        <div className='col-md-12' id='pie-div'>
           <h5>Your Webpage ressources in bytes:</h5>
         </div>
       </div>);

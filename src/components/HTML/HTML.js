@@ -171,18 +171,18 @@ class HTML extends Component {
 
       //add filter options
       errorItems.push(
-          <div key="filter">
-            <div className="col-md-12 error-filter">
+          <div key='filter'>
+            <div className='col-md-12 error-filter'>
               <span>Filter result list:</span>
               <form>
 
-                <input type="checkbox" id="error-checkbox" checked={this.state.showHideError}
+                <input type='checkbox' id='error-checkbox' checked={this.state.showHideError}
                        onChange={this.handleInputChange}/>
-                <label htmlFor="error-checkbox"><i className="fa error"></i>Errors ({this.state.errorcount})</label>
+                <label htmlFor='error-checkbox'><i className='fa error'></i>Errors ({this.state.errorcount})</label>
 
-                <input type="checkbox" id="error-checkbox" checked={this.state.showHideInfo}
+                <input type='checkbox' id='error-checkbox' checked={this.state.showHideInfo}
                        onChange={this.handleInputChangeInfo}/>
-                <label htmlFor="info-checkbox">Warnings ({this.state.warningcount})</label>
+                <label htmlFor='info-checkbox'>Warnings ({this.state.warningcount})</label>
               </form>
             </div>
             <HTMLBarchart warningTypes={this.state.warningTypes} errorTypes={this.state.errorTypes}
@@ -203,14 +203,14 @@ class HTML extends Component {
         }
         errorItems.push(
             <div className={'error col-md-12 ' + classChecked} key={i}>
-              <div className="col-md-6">
-                <span className="codeLine">In line: {error[i].lastLine}</span>
-                <p className="codeSnipped">{error[i].extract}</p>
+              <div className='col-md-6'>
+                <span className='codeLine'>In line: {error[i].lastLine}</span>
+                <p className='codeSnipped'>{error[i].extract}</p>
               </div>
 
-              <div className="col-md-6">
-                <span className={'errorType ' + error[i].type}><i className="fa"></i> {error[i].type}</span>
-                <span className="errorMessage">{error[i].message}</span>
+              <div className='col-md-6'>
+                <span className={'errorType ' + error[i].type}><i className='fa'></i> {error[i].type}</span>
+                <span className='errorMessage'>{error[i].message}</span>
 
               </div>
             </div>

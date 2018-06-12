@@ -11,27 +11,22 @@ class ChordDiagramm extends Component {
     this.state = {
       matrix: '',
       map: '',
-      url: '',
+      chordData: '',
     };
     this.createChord = this.createChord.bind(this);
   }
 
-  /*componentDidMount() {
-   this.createChord();
-   }*/
 
   componentDidUpdate() {
-    if (this.props.url !== this.state.url) {
-      if (this.props.chordData.length > 0) {
+    if (this.props.chordData !== this.state.chordData) {
         this.createChord();
-      }
     }
   }
 
   createChord() {
 
     this.setState({
-      url: this.props.url,
+      chordData: this.props.chordData,
     });
 
     document.getElementById('chordSVG') ? document.getElementById('chordSVG').remove() : '';
@@ -81,119 +76,119 @@ class ChordDiagramm extends Component {
         .radius(r0);
 
 
-    const svg = d3.select("#chordChart")
-        .append("svg:svg")
+    const svg = d3.select('#chordChart')
+        .append('svg:svg')
         .attr('id', 'chordSVG')
-        .attr("width", w)
-        .attr("height", h)
-        .append("svg:g")
-        .attr("id", "circle")
-        .attr("transform", "translate(" + w / 2 + "," + h / 2 + ")")
+        .attr('width', w)
+        .attr('height', h)
+        .append('svg:g')
+        .attr('id', 'circle')
+        .attr('transform', 'translate(' + w / 2 + ',' + h / 2 + ')')
         .datum(chord(matrix));
 
-    svg.append("circle")
-        .attr("r", r0 + 20)
-        .attr("fill", "white");
+    svg.append('circle')
+        .attr('r', r0 + 20)
+        .attr('fill', 'white');
 
     const mapReader = chordRdr(matrix, mmap);
 
 
-    const g = svg.selectAll("g.group")
+    const g = svg.selectAll('g.group')
         .data(function (chords) {
           return chords.groups;
         })
-        .enter().append("svg:g")
-        .attr("class", "group");
+        .enter().append('svg:g')
+        .attr('class', 'group');
 
-    g.append("svg:path")
-        .style("stroke", "grey")
-        .attr("d", arc)
+    g.append('svg:path')
+        .style('stroke', 'grey')
+        .attr('d', arc)
         .on('mouseover', function (g, i) {
-          svg.selectAll("path.chord")
+          svg.selectAll('path.chord')
               .filter(function (d) {
 
                 return d.source.index !== i && d.target.index !== i;
               })
               .transition()
-              .style("opacity", .1);
+              .style('opacity', .1);
 
 
           toolTipCategory.transition().duration(200).style('opacity', 1);
-          toolTipCategory.html("<b>Categorical Info:</b> <br>" +
-              "<span>There " + (mapReader(g).gvalue === 0 ? "is 1" : "are " + mapReader(g).gvalue) + " " + mapReader(g).gname + " Element(s) in the HTML source code</span>")
+          toolTipCategory.html('<b>Categorical Info:</b> <br>' +
+              '<span>There ' + (mapReader(g).gvalue === 0 ? 'is 1' : 'are ' + mapReader(g).gvalue) + ' ' + mapReader(g).gname + ' Element(s) in the HTML source code</span>')
         })
         .on('mouseout', function (g, i) {
-          svg.selectAll("path.chord ")
+          svg.selectAll('path.chord ')
               .filter(function (d) {
                 return d.source.index !== i && d.target.index !== i;
               })
               .transition()
-              .style("opacity", 1);
+              .style('opacity', 1);
           toolTipCategory.transition().duration(200).style('opacity', 0.4);
 
         });
 
-    g.append("svg:text")
+    g.append('svg:text')
         .each(function (d) {
           d.angle = (d.startAngle + d.endAngle) / 2;
         })
-        .attr("dy", ".35em")
-        .style("font-family", "helvetica, arial, sans-serif")
-        .style("font-size", "15px")
-        .attr("text-anchor", function (d) {
-          return d.angle > Math.PI ? "end" : null;
+        .attr('dy', '.35em')
+        .style('font-family', 'helvetica, arial, sans-serif')
+        .style('font-size', '15px')
+        .attr('text-anchor', function (d) {
+          return d.angle > Math.PI ? 'end' : null;
         })
-        .attr("transform", function (d) {
-          return "rotate(" + (d.angle * 180 / Math.PI - 90) + ")" +
-              "translate(" + (r0 + 26) + ")" +
-              (d.angle > Math.PI ? "rotate(180)" : "");
+        .attr('transform', function (d) {
+          return 'rotate(' + (d.angle * 180 / Math.PI - 90) + ')' +
+              'translate(' + (r0 + 26) + ')' +
+              (d.angle > Math.PI ? 'rotate(180)' : '');
         })
         .text(function (d) {
           return mapReader(d).gname;
         });
 
     const colors = d3.scaleOrdinal()
-        .range(["#fbc98d", "#ef8160", "#db476a", "#9f2f7f", "#5e257c", "#262150"]);
+        .range(['#fbc98d', '#ef8160', '#db476a', '#9f2f7f', '#5e257c', '#262150']);
 
-    svg.selectAll("path.chord")
+    svg.selectAll('path.chord')
         .data(function (chords) {
           return chords;
         })
-        .enter().append("svg:path")
-        .attr("class", "chord")
-        .attr("index", function (d) {
+        .enter().append('svg:path')
+        .attr('class', 'chord')
+        .attr('index', function (d) {
           return d.source.index;
         })
-        //.style("stroke", "grey")
-        .style("fill", function (d, i) {
+        //.style('stroke', 'grey')
+        .style('fill', function (d, i) {
           return colors(i)
         })
-        .attr("d", ribbon.radius(r0))
+        .attr('d', ribbon.radius(r0))
         .on('mouseover', function (g, i) {
-          svg.selectAll("path.chord")
+          svg.selectAll('path.chord')
               .filter(function (d) {
                 return d.source.index !== g.source.index || d.target.index !== g.target.index;
               })
               .transition()
-              .style("opacity", .1);
+              .style('opacity', .1);
           toolTip.transition().duration(200).style('opacity', 1);
 
-          toolTip.html("<b>Info:</b> <br>" +
-              "<span>There are " + g.source.value + "  " + mapReader(g).sname + " in " + mapReader(g).tname + " Elements. " +
-              "<br>There are " + g.target.value + "  " + mapReader(g).tname + " in " + mapReader(g).sname + " Elements." +
-              "</span>")
+          toolTip.html('<b>Info:</b> <br>' +
+              '<span>There are ' + g.source.value + '  ' + mapReader(g).sname + ' in ' + mapReader(g).tname + ' Elements. ' +
+              '<br>There are ' + g.target.value + '  ' + mapReader(g).tname + ' in ' + mapReader(g).sname + ' Elements.' +
+              '</span>')
 
           //.style('left', (d.x - 20) + 'px')
           //.style('top', (d.y + d.value * 3 + 20) + 'px')
           ;
         })
         .on('mouseout', function (g, i) {
-          svg.selectAll("path.chord ")
+          svg.selectAll('path.chord ')
               .filter(function (d) {
                 return d.source.index !== g.source.index || d.target.index !== g.target.index;
               })
               .transition()
-              .style("opacity", 1);
+              .style('opacity', 1);
           toolTip.transition().duration(200).style('opacity', 0.4);
         });
   }

@@ -4,7 +4,7 @@ import '../styles/App.css';
 class Footer extends Component {
   render() {
     return (
-        <div className="container">
+        <div className='container'>
           <div>
             <p>This tool helps you to analyze the quality of a website by five different areas.
               The HTML & CSS source code is validated first. Performance, Accessibility and

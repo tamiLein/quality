@@ -12,8 +12,8 @@ import AccordionCardGlobal from './AccordionCardGlobal';
 class Accordion extends Component {
   render() {
     return (
-        <div className="container">
-          <div className="panel-group" id="accordion">
+        <div className='container'>
+          <div className='panel-group' id='accordion'>
             <AccordionCardHTML/>
             <AccordionCardCSS/>
             <AccordionCardPerformance/>

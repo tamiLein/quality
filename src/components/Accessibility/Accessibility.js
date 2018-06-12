@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import decodeHTML from 'decode-html';
 
-import AccessibilityBar from './/Accessibility-Bar';
+import AccessibilityBar from './/AccessibilityBar';
 import AccessibilityChart from './/AccessibilityBarchart';
 
 
@@ -57,6 +57,7 @@ class Accessibility extends Component {
     };
 
 
+    //statistic data from tenon.io for fh-ooe.at
     const staticData =
       {
         "apiErrors": [
@@ -22081,6 +22082,7 @@ class Accessibility extends Component {
         });*/
 
 
+    //count the occured errors by their type
     this.countByType(staticData.resultSet);
 
   }
@@ -22175,18 +22177,18 @@ class Accessibility extends Component {
         }
         errorItems.push(
             <div className={'error col-md-12 ' + classChecked} key={i}>
-              <div className="col-md-6">
-                <span className="codeLine">In line: {error[i].position.line}</span>
-                <p className="codeSnipped">{ codeSnipped}</p>
+              <div className='col-md-6'>
+                <span className='codeLine'>In line: {error[i].position.line}</span>
+                <p className='codeSnipped'>{ codeSnipped}</p>
               </div>
 
-              <div className="col-md-6">
-                <span className={'errorType ' + error[i].certainity}><i className="fa"></i> {error[i].errorTitle}</span>
-                <span className="priority">Priority: {error[i].priority}</span>
-                <br/><span className="errorMessage">Description: {error[i].errorDescription}</span>
-                <br/><span className="standardsMessage">Standard: {error[i].standards[0]}</span>
-                <br/><span className="errorMessage">Solution: {error[i].resultTitle}</span>
-                <br/><span className="errorMessage">More Information: <a href={error[i].ref} target="_blanc">{error[i].ref}</a></span>
+              <div className='col-md-6'>
+                <span className={'errorType ' + error[i].certainity}><i className='fa'></i> {error[i].errorTitle}</span>
+                <span className='priority'>Priority: {error[i].priority}</span>
+                <br/><span className='errorMessage'>Description: {error[i].errorDescription}</span>
+                <br/><span className='standardsMessage'>Standard: {error[i].standards[0]}</span>
+                <br/><span className='errorMessage'>Solution: {error[i].resultTitle}</span>
+                <br/><span className='errorMessage'>More Information: <a href={error[i].ref} target='_blanc'>{error[i].ref}</a></span>
               </div>
             </div>
         )

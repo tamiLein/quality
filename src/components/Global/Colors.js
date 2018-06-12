@@ -67,7 +67,7 @@ class Colors extends Component {
         .attr('height', nodeWidth)
         .attr('transform', function (d) {
           count++;
-          return "translate( " + (nodeWidth * ((count - 1) - Math.floor(count / 18) * 18)) + ", " + Math.floor(count / 18) * 75 + ")";
+          return 'translate( ' + (nodeWidth * ((count - 1) - Math.floor(count / 18) * 18)) + ', ' + Math.floor(count / 18) * 75 + ')';
         });
 
     node.append('rect')
@@ -93,7 +93,7 @@ class Colors extends Component {
           return d.count;
         });
 
-    node.append("text")
+    node.append('text')
         .attr('x', 0)
         .attr('y', 62)
         .text(function (d) {
@@ -108,7 +108,7 @@ class Colors extends Component {
   render() {
     return ( <div>
           <h5>Used Colors - {this.props.data}</h5>
-          <div id={"colors" + this.props.data}></div>
+          <div id={'colors' + this.props.data}></div>
         </div>
     );
   }

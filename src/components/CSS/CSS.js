@@ -60,7 +60,6 @@ class CSS extends Component {
     });
   }
 
-
   handleInputChange(event) {
     const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
     this.setState(
@@ -95,7 +94,6 @@ class CSS extends Component {
       }
     }
 
-
     for (let i = 0; i < warning.length; i++) {
       warningTypes[warning[i].type] = warningTypes[warning[i].type] ? warningTypes[warning[i].type] + 1 : 1;
       if (i === warning.length - 1) {
@@ -105,10 +103,7 @@ class CSS extends Component {
         });
       }
     }
-
-
   }
-
 
   render() {
 
@@ -136,10 +131,9 @@ class CSS extends Component {
           </div>
           <CSSBarchart warningTypes={this.state.warningTypes} errorTypes={this.state.errorTypes}
                        warnings={this.state.showHideInfo} errors={this.state.showHideError}/>
-          <h5>Error-List</h5>
+
         </div>
     );
-
 
     // add errors
     for (let i = 0; i < error.length; i++) {
@@ -159,7 +153,6 @@ class CSS extends Component {
       )
     }
 
-
     // add warnings
     for (let i = 0; i < warning.length; i++) {
       warningItems.push(
@@ -178,7 +171,6 @@ class CSS extends Component {
       )
     }
 
-
     if (errorItems !== '' && warningItems !== '') {
       errorItems.push(warningItems);
       return (errorItems);
@@ -189,7 +181,6 @@ class CSS extends Component {
     } else {
       return null;
     }
-
 
   }
 }

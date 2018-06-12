@@ -30,7 +30,7 @@ class Input extends Component {
     const pattern = /^((http|https|ftp):\/\/)/;
 
     if (!pattern.test(url)) {
-      url = "http://" + url;
+      url = 'http://' + url;
     }
     return url;
 
@@ -45,12 +45,12 @@ class Input extends Component {
 
   render() {
     return (
-        <div className="container">
+        <div className='container'>
           <form>
-            <label htmlFor="addressInput" className="screen-reader-text">URL</label>
-            <input type="text" id="addressInput" onChange={this.handleChange} placeholder="Please enter your URL ..."/>
-            <button className="btn btn-default" onClick={this.handleClick}><span
-                className="screen-reader-text">Submit</span></button>
+            <label htmlFor='addressInput' className='screen-reader-text'>URL</label>
+            <input type='text' id='addressInput' onChange={this.handleChange} placeholder='Please enter your URL ...'/>
+            <button className='btn btn-default' onClick={this.handleClick}><span
+                className='screen-reader-text'>Submit</span></button>
           </form>
         </div>
     );
